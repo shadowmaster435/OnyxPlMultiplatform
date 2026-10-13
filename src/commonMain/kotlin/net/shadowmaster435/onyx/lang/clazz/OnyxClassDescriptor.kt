@@ -6,6 +6,7 @@ import net.shadowmaster435.onyx.lang.enums.operator.OnyxOperator
 import net.shadowmaster435.onyx.lang.field.OnyxFieldDesc
 import net.shadowmaster435.onyx.lang.function.AbstractOnyxFunction
 import net.shadowmaster435.onyx.lang.function.OnyxFunction
+import net.shadowmaster435.onyx.lang.function.OnyxTuple
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
 import net.shadowmaster435.onyx.lang.pkg.OnyxPackage
 import net.shadowmaster435.onyx.lang.util.EnumMap
@@ -22,11 +23,13 @@ open class OnyxClassDescriptor(
     val companion: OnyxObject? = null,
     protected val operatorOverloads: EnumMap<OnyxOperator, OnyxFunction> = enumMapOf(),
     val genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty,
+    val constructors: List<AbstractOnyxFunction> = listOf(),
 ) {
     open val constant: Boolean = false
     protected val fieldEntries = fields.values.toTypedArray()
     protected val functionEntries = functions.values.toTypedArray()
     protected val classEntries = classes.values.toTypedArray()
+    private val constructorTuples: HashMap<OnyxTuple, OnyxClassInstance?> = hashMapOf<OnyxTuple, OnyxClassInstance?>().apply {  }
 
 
     internal val fields = HashMap<String, Int>().apply {
@@ -83,7 +86,6 @@ open class OnyxClassDescriptor(
         if (castableTo(from.desc)) return from
         throw ClassCastException("Class ${from.desc} cannot be cast to $this")
     }
-
 
     fun getFieldRefIndex(name: String) = fields[name]!!
     fun getField(refIndex: Int) = fieldEntries[refIndex]

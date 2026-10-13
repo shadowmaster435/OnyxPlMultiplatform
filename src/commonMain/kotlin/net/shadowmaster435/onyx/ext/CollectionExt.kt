@@ -19,3 +19,11 @@ fun <T> Collection<T>.hasOnlyOne(v: T): Boolean {
     }
     return true
 }
+
+fun <K, V> List<K>.toHashMap(values: List<V>): HashMap<K, V> {
+    val map = hashMapOf<K, V>()
+    repeat(size) {
+        map[get(it)] = values[it]
+    }
+    return map
+}

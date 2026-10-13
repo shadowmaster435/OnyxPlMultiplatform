@@ -5,11 +5,12 @@ import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
 import net.shadowmaster435.onyx.lang.impl.OnyxPokable
 import net.shadowmaster435.onyx.util.OnyxInitHolder
+import net.shadowmaster435.onyx.util.OnyxParams
 
 open class OnyxFieldInstance(
     val desc: OnyxFieldImpl,
     val referenceIndex: Int,
-    val type: OnyxClassDescriptor
+    val type: OnyxClassDescriptor,
 ): OnyxPokable {
 
     open val held = OnyxInitHolder<OnyxClassInstance>()
@@ -18,8 +19,13 @@ open class OnyxFieldInstance(
     fun get() = held.get()
 
     override fun poke() { }
-    override fun pokeWith(onyxClassInstance: OnyxClassInstance?) {
+
+    fun initialize(
+        thisInst: OnyxClassInstance,
+        params: OnyxParams
+    ) {
         val expr = desc.initExpression ?: throw NullPointerException("Missing expression for field")
-        held.set(expr.evaluate(onyxClassInstance))
+        held.set(expr.evaluate(thisInst))
     }
+
 }

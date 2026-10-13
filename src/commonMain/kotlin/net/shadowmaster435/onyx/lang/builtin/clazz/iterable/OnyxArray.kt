@@ -14,7 +14,8 @@ class OnyxArray(override val held: Array<OnyxClassInstance>): OnyxExternalClassI
     fun isEmpty() = held.isEmpty()
     fun contains(element: OnyxClassInstance) = held.contains(element)
     fun iterator() = held.iterator()
-    operator fun set(index: Int) {
+    operator fun set(index: Int, v: OnyxClassInstance) {
+        held[index] = v
     }
 
     companion object {

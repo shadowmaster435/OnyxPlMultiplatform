@@ -10,13 +10,16 @@ import kotlin.jvm.JvmInline
 class OnyxCodeBlock(
     val members: List<OnyxRunnableImpl>, val returnType: OnyxClassDescriptor = OnyxUnit.desc
 ) {
-    fun execute(thisInst: OnyxClassInstance?, params: List<OnyxClassInstance>): Pair<OnyxClassInstance, OnyxExitType?> {
+    fun execute(thisInst: OnyxClassInstance?, params: List<OnyxClassInstance>): Triple<OnyxClassInstance, OnyxExitType?, OnyxCodeBlock?> {
         members.forEach {
             if (it is OnyxExitStatement)
-                return it.execute(thisInst, params) to it.type
-            else execute(thisInst, params)
+                return Triple(it.execute(thisInst, params), it.type, it.at)
+            else {
+                val ret = execute(thisInst, params)
+                if (ret.third != null && ret.third !== this) return ret
+            }
         }
-        return OnyxUnit to null
+        return Triple(OnyxUnit, null, null)
     }
     fun execute(thisInst: OnyxClassInstance?) = execute(thisInst,listOf())
     fun execute(thisInst: OnyxClassInstance?, singleParam: OnyxClassInstance) = execute(thisInst,listOf(singleParam))

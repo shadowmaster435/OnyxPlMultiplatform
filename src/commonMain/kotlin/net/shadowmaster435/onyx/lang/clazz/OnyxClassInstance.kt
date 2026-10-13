@@ -12,10 +12,12 @@ open class OnyxClassInstance(
     val desc: OnyxClassDescriptor,
 ): OnyxPokable {
     protected open val fieldData: MutableList<OnyxFieldInstance> = mutableListOf()
+    protected open var initialized = false
     open val isObject = false
     override fun poke() {
         createFieldData()
     }
+
 
     open fun createFieldData() {
         var i = 0
@@ -36,19 +38,25 @@ open class OnyxClassInstance(
     open fun onyxHashcode() = (desc.hashcodeFunction?.invoke(this)
         ?: throw RuntimeException("No defined hashcode function, this should never happen.")) as OnyxInt
 
-    fun castableTo(to: OnyxClassDescriptor) = this@OnyxClassInstance.desc.castableTo(to)
+    fun castableTo(to: OnyxClassDescriptor) = desc.castableTo(to)
 
     fun setField(refIndex: Int, value: OnyxClassInstance) {
-        val field = fieldData[refIndex]
+        val field = fieldData.getOrNull(refIndex) ?: return
         field.set(value.cast(field.type))
     }
     fun setField(name: String, value: OnyxClassInstance) {
-        val field = fieldData[desc.getFieldRefIndex(name)]
+        val field = fieldData.getOrNull(desc.getFieldRefIndex(name)) ?: return
         field.set(value.cast(field.type))
     }
     fun getField(refIndex: Int) = fieldData[refIndex].get()
     fun getField(name: String) = fieldData[desc.getFieldRefIndex(name)].get()
+    fun getFieldNullable(name: String) = fieldData.getOrNull(desc.getFieldRefIndex(name))?.get()
+
+
+
     companion object {
+
+
         val defaultEqualsFunction = OnyxExternalFunction(
             OnyxTuples.empty,
             listOf(
