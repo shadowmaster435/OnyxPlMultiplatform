@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="23" />
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-Xexpect-actual-classes" />
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="IdeaProjects.OnyxPlMultiplatform.src" options="" />
+      <module name="IdeaProjects.OnyxPlMultiplatform.src.commonMain" options="" />
+      <module name="IdeaProjects.OnyxPlMultiplatform.src.jvmMain" options="" />
+      <module name="OnyxPlMultiplatform" options="" />
+      <module name="OnyxPlMultiplatform.commonMain" options="" />
+      <module name="OnyxPlMultiplatform.commonTest" options="" />
+      <module name="OnyxPlMultiplatform.jvmMain" options="" />
+      <module name="OnyxPlMultiplatform.jvmTest" options="" />
+      <module name="OnyxPlMultiplatform.linuxMain" options="" />
+      <module name="OnyxPlMultiplatform.linuxTest" options="" />
+      <module name="OnyxPlMultiplatform.nativeLinuxMain" options="" />
+      <module name="OnyxPlMultiplatform.nativeLinuxTest" options="" />
+      <module name="OnyxPlMultiplatform.nativeMain" options="" />
+      <module name="OnyxPlMultiplatform.nativeTest" options="" />
+      <module name="OnyxPlMultiplatform.parsinator" options="" />
+      <module name="OnyxPlMultiplatform.parsinator.commonMain" options="" />
+      <module name="OnyxPlMultiplatform.parsinator.commonTest" options="" />
+      <module name="OnyxPlMultiplatform.parsinator.jvmMain" options="" />
+      <module name="OnyxPlMultiplatform.parsinator.jvmTest" options="" />
+      <module name="OnyxPlMultiplatform.parsinator.linuxMain" options="" />
+      <module name="OnyxPlMultiplatform.parsinator.linuxTest" options="" />
+      <module name="OnyxPlMultiplatform.parsinator.nativeLinuxMain" options="" />
+      <module name="OnyxPlMultiplatform.parsinator.nativeLinuxTest" options="" />
+      <module name="OnyxPlMultiplatform.parsinator.nativeMain" options="" />
+      <module name="OnyxPlMultiplatform.parsinator.nativeTest" options="" />
+      <module name="OnyxPlMultiplatform.src" options="" />
+      <module name="OnyxPlMultiplatform.src.commonMain" options="" />
+      <module name="OnyxPlMultiplatform.src.jvmMain" options="" />
+      <module name="Parsinator" options="" />
+      <module name="Parsinator.OnyxPlMultiplatform.parsinator" options="" />
+      <module name="Parsinator.commonMain" options="" />
+      <module name="Parsinator.commonTest" options="" />
+      <module name="Parsinator.jvmMain" options="" />
+      <module name="Parsinator.jvmTest" options="" />
+      <module name="Parsinator.linuxMain" options="" />
+      <module name="Parsinator.linuxTest" options="" />
+      <module name="Parsinator.nativeLinuxMain" options="" />
+      <module name="Parsinator.nativeLinuxTest" options="" />
+      <module name="Parsinator.nativeMain" options="" />
+      <module name="Parsinator.nativeTest" options="" />
+      <module name="Parsinator.parsinator" options="" />
+      <module name="Parsinator.parsinator.commonMain" options="" />
+      <module name="Parsinator.parsinator.commonTest" options="" />
+      <module name="Parsinator.parsinator.jvmMain" options="" />
+      <module name="Parsinator.parsinator.jvmTest" options="" />
+      <module name="Parsinator.parsinator.linuxMain" options="" />
+      <module name="Parsinator.parsinator.linuxTest" options="" />
+      <module name="Parsinator.parsinator.nativeLinuxMain" options="" />
+      <module name="Parsinator.parsinator.nativeLinuxTest" options="" />
+      <module name="Parsinator.parsinator.nativeMain" options="" />
+      <module name="Parsinator.parsinator.nativeTest" options="" />
+      <module name="Parsinator.src" options="" />
+      <module name="Parsinator.src.commonMain" options="" />
+      <module name="Parsinator.src.jvmMain" options="" />
+      <module name="Parsinator.testNative" options="" />
+      <module name="Parsinator.testNative.commonMain" options="" />
+      <module name="Parsinator.testNative.commonTest" options="" />
+      <module name="Parsinator.testNative.linuxMain" options="" />
+      <module name="Parsinator.testNative.linuxTest" options="" />
+      <module name="Parsinator.testNative.linuxX64Main" options="" />
+      <module name="Parsinator.testNative.linuxX64Test" options="" />
+      <module name="Parsinator.testNative.nativeMain" options="" />
+      <module name="Parsinator.testNative.nativeTest" options="" />
+      <module name="com.example.OnyxPlMultiplatform.commonMain" options="" />
+      <module name="com.example.OnyxPlMultiplatform.commonTest" options="" />
+      <module name="com.example.OnyxPlMultiplatform.jvmMain" options="" />
+      <module name="com.example.OnyxPlMultiplatform.jvmTest" options="" />
+      <module name="com.example.OnyxPlMultiplatform.linuxMain" options="" />
+      <module name="com.example.OnyxPlMultiplatform.linuxTest" options="" />
+      <module name="com.example.OnyxPlMultiplatform.nativeLinuxMain" options="" />
+      <module name="com.example.OnyxPlMultiplatform.nativeLinuxTest" options="" />
+      <module name="com.example.OnyxPlMultiplatform.nativeMain" options="" />
+      <module name="com.example.OnyxPlMultiplatform.nativeTest" options="" />
+      <module name="com.example.OnyxPlMultiplatform.parsinator" options="" />
+      <module name="com.example.OnyxPlMultiplatform.parsinator.commonMain" options="" />
+      <module name="com.example.OnyxPlMultiplatform.parsinator.commonTest" options="" />
+      <module name="com.example.OnyxPlMultiplatform.parsinator.jvmMain" options="" />
+      <module name="com.example.OnyxPlMultiplatform.parsinator.jvmTest" options="" />
+      <module name="com.example.OnyxPlMultiplatform.parsinator.linuxMain" options="" />
+      <module name="com.example.OnyxPlMultiplatform.parsinator.linuxTest" options="" />
+      <module name="com.example.OnyxPlMultiplatform.parsinator.nativeLinuxMain" options="" />
+      <module name="com.example.OnyxPlMultiplatform.parsinator.nativeLinuxTest" options="" />
+      <module name="com.example.OnyxPlMultiplatform.parsinator.nativeMain" options="" />
+      <module name="com.example.OnyxPlMultiplatform.parsinator.nativeTest" options="" />
+    </option>
+  </component>
+</project>

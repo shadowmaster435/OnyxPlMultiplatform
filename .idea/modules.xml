@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.commonMain.iml" filepath="$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.commonMain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.commonTest.iml" filepath="$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.commonTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.jvmMain.iml" filepath="$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.jvmMain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.jvmTest.iml" filepath="$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.jvmTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.linuxMain.iml" filepath="$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.linuxMain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.linuxTest.iml" filepath="$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.linuxTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.nativeLinuxMain.iml" filepath="$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.nativeLinuxMain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.nativeLinuxTest.iml" filepath="$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.nativeLinuxTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.nativeMain.iml" filepath="$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.nativeMain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.nativeTest.iml" filepath="$PROJECT_DIR$/.idea/modules/OnyxPlMultiplatform.nativeTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.iml" filepath="$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.commonMain.iml" filepath="$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.commonMain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.commonTest.iml" filepath="$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.commonTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.jvmMain.iml" filepath="$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.jvmMain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.jvmTest.iml" filepath="$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.jvmTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.linuxMain.iml" filepath="$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.linuxMain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.linuxTest.iml" filepath="$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.linuxTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.nativeLinuxMain.iml" filepath="$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.nativeLinuxMain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.nativeLinuxTest.iml" filepath="$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.nativeLinuxTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.nativeMain.iml" filepath="$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.nativeMain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.nativeTest.iml" filepath="$PROJECT_DIR$/.idea/modules/1473815523/OnyxPlMultiplatform.parsinator.nativeTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/src/OnyxPlMultiplatform.src.iml" filepath="$PROJECT_DIR$/.idea/modules/src/OnyxPlMultiplatform.src.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/src/commonMain/OnyxPlMultiplatform.src.commonMain.iml" filepath="$PROJECT_DIR$/.idea/modules/src/commonMain/OnyxPlMultiplatform.src.commonMain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/src/jvmMain/OnyxPlMultiplatform.src.jvmMain.iml" filepath="$PROJECT_DIR$/.idea/modules/src/jvmMain/OnyxPlMultiplatform.src.jvmMain.iml" />
+    </modules>
+  </component>
+</project>

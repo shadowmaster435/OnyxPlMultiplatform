@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="test-1.0-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../Parsinator/test/build/libs/test-1.0-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

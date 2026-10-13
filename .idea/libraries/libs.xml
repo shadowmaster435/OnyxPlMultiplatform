@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="libs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../Parsinator/build/libs/Parsinator-jvm-1.0-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../Parsinator/build/libs/Parsinator-metadata-1.0-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
