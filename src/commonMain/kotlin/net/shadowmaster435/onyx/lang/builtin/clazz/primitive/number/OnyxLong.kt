@@ -8,4 +8,7 @@ class OnyxLong(override val held: Long) : OnyxNumber<Long>(makeOverrideDesc<Onyx
     override fun toLong() = held
     override fun toFloat() = held.toFloat()
     override fun toDouble() = held.toDouble()
+    companion object {
+        val desc = descOf(OnyxLong::class)
+    }
 }

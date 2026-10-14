@@ -13,11 +13,17 @@ class OnyxFieldDesc(
     override val classType: OnyxClassDescriptor,
     override val modifiers: List<OnyxModifierType>,
     override val initExpression: OnyxExpression? = null,
+    override val isFinal: Boolean = false,
+
+    override val isVirtual: Boolean = false,
 ): OnyxFieldImpl {
+    override val isDeferred: Boolean = false
     override var getter: OnyxFunction? = null
     override var setter: OnyxFunction? = null
     override val type = OnyxMemberType.FIELD
     override fun poke() {}
     override fun pokeWith(stick: OnyxClassInstance?) {}
-    override fun instantiate(refIndex: Int) = OnyxFieldInstance(this, refIndex, classType)
+    override fun instantiate(refIndex: Int) = OnyxFieldInstance(
+        this, refIndex, isFinal, isDeferred, isVirtual
+    )
 }

@@ -1,5 +1,7 @@
 package net.shadowmaster435.onyx.lang.function
 
+import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxUnit
+import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxMemberType
 import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
@@ -10,8 +12,10 @@ class OnyxExternalFunction(
     tuples: OnyxTuples,
     modifiers: List<OnyxModifierType>,
     genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty,
+    returnType: OnyxClassDescriptor = OnyxUnit.desc,
+
     val function: (thisInst: OnyxClassInstance?, list: List<OnyxClassInstance>) -> OnyxClassInstance
-) : AbstractOnyxFunction(tuples, modifiers, genericTuples) {
+) : AbstractOnyxFunction(tuples, modifiers, genericTuples, returnType) {
     override val type = OnyxMemberType.FUNCTION
     override fun poke() {}
 

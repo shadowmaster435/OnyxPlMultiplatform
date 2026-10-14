@@ -1,6 +1,7 @@
 package net.shadowmaster435.onyx.lang.clazz
 
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxBoolean
+import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxString
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxInt
 import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.field.OnyxFieldInstance
@@ -42,11 +43,11 @@ open class OnyxClassInstance(
 
     fun setField(refIndex: Int, value: OnyxClassInstance) {
         val field = fieldData.getOrNull(refIndex) ?: return
-        field.set(value.cast(field.type))
+        field.set(value.cast(field.desc.classType))
     }
     fun setField(name: String, value: OnyxClassInstance) {
         val field = fieldData.getOrNull(desc.getFieldRefIndex(name)) ?: return
-        field.set(value.cast(field.type))
+        field.set(value.cast(field.desc.classType))
     }
     fun getField(refIndex: Int) = fieldData[refIndex].get()
     fun getField(name: String) = fieldData[desc.getFieldRefIndex(name)].get()
@@ -71,5 +72,12 @@ open class OnyxClassInstance(
                 OnyxModifierType.OPEN,
             )
         ) { thisInst, _ -> OnyxInt(thisInst.hashCode()) }
+        val defaultToStringFunction = OnyxExternalFunction(
+            OnyxTuples.empty,
+            listOf(
+                OnyxModifierType.PUBLIC,
+                OnyxModifierType.OPEN,
+            )
+        ) { thisInst, _ -> OnyxString(thisInst.toString()) }
     }
 }

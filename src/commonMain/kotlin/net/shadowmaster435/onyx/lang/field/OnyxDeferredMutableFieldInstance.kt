@@ -1,8 +1,8 @@
 package net.shadowmaster435.onyx.lang.field
 
-import net.shadowmaster435.onyx.lang.function.OnyxFunction
+import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
 
 class OnyxDeferredMutableFieldInstance(
-    desc: OnyxFieldDesc,
+    desc: OnyxFieldImpl,
     referenceIndex: Int,
-): OnyxFieldInstance(desc, referenceIndex)
+): OnyxFieldInstance(desc, referenceIndex, deferred = true)

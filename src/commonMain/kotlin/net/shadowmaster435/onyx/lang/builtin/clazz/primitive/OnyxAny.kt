@@ -14,9 +14,11 @@ class OnyxAny: OnyxClassInstance(desc) {
         val desc = anyDesc
     }
 }
+
 internal val anyDesc = OnyxClassDescriptor(
     "Any", onyxPrimitives, linkedMapOf(), linkedMapOf(
         OnyxClassDescriptor.hashcodeDesc,
-        OnyxClassDescriptor.equalDesc
+        OnyxClassDescriptor.equalDesc,
+        OnyxClassDescriptor.toStringDesc,
     ), linkedMapOf(), OnyxClassType.OPEN, listOf()
 )

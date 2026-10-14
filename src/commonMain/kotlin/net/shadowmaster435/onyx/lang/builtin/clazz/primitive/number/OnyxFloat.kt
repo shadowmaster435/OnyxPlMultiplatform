@@ -8,4 +8,7 @@ class OnyxFloat(override val held: Float) : OnyxNumber<Float>(makeOverrideDesc<O
     override fun toLong() = held.toLong()
     override fun toFloat() = held
     override fun toDouble() = held.toDouble()
+    companion object {
+        val desc = descOf(OnyxFloat::class)
+    }
 }

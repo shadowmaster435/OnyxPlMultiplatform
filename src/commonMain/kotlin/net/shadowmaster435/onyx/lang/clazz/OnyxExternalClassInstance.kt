@@ -8,4 +8,5 @@ abstract class OnyxExternalClassInstance<T>(
 ) : OnyxClassInstance(desc) {
     abstract val held: T
     override fun onyxEquals(other: OnyxClassInstance) = OnyxBoolean(other is OnyxNumber<*> && held == other.held)
+    override fun toString() = held.toString()
 }

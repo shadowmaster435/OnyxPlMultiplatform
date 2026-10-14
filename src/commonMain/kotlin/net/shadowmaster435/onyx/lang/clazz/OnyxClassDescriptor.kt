@@ -8,73 +8,73 @@ import net.shadowmaster435.onyx.lang.function.AbstractOnyxFunction
 import net.shadowmaster435.onyx.lang.function.OnyxFunction
 import net.shadowmaster435.onyx.lang.function.OnyxTuple
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
+import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
 import net.shadowmaster435.onyx.lang.pkg.OnyxPackage
 import net.shadowmaster435.onyx.lang.util.EnumMap
 import net.shadowmaster435.onyx.lang.util.enumMapOf
 
 open class OnyxClassDescriptor(
-    val name: String,
-    val pkg: OnyxPackage,
-    fields: LinkedHashMap<String, OnyxFieldDesc>,
+    open val name: String,
+    open val pkg: OnyxPackage,
+    fields: LinkedHashMap<String, OnyxFieldImpl>,
     functions: LinkedHashMap<String, AbstractOnyxFunction>,
     classes: LinkedHashMap<String, OnyxClassDescriptor>,
-    val type: OnyxClassType,
+    open val type: OnyxClassType,
     supertypes: List<OnyxClassDescriptor>,
-    val companion: OnyxObject? = null,
-    protected val operatorOverloads: EnumMap<OnyxOperator, OnyxFunction> = enumMapOf(),
-    val genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty,
-    val constructors: List<AbstractOnyxFunction> = listOf(),
+    open val companion: OnyxObject? = null,
+    internal open val operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunction> = enumMapOf(),
+    open val genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty,
+    open val constructors: List<AbstractOnyxFunction> = listOf(),
 ) {
     open val constant: Boolean = false
-    protected val fieldEntries = fields.values.toTypedArray()
-    protected val functionEntries = functions.values.toTypedArray()
-    protected val classEntries = classes.values.toTypedArray()
-    private val constructorTuples: HashMap<OnyxTuple, OnyxClassInstance?> = hashMapOf<OnyxTuple, OnyxClassInstance?>().apply {  }
+    internal open val fieldEntries = fields.values.toTypedArray()
+    internal open val functionEntries = functions.values.toTypedArray()
+    internal open val classEntries = classes.values.toTypedArray()
 
 
-    internal val fields = HashMap<String, Int>().apply {
+    internal open val fields = HashMap<String, Int>().apply {
         var i = 0
         fields.forEach {
             put(it.key, i)
             i++
         }
     }
-    internal val functions = HashMap<String, Int>().apply {
+    internal open val functions = HashMap<String, Int>().apply {
         var i = 0
         functions.forEach {
             put(it.key, i)
             i++
         }
     }
-    internal val classes = HashMap<String, Int>().apply {
+    internal open val classes = HashMap<String, Int>().apply {
         var i = 0
         classes.forEach {
             put(it.key, i)
             i++
         }
     }
-    val supertypes = supertypes.toList()
+    open val supertypes = supertypes.toList()
 
 
-    val equalsFunction = functions["equals"]
-    val hashcodeFunction = functions["hashCode"]
+    open val equalsFunction = functions["equals"]
+    open val hashcodeFunction = functions["hashCode"]
 
 
 
     constructor(
         name: String,
         pkg: OnyxPackage,
-        fields: LinkedHashMap<String, OnyxFieldDesc>,
+        fields: LinkedHashMap<String, OnyxFieldImpl>,
         functions: LinkedHashMap<String, AbstractOnyxFunction>,
         classes: LinkedHashMap<String, OnyxClassDescriptor>,
         type: OnyxClassType,
         supertype: OnyxClassDescriptor,
         companion: OnyxObject? = null,
-        operatorOverloads: EnumMap<OnyxOperator, OnyxFunction> = enumMapOf(),
+        operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunction> = enumMapOf(),
         genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty
     ) : this(name, pkg, fields, functions, classes, type, listOf(supertype), companion, operatorOverloads, genericTuples)
 
-    fun castableTo(other: OnyxClassDescriptor): Boolean {
+    open fun castableTo(other: OnyxClassDescriptor): Boolean {
         for(supertype in supertypes) {
             if (supertype == other || supertype.castableTo(other)) return true
         }
@@ -87,10 +87,10 @@ open class OnyxClassDescriptor(
         throw ClassCastException("Class ${from.desc} cannot be cast to $this")
     }
 
-    fun getFieldRefIndex(name: String) = fields[name]!!
-    fun getField(refIndex: Int) = fieldEntries[refIndex]
-    fun getField(name: String) = fieldEntries[fields[name]!!]
-    fun getOperatorOverload(op: OnyxOperator) = operatorOverloads[op]
+    open fun getFieldRefIndex(name: String) = fields[name]!!
+    open fun getField(refIndex: Int) = fieldEntries[refIndex]
+    open fun getField(name: String) = fieldEntries[fields[name]!!]
+    open fun getOperatorOverload(op: OnyxOperator) = operatorOverloads[op]
 
     open fun extend(
         name: String,
@@ -98,10 +98,10 @@ open class OnyxClassDescriptor(
         type: OnyxClassType,
         supertypes: List<OnyxClassDescriptor>,
         companion: OnyxObject? = null,
-        fields: LinkedHashMap<String, OnyxFieldDesc> = linkedMapOf(),
+        fields: LinkedHashMap<String, OnyxFieldImpl> = linkedMapOf(),
         functions: LinkedHashMap<String, AbstractOnyxFunction> = linkedMapOf(),
         classes: LinkedHashMap<String, OnyxClassDescriptor> = linkedMapOf(),
-        operatorOverloads: EnumMap<OnyxOperator, OnyxFunction> = enumMapOf(),
+        operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunction> = enumMapOf(),
         genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty,
     ) = OnyxClassDescriptor(
         name,
@@ -127,10 +127,10 @@ open class OnyxClassDescriptor(
         type: OnyxClassType,
         supertype: OnyxClassDescriptor,
         companion: OnyxObject? = null,
-        fields: LinkedHashMap<String, OnyxFieldDesc> = linkedMapOf(),
+        fields: LinkedHashMap<String, OnyxFieldImpl> = linkedMapOf(),
         functions: LinkedHashMap<String, AbstractOnyxFunction> = linkedMapOf(),
         classes: LinkedHashMap<String, OnyxClassDescriptor> = linkedMapOf(),
-        operatorOverloads: EnumMap<OnyxOperator, OnyxFunction> = enumMapOf(),
+        operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunction> = enumMapOf(),
         genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty,
     ) = extend(
         name, pkg, type, listOf(supertype), companion,
@@ -142,10 +142,10 @@ open class OnyxClassDescriptor(
         pkg: OnyxPackage,
         type: OnyxClassType,
         companion: OnyxObject? = null,
-        fields: LinkedHashMap<String, OnyxFieldDesc> = linkedMapOf(),
+        fields: LinkedHashMap<String, OnyxFieldImpl> = linkedMapOf(),
         functions: LinkedHashMap<String, AbstractOnyxFunction> = linkedMapOf(),
         classes: LinkedHashMap<String, OnyxClassDescriptor> = linkedMapOf(),
-        operatorOverloads: EnumMap<OnyxOperator, OnyxFunction> = enumMapOf(),
+        operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunction> = enumMapOf(),
         genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty,
     ) = extend(
         name, pkg, type, listOf(), companion,
@@ -155,5 +155,6 @@ open class OnyxClassDescriptor(
     companion object {
         val equalDesc = "equals" to OnyxClassInstance.defaultEqualsFunction
         val hashcodeDesc = "hashCode" to OnyxClassInstance.defaultHashcodeFunction
+        val toStringDesc = "toString" to OnyxClassInstance.defaultToStringFunction
     }
 }

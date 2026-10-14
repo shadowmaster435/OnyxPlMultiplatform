@@ -5,6 +5,7 @@ import net.shadowmaster435.onyx.lang.enums.operator.OnyxOperator
 import net.shadowmaster435.onyx.lang.field.OnyxFieldDesc
 import net.shadowmaster435.onyx.lang.function.AbstractOnyxFunction
 import net.shadowmaster435.onyx.lang.function.OnyxFunction
+import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
 import net.shadowmaster435.onyx.lang.pkg.OnyxPackage
 import net.shadowmaster435.onyx.lang.util.EnumMap
 import net.shadowmaster435.onyx.lang.util.enumMapOf
@@ -12,16 +13,16 @@ import net.shadowmaster435.onyx.lang.util.enumMapOf
 class OnyxConstClassDescriptor(
     name: String,
     pkg: OnyxPackage,
-    constructors: LinkedHashMap<String, AbstractOnyxFunction>,
-    fields: LinkedHashMap<String, OnyxFieldDesc>,
+    constructors: List<AbstractOnyxFunction>,
+    fields: LinkedHashMap<String, OnyxFieldImpl>,
     functions: LinkedHashMap<String, AbstractOnyxFunction>,
     classes: LinkedHashMap<String, OnyxClassDescriptor>,
     type: OnyxClassType,
     supertypes: List<OnyxConstClassDescriptor>,
     companion: OnyxObject? = null,
-    operatorOverloads: EnumMap<OnyxOperator, OnyxFunction> = enumMapOf(),
+    operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunction> = enumMapOf(),
 ) : OnyxClassDescriptor(
-    name, pkg, constructors, fields, functions, classes, type, supertypes, companion, operatorOverloads
+    name, pkg, fields, functions, classes, type, supertypes, companion, operatorOverloads, constructors =  constructors
 ) {
 
     override val constant = true
@@ -35,13 +36,13 @@ class OnyxConstClassDescriptor(
         name: String,
         pkg: OnyxPackage,
         type: OnyxClassType,
-        constructors: LinkedHashMap<String, AbstractOnyxFunction>,
+        constructors: List<AbstractOnyxFunction>,
         supertypes: List<OnyxConstClassDescriptor>,
         companion: OnyxObject? = null,
-        fields: LinkedHashMap<String, OnyxFieldDesc> = linkedMapOf(),
+        fields: LinkedHashMap<String, OnyxFieldImpl> = linkedMapOf(),
         functions: LinkedHashMap<String, AbstractOnyxFunction> = linkedMapOf(),
         classes: LinkedHashMap<String, OnyxClassDescriptor> = linkedMapOf(),
-        operatorOverloads: EnumMap<OnyxOperator, OnyxFunction> = enumMapOf(),
+        operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunction> = enumMapOf(),
     ) = OnyxConstClassDescriptor(
         name,
         pkg, constructors,
@@ -64,13 +65,13 @@ class OnyxConstClassDescriptor(
         name: String,
         pkg: OnyxPackage,
         type: OnyxClassType,
-        constructors: LinkedHashMap<String, AbstractOnyxFunction>,
+        constructors: List<AbstractOnyxFunction>,
         supertype: OnyxConstClassDescriptor,
         companion: OnyxObject? = null,
-        fields: LinkedHashMap<String, OnyxFieldDesc> = linkedMapOf(),
+        fields: LinkedHashMap<String, OnyxFieldImpl> = linkedMapOf(),
         functions: LinkedHashMap<String, AbstractOnyxFunction> = linkedMapOf(),
         classes: LinkedHashMap<String, OnyxClassDescriptor> = linkedMapOf(),
-        operatorOverloads: EnumMap<OnyxOperator, OnyxFunction> = enumMapOf(),
+        operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunction> = enumMapOf(),
     ) = extend(
         name, pkg, type, constructors, listOf(supertype), companion,
         fields, functions, classes, operatorOverloads
@@ -80,12 +81,12 @@ class OnyxConstClassDescriptor(
         name: String,
         pkg: OnyxPackage,
         type: OnyxClassType,
-        constructors: LinkedHashMap<String, AbstractOnyxFunction>,
+        constructors: List<AbstractOnyxFunction>,
         companion: OnyxObject? = null,
-        fields: LinkedHashMap<String, OnyxFieldDesc> = linkedMapOf(),
+        fields: LinkedHashMap<String, OnyxFieldImpl> = linkedMapOf(),
         functions: LinkedHashMap<String, AbstractOnyxFunction> = linkedMapOf(),
         classes: LinkedHashMap<String, OnyxClassDescriptor> = linkedMapOf(),
-        operatorOverloads: EnumMap<OnyxOperator, OnyxFunction> = enumMapOf(),
+        operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunction> = enumMapOf(),
     ) = extend(
         name, pkg, type, constructors, listOf(), companion,
         fields, functions, classes, operatorOverloads

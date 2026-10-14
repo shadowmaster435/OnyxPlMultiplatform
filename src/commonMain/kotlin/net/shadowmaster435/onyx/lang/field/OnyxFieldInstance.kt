@@ -10,13 +10,16 @@ import net.shadowmaster435.onyx.util.OnyxParams
 open class OnyxFieldInstance(
     val desc: OnyxFieldImpl,
     val referenceIndex: Int,
-    val type: OnyxClassDescriptor,
+    open val final: Boolean = false,
+    open val deferred: Boolean = false,
+    open val virtual: Boolean = false
 ): OnyxPokable {
 
     open val held = OnyxInitHolder<OnyxClassInstance>()
+        get() = if (virtual) throw virtualAccess else field
 
-    fun set(to: OnyxClassInstance) = held.set(type.cast(to))
-    fun get() = held.get()
+    open fun set(to: OnyxClassInstance, thisInst: OnyxClassInstance? = null) = if (virtual) throw virtualAccess else held.set(desc.classType.cast(to))
+    open fun get(thisInst: OnyxClassInstance? = null) = if (virtual) throw virtualAccess else held.get()
 
     override fun poke() { }
 
@@ -27,5 +30,7 @@ open class OnyxFieldInstance(
         val expr = desc.initExpression ?: throw NullPointerException("Missing expression for field")
         held.set(expr.evaluate(thisInst))
     }
-
+    companion object {
+        val virtualAccess = RuntimeException("Cannot access/modify a virtual field")
+    }
 }

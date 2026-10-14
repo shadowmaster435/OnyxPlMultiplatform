@@ -8,4 +8,7 @@ class OnyxDouble(override val held: Double) : OnyxNumber<Double>(makeOverrideDes
     override fun toLong() = held.toLong()
     override fun toFloat() = held.toFloat()
     override fun toDouble() = held
+    companion object {
+        val desc = descOf(OnyxDouble::class)
+    }
 }

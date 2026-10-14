@@ -8,4 +8,7 @@ class OnyxByte(override val held: Byte) : OnyxNumber<Byte>(makeOverrideDesc<Onyx
     override fun toLong() = held.toLong()
     override fun toFloat() = held.toFloat()
     override fun toDouble() = held.toDouble()
+    companion object {
+        val desc = descOf(OnyxByte::class)
+    }
 }

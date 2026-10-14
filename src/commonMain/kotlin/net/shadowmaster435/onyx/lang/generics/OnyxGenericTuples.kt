@@ -1,16 +1,13 @@
 package net.shadowmaster435.onyx.lang.generics
 
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxNull
-import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
-import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
-import net.shadowmaster435.onyx.lang.function.OnyxTuple
 
 class OnyxGenericTuples(val tuples: List<OnyxGenericType>) {
     constructor(vararg tuples: OnyxGenericType) : this(tuples.toList())
     val requiredTuples = tuples.size
 
     private fun normal(v: OnyxGenericType, t: OnyxGenericType) =
-        v.type?.castableTo(t.type ?: throw err) ?: throw err
+        v.genericType?.castableTo(t.genericType ?: throw err) ?: throw err
 
 
 
@@ -18,7 +15,7 @@ class OnyxGenericTuples(val tuples: List<OnyxGenericType>) {
         var i = 0
         input.forEach { value ->
             val tuple = tuples[i]
-            if (tuple.type === OnyxNull.desc && !tuple.nullable) throw NullPointerException("Generic defined as non null")
+            if (tuple.genericType === OnyxNull.desc && !tuple.nullable) throw NullPointerException("Generic defined as non null")
             if (!(normal(value, tuple))) throw err
             i++
         }

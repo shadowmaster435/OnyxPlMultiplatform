@@ -9,4 +9,8 @@ class OnyxInt(override val held: Int) : OnyxNumber<Int>(makeOverrideDesc<OnyxInt
     override fun toFloat() = held.toFloat()
     override fun toDouble() = held.toDouble()
     override fun onyxHashcode() = this
+    companion object {
+        val desc = descOf(OnyxInt::class)
+
+    }
 }

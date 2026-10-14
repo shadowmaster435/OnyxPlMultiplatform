@@ -1,7 +1,6 @@
 package net.shadowmaster435.onyx.lang.impl
 
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
-import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.field.OnyxFieldInstance
 import net.shadowmaster435.onyx.lang.function.OnyxFunction
@@ -14,6 +13,7 @@ interface OnyxFieldImpl : OnyxMemberImpl, OnyxAccessImpl {
     val initExpression: OnyxExpression?
     val isLateInit get() = modifiers.contains(OnyxModifierType.LATEINIT)
     val isLazy get() = modifiers.contains(OnyxModifierType.LAZY)
-
+    val isDeferred: Boolean
+    val isVirtual: Boolean
     fun instantiate(refIndex: Int): OnyxFieldInstance
 }

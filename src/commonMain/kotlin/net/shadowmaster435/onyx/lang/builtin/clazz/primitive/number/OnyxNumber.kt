@@ -12,7 +12,9 @@ import net.shadowmaster435.onyx.lang.function.OnyxExternalFunction
 import net.shadowmaster435.onyx.lang.function.OnyxTuples
 import net.shadowmaster435.onyx.lang.function.OnyxVirtualFunction
 import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
+import kotlin.reflect.KClass
 
+@Suppress("UNCHECKED_CAST")
 abstract class OnyxNumber<T: Number>(desc: OnyxClassDescriptor = Companion.desc): OnyxExternalClassInstance<T>(desc) {
     abstract val byteCount: Int
     open val floatingPoint = false
@@ -25,6 +27,10 @@ abstract class OnyxNumber<T: Number>(desc: OnyxClassDescriptor = Companion.desc)
     override fun onyxHashcode() = OnyxInt(held.hashCode())
     companion object {
         private val extendedModifiers = listOf(OnyxModifierType.PUBLIC, OnyxModifierType.OVERRIDE)
+        private val descriptors = hashMapOf<KClass<*>, OnyxClassDescriptor>()
+
+        fun <T: OnyxNumber<*>> descOf(klass: KClass<T>) = descriptors[klass]!!
+
 
         val desc = anyDesc.extend(
             "Number", onyxPrimitives, OnyxClassType.OPEN, null,
@@ -42,7 +48,17 @@ abstract class OnyxNumber<T: Number>(desc: OnyxClassDescriptor = Companion.desc)
         )
 
         @Suppress("UNCHECKED_CAST")
-        fun <T: OnyxNumber<*>> makeOverrideDesc(
+        internal inline fun <reified T: OnyxNumber<*>> makeOverrideDesc(
+            name: String,
+            supertypes: List<OnyxClassDescriptor> = listOf(),
+            companion: OnyxObject? = null
+        ): OnyxClassDescriptor {
+            val desc = actuallyMakeOverrideDesc<T>(name, supertypes, companion)
+            descriptors[T::class] = desc
+            return desc
+        }
+
+        fun <T: OnyxNumber<*>> actuallyMakeOverrideDesc(
             name: String,
             supertypes: List<OnyxClassDescriptor> = listOf(),
             companion: OnyxObject? = null
@@ -74,6 +90,7 @@ abstract class OnyxNumber<T: Number>(desc: OnyxClassDescriptor = Companion.desc)
                 },
             ), linkedMapOf(), OnyxClassType.NORMAL, listOf(desc) + supertypes, companion
         )
+
         private val unknownOp get() = IllegalArgumentException("Unknown operator")
         private val illegalBitwiseOp
             get() = IllegalArgumentException("Cannot perform bitwise operations on ints and longs")
