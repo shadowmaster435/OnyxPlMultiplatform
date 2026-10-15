@@ -44,5 +44,13 @@ class OnyxPackage(val packageName: String, val parent: OnyxPackage?) {
             return pkg
         }
     }
-    
+
+    override fun hashCode(): Int {
+        var result = packageName.hashCode()
+        result = 31 * result + parent.hashCode()
+        result = 31 * result + children.hashCode()
+        result = 31 * result + qualifiedName.hashCode()
+        return result
+    }
+
 }

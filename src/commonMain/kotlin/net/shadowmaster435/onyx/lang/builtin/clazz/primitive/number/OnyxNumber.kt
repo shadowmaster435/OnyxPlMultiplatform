@@ -1,5 +1,7 @@
 package net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number
 
+import net.shadowmaster435.onyx.exception.IllegalOperationException
+import net.shadowmaster435.onyx.exception.UnknownOperationException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxBoolean
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.anyDesc
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
@@ -91,9 +93,9 @@ abstract class OnyxNumber<T: Number>(desc: OnyxClassDescriptor = Companion.desc)
             ), linkedMapOf(), OnyxClassType.NORMAL, listOf(desc) + supertypes, companion
         )
 
-        private val unknownOp get() = IllegalArgumentException("Unknown operator")
+        private val unknownOp get() = UnknownOperationException("Unknown operator")
         private val illegalBitwiseOp
-            get() = IllegalArgumentException("Cannot perform bitwise operations on ints and longs")
+            get() = IllegalOperationException("Cannot perform bitwise operations on ints and longs")
 
         /**
          * Operations are as follows

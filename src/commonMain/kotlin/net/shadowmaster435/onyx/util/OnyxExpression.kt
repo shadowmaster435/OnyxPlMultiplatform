@@ -1,5 +1,6 @@
 package net.shadowmaster435.onyx.util
 
+import net.shadowmaster435.onyx.exception.ImpossibleException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxUnit
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
@@ -17,7 +18,7 @@ class OnyxExpression internal constructor(groups: List<OnyxExpressionBuilder.Gro
         groups.forEach { it.reset() }
         var accum: OnyxExpressionBuilder.Slot? = null
         groups.forEach { accum = it.evaluate(thisInst) }
-        return accum!!.held ?: throw NullPointerException("Expression failed to evaluate. This should never happen")
+        return accum!!.held ?: throw ImpossibleException("Expression failed to evaluate. This should never happen")
     }
 
     override fun execute(thisInst: OnyxClassInstance?, params: List<OnyxClassInstance>) =

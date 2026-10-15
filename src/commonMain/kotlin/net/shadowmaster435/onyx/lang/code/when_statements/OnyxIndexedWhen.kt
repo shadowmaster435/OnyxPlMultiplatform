@@ -1,5 +1,6 @@
 package net.shadowmaster435.onyx.lang.code.when_statements
 
+import net.shadowmaster435.onyx.exception.ImpossibleException
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.code.OnyxCodeBlock
@@ -27,7 +28,7 @@ class OnyxIndexedWhen(
         val i = intProvider(thisInst) - minIndex
         if (i < 0) {
             if (elseBlock != null) return elseBlock.execute(thisInst, params).first
-            throw NullPointerException("This should never happen")
+            throw ImpossibleException()
         }
         return blocks[i].execute(thisInst, params).first
     }

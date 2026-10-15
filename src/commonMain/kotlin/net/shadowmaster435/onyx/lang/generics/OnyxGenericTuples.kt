@@ -1,5 +1,6 @@
 package net.shadowmaster435.onyx.lang.generics
 
+import net.shadowmaster435.onyx.exception.ImpossibleException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxNull
 
 class OnyxGenericTuples(val tuples: List<OnyxGenericType>) {
@@ -34,7 +35,7 @@ class OnyxGenericTuples(val tuples: List<OnyxGenericType>) {
     }
 
     companion object {
-        private val err = NullPointerException("Type erased for generic cast, this should never happen")
+        private val err = ImpossibleException("Type erased for generic cast, this should never happen")
         val empty = OnyxGenericTuples(listOf())
     }
 }

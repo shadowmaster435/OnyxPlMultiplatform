@@ -11,8 +11,9 @@ import net.shadowmaster435.onyx.lang.function.OnyxExternalFunction
 import net.shadowmaster435.onyx.lang.function.OnyxTuple
 import net.shadowmaster435.onyx.lang.function.OnyxTuples
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
+import net.shadowmaster435.onyx.util.OnyxModifiers
 
-fun field(name: String, type: OnyxClassDescriptor,) {}
+fun field(name: String, type: OnyxClassDescriptor) {}
 fun externalFinalField(name: String, type: OnyxClassDescriptor, getter: (OnyxClassInstance?) -> OnyxClassInstance) = name to
     OnyxExternalFinalFieldDesc(listOf(), type, extGetter = getter)
 fun interfaceField(name: String, type: OnyxClassDescriptor) = name to OnyxFieldDesc(
@@ -23,7 +24,7 @@ fun externalOverload(
     op: OnyxOperator,
     tuples: OnyxTuples,
     returnType: OnyxClassDescriptor = OnyxUnit.desc,
-    modifiers: List<OnyxModifierType> = listOf(),
+    modifiers: OnyxModifiers = listOf(),
     genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty,
     func: (thisInst: OnyxClassInstance?, list: List<OnyxClassInstance>) -> OnyxClassInstance
 ) {
@@ -34,7 +35,7 @@ fun externalOverload(
 
 fun externalFunc(
     tuples: OnyxTuples,
-    modifiers: List<OnyxModifierType> = listOf(),
+    modifiers: OnyxModifiers = listOf(),
     returnType: OnyxClassDescriptor = OnyxUnit.desc,
     genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty,
     func: (thisInst: OnyxClassInstance?, list: List<OnyxClassInstance>) -> OnyxClassInstance

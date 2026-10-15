@@ -1,5 +1,6 @@
 package net.shadowmaster435.onyx.lang.code.when_statements
 
+import net.shadowmaster435.onyx.exception.ImpossibleException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxBoolean
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxClass
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
@@ -23,7 +24,7 @@ class OnyxExpressionWhen(
             if (v != null) return v
         }
         if (elseBlock != null) return elseBlock.execute(thisInst, params).first
-        throw NullPointerException("This should never happen")
+        throw ImpossibleException()
     }
 
     class Branch (

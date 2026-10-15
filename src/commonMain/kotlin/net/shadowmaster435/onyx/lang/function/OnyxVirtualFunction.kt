@@ -1,5 +1,6 @@
 package net.shadowmaster435.onyx.lang.function
 
+import net.shadowmaster435.onyx.exception.VirtualAccessException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxUnit
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
@@ -22,5 +23,5 @@ class OnyxVirtualFunction(
         tuples: OnyxTuples,
     ) : this(tuples, listOf(OnyxModifierType.PUBLIC))
     override fun invoke(thisInst: OnyxClassInstance?, params: List<OnyxClassInstance>, generics: List<OnyxGenericType>) =
-        throw UnsupportedOperationException("Cannot directly invoke a virtual function")
+        throw VirtualAccessException("Cannot directly invoke a virtual function")
 }

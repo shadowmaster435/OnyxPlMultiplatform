@@ -1,5 +1,6 @@
 package net.shadowmaster435.onyx.lang.clazz
 
+import net.shadowmaster435.onyx.exception.ImpossibleException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxBoolean
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxString
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxInt
@@ -30,14 +31,14 @@ open class OnyxClassInstance(
     open fun cast(to: OnyxClassDescriptor) = to.cast(this)
     open fun safeCast(to: OnyxClassDescriptor) = to.safeCast(this)
     open fun onyxIterator(): Iterator<OnyxClassInstance> =
-        throw RuntimeException("Tried to get iterator from non iterable class, this should never happen")
+        throw ImpossibleException("Tried to get iterator from non iterable class, this should never happen")
 
 
     open fun onyxEquals(other: OnyxClassInstance) = (desc.equalsFunction?.invoke(other)
-        ?: throw RuntimeException("No defined equals function, this should never happen.")) as OnyxBoolean
+        ?: throw ImpossibleException("No defined equals function, this should never happen.")) as OnyxBoolean
 
     open fun onyxHashcode() = (desc.hashcodeFunction?.invoke(this)
-        ?: throw RuntimeException("No defined hashcode function, this should never happen.")) as OnyxInt
+        ?: throw ImpossibleException("No defined hashcode function, this should never happen.")) as OnyxInt
 
     fun castableTo(to: OnyxClassDescriptor) = desc.castableTo(to)
 

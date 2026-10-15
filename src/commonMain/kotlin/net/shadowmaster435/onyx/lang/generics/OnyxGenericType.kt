@@ -1,5 +1,6 @@
 package net.shadowmaster435.onyx.lang.generics
 
+import net.shadowmaster435.onyx.exception.ImpossibleException
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.clazz.OnyxObject
@@ -151,6 +152,6 @@ class OnyxGenericType(
     fun castableTo(from: OnyxClassInstance) = from.castableTo(erasureCheck())
 
     companion object {
-        private val err = NullPointerException("Tried to cast to erased type, this should never happen")
+        private val err = ImpossibleException("Tried to cast to erased type, this should never happen")
     }
 }

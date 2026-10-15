@@ -1,5 +1,6 @@
 package net.shadowmaster435.onyx.lang.field
 
+import net.shadowmaster435.onyx.exception.VirtualAccessException
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
@@ -31,6 +32,6 @@ open class OnyxFieldInstance(
         held.set(expr.evaluate(thisInst))
     }
     companion object {
-        val virtualAccess = RuntimeException("Cannot access/modify a virtual field")
+        val virtualAccess = VirtualAccessException("Cannot access/modify a virtual field")
     }
 }
