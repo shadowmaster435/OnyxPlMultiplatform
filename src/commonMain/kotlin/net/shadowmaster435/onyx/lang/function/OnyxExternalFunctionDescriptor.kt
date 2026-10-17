@@ -8,21 +8,23 @@ import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericType
 
-class OnyxExternalFunction(
+class OnyxExternalFunctionDescriptor(
+    name: String,
     tuples: OnyxTuples,
     modifiers: List<OnyxModifierType>,
     genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty,
     returnType: OnyxClassDescriptor = OnyxUnit.desc,
 
     val function: (thisInst: OnyxClassInstance?, list: List<OnyxClassInstance>) -> OnyxClassInstance
-) : AbstractOnyxFunction(tuples, modifiers, genericTuples, returnType) {
+) : AbstractOnyxFunctionDescriptor(name, tuples, modifiers, genericTuples, returnType) {
     override val type = OnyxMemberType.FUNCTION
     override fun poke() {}
 
     constructor(
+        name: String,
         tuples: OnyxTuples,
         function: (thisInst: OnyxClassInstance?, list: List<OnyxClassInstance>) -> OnyxClassInstance
-    ) : this(tuples, listOf(OnyxModifierType.PUBLIC), function = function)
+    ) : this(name, tuples, listOf(OnyxModifierType.PUBLIC), function = function)
     override fun invoke(
         thisInst: OnyxClassInstance?,
         params: List<OnyxClassInstance>,

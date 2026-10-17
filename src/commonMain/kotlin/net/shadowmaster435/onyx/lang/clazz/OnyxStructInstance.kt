@@ -1,11 +1,8 @@
 package net.shadowmaster435.onyx.lang.clazz
 
-import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.anyDesc
 import net.shadowmaster435.onyx.lang.impl.clazz.OnyxConstableImpl
-import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
-import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
 
-class OnyxStruct(
+class OnyxStructInstance(
     desc: OnyxClassDescriptor,
     private val entries: List<OnyxConstableImpl>
 ) : OnyxClassInstance(desc), OnyxConstableImpl {

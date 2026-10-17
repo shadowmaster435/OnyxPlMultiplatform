@@ -1,5 +1,6 @@
 package net.shadowmaster435.onyx.lang.enums.modifier
 
+import net.shadowmaster435.onyx.exception.UnknownException
 import net.shadowmaster435.onyx.ext.containsAny
 import net.shadowmaster435.onyx.ext.hasOnlyOne
 import net.shadowmaster435.onyx.ext.isOnlyOne
@@ -49,10 +50,33 @@ enum class OnyxModifierType(val subtypes: HashSet<Subtype>, val string: String, 
     }
     companion object {
         private val default: OnyxModifierType.(OnyxModifierType) -> Boolean = {!subtypes.containsAny(it.subtypes)}
-        @JvmSynthetic internal fun template(make: (Any?) -> Any?) = ParsinatorTemplate {
-            branch(true) {
-                for (keyword in enumEntries<OnyxKeywordType>()) token(true, keyword.string)
-            } makes make
-        }
+        val template = ParsinatorTemplate {
+            repeating(false, true) {
+                chain(false) {
+                    whitespace(false)
+                    branch(true) {
+                        for (keyword in enumEntries<OnyxKeywordType>()) token(true, keyword.string)
+                    }
+                    whitespace(false)
+                }
+            } makes {
+                @Suppress("UNCHECKED_CAST")
+                it as List<List<*>>
+                buildList {
+                    for (repeatEntry in it) {
+                        for (chainEntry in repeatEntry)
+                            if (chainEntry is String) {
+                                add(
+                                    OnyxModifierType.entries.firstOrNull {
+                                        e -> e.name == chainEntry
+                                    } ?: throw UnknownException("Unknown modifier type '$chainEntry'")
+                                )
+                                break
+                            }
+                        }
+                    }
+                }
+            }
     }
+
 }

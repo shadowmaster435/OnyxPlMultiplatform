@@ -3,21 +3,28 @@ package net.shadowmaster435.onyx.lang.util
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxUnit
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
-import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.enums.operator.OnyxOperator
 import net.shadowmaster435.onyx.lang.field.OnyxExternalFinalFieldDesc
-import net.shadowmaster435.onyx.lang.field.OnyxFieldDesc
-import net.shadowmaster435.onyx.lang.function.OnyxExternalFunction
+import net.shadowmaster435.onyx.lang.field.OnyxFieldDescriptor
+import net.shadowmaster435.onyx.lang.function.AbstractOnyxFunctionDescriptor
+import net.shadowmaster435.onyx.lang.function.OnyxExternalFunctionDescriptor
 import net.shadowmaster435.onyx.lang.function.OnyxTuple
 import net.shadowmaster435.onyx.lang.function.OnyxTuples
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
 import net.shadowmaster435.onyx.util.OnyxModifiers
+import net.shadowmaster435.parsinator.dsl.ParsinatorBuilder
+
+val nameRegex = Regex("[_abAB09]")
+val numbersRegex = Regex("[09]")
+val decimalNumbersRegex = Regex("[09.]")
+
+fun ParsinatorBuilder.name(optional: Boolean) = name(optional, nameRegex, numbersRegex)
 
 fun field(name: String, type: OnyxClassDescriptor) {}
 fun externalFinalField(name: String, type: OnyxClassDescriptor, getter: (OnyxClassInstance?) -> OnyxClassInstance) = name to
-    OnyxExternalFinalFieldDesc(listOf(), type, extGetter = getter)
-fun interfaceField(name: String, type: OnyxClassDescriptor) = name to OnyxFieldDesc(
-    type, listOf(), isVirtual = true
+    OnyxExternalFinalFieldDesc(name, listOf(), type, extGetter = getter)
+fun interfaceField(name: String, type: OnyxClassDescriptor) = name to OnyxFieldDescriptor(
+    name, type, listOf(), isVirtual = true
 )
 
 fun externalOverload(
@@ -28,22 +35,22 @@ fun externalOverload(
     genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty,
     func: (thisInst: OnyxClassInstance?, list: List<OnyxClassInstance>) -> OnyxClassInstance
 ) {
-    op to OnyxExternalFunction(
+    op to OnyxExternalFunctionDescriptor(
+        op.overloadableName ?: throw IllegalArgumentException("Operator $op is not overloadable"),
         tuples, modifiers, genericTuples, returnType, func
     )
 }
 
 fun externalFunc(
+    name: String,
     tuples: OnyxTuples,
     modifiers: OnyxModifiers = listOf(),
     returnType: OnyxClassDescriptor = OnyxUnit.desc,
     genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty,
     func: (thisInst: OnyxClassInstance?, list: List<OnyxClassInstance>) -> OnyxClassInstance
-) {
-    OnyxExternalFunction(
-        tuples, modifiers, genericTuples, returnType, func
-    )
-}
+): Pair<String, AbstractOnyxFunctionDescriptor> = name to OnyxExternalFunctionDescriptor(
+    name, tuples, modifiers, genericTuples, returnType, func
+)
 
 
 fun simpleTuple(name: String, type: OnyxClassDescriptor, nullable: Boolean = false) = OnyxTuples(
@@ -52,3 +59,12 @@ fun simpleTuple(name: String, type: OnyxClassDescriptor, nullable: Boolean = fal
         name, false, nullable
     )
 )
+
+fun OnyxModifiers.modifierString(): String {
+    var str = ""
+    for (mod in this) {
+        val space = if (mod === last()) "" else " "
+        str += mod.string + space
+    }
+    return str
+}

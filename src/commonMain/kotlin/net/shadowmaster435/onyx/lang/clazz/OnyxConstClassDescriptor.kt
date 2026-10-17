@@ -1,28 +1,29 @@
 package net.shadowmaster435.onyx.lang.clazz
 
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
+import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.enums.operator.OnyxOperator
-import net.shadowmaster435.onyx.lang.field.OnyxFieldDesc
-import net.shadowmaster435.onyx.lang.function.AbstractOnyxFunction
-import net.shadowmaster435.onyx.lang.function.OnyxFunction
+import net.shadowmaster435.onyx.lang.function.AbstractOnyxFunctionDescriptor
 import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
 import net.shadowmaster435.onyx.lang.pkg.OnyxPackage
 import net.shadowmaster435.onyx.lang.util.EnumMap
 import net.shadowmaster435.onyx.lang.util.enumMapOf
+import net.shadowmaster435.onyx.util.OnyxModifiers
 
 class OnyxConstClassDescriptor(
     name: String,
     pkg: OnyxPackage,
-    constructors: List<AbstractOnyxFunction>,
+    modifiers: OnyxModifiers,
+    constructors: List<AbstractOnyxFunctionDescriptor>,
     fields: LinkedHashMap<String, OnyxFieldImpl>,
-    functions: LinkedHashMap<String, AbstractOnyxFunction>,
+    functions: LinkedHashMap<String, AbstractOnyxFunctionDescriptor>,
     classes: LinkedHashMap<String, OnyxClassDescriptor>,
     type: OnyxClassType,
     supertypes: List<OnyxConstClassDescriptor>,
     companion: OnyxObject? = null,
-    operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunction> = enumMapOf(),
+    operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunctionDescriptor> = enumMapOf(),
 ) : OnyxClassDescriptor(
-    name, pkg, fields, functions, classes, type, supertypes, companion, operatorOverloads, constructors =  constructors
+    name, pkg, modifiers, fields, functions, classes, type, supertypes, companion, operatorOverloads, constructors =  constructors
 ) {
 
     override val constant = true
@@ -36,16 +37,17 @@ class OnyxConstClassDescriptor(
         name: String,
         pkg: OnyxPackage,
         type: OnyxClassType,
-        constructors: List<AbstractOnyxFunction>,
+        constructors: List<AbstractOnyxFunctionDescriptor>,
         supertypes: List<OnyxConstClassDescriptor>,
         companion: OnyxObject? = null,
         fields: LinkedHashMap<String, OnyxFieldImpl> = linkedMapOf(),
-        functions: LinkedHashMap<String, AbstractOnyxFunction> = linkedMapOf(),
+        functions: LinkedHashMap<String, AbstractOnyxFunctionDescriptor> = linkedMapOf(),
         classes: LinkedHashMap<String, OnyxClassDescriptor> = linkedMapOf(),
-        operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunction> = enumMapOf(),
+        operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunctionDescriptor> = enumMapOf(),
+        modifiers: OnyxModifiers = listOf(OnyxModifierType.PUBLIC)
     ) = OnyxConstClassDescriptor(
         name,
-        pkg, constructors,
+        pkg, modifiers, constructors,
         LinkedHashMap(buildMap { this@OnyxConstClassDescriptor.fields.forEach {
             put(it.key, fieldEntries[it.value])
         } } + fields),
@@ -65,30 +67,32 @@ class OnyxConstClassDescriptor(
         name: String,
         pkg: OnyxPackage,
         type: OnyxClassType,
-        constructors: List<AbstractOnyxFunction>,
+        constructors: List<AbstractOnyxFunctionDescriptor>,
         supertype: OnyxConstClassDescriptor,
         companion: OnyxObject? = null,
         fields: LinkedHashMap<String, OnyxFieldImpl> = linkedMapOf(),
-        functions: LinkedHashMap<String, AbstractOnyxFunction> = linkedMapOf(),
+        functions: LinkedHashMap<String, AbstractOnyxFunctionDescriptor> = linkedMapOf(),
         classes: LinkedHashMap<String, OnyxClassDescriptor> = linkedMapOf(),
-        operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunction> = enumMapOf(),
+        operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunctionDescriptor> = enumMapOf(),
+        modifiers: OnyxModifiers = listOf(OnyxModifierType.PUBLIC)
     ) = extend(
         name, pkg, type, constructors, listOf(supertype), companion,
-        fields, functions, classes, operatorOverloads
+        fields, functions, classes, operatorOverloads, modifiers
     )
 
     fun extend(
         name: String,
         pkg: OnyxPackage,
         type: OnyxClassType,
-        constructors: List<AbstractOnyxFunction>,
+        constructors: List<AbstractOnyxFunctionDescriptor>,
         companion: OnyxObject? = null,
         fields: LinkedHashMap<String, OnyxFieldImpl> = linkedMapOf(),
-        functions: LinkedHashMap<String, AbstractOnyxFunction> = linkedMapOf(),
+        functions: LinkedHashMap<String, AbstractOnyxFunctionDescriptor> = linkedMapOf(),
         classes: LinkedHashMap<String, OnyxClassDescriptor> = linkedMapOf(),
-        operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunction> = enumMapOf(),
+        operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunctionDescriptor> = enumMapOf(),
+        modifiers: OnyxModifiers = listOf(OnyxModifierType.PUBLIC)
     ) = extend(
         name, pkg, type, constructors, listOf(), companion,
-        fields, functions, classes, operatorOverloads
+        fields, functions, classes, operatorOverloads, modifiers
     )
 }

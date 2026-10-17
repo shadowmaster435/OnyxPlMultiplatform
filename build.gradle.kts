@@ -56,6 +56,7 @@ kotlin {
         nativeMain.dependencies {
             implementation(kotlin("stdlib"))
             implementation(files("libs/parsinator-linux-$parsinatorVersion.klib"))
+            implementation("org.jetbrains.kotlinx:kotlinx-io-okio:0.9.1")
         }
         jvmMain.dependencies {
             implementation(kotlin("stdlib"))

@@ -10,10 +10,10 @@ import net.shadowmaster435.onyx.lang.clazz.OnyxObject
 import net.shadowmaster435.onyx.lang.clazz.OnyxExternalClassInstance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
-import net.shadowmaster435.onyx.lang.function.OnyxExternalFunction
 import net.shadowmaster435.onyx.lang.function.OnyxTuples
-import net.shadowmaster435.onyx.lang.function.OnyxVirtualFunction
+import net.shadowmaster435.onyx.lang.function.OnyxVirtualFunctionDescriptor
 import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
+import net.shadowmaster435.onyx.lang.util.externalFunc
 import kotlin.reflect.KClass
 
 @Suppress("UNCHECKED_CAST")
@@ -37,15 +37,15 @@ abstract class OnyxNumber<T: Number>(desc: OnyxClassDescriptor = Companion.desc)
         val desc = anyDesc.extend(
             "Number", onyxPrimitives, OnyxClassType.OPEN, null,
             linkedMapOf(), linkedMapOf(
-                "toByte" to OnyxVirtualFunction(OnyxTuples.empty, listOf()),
-                "toShort" to OnyxVirtualFunction(OnyxTuples.empty, listOf()),
-                "toInt" to OnyxVirtualFunction(OnyxTuples.empty, listOf()),
-                "toLong" to OnyxVirtualFunction(OnyxTuples.empty, listOf()),
-                "toFloat" to OnyxVirtualFunction(OnyxTuples.empty, listOf()),
-                "toDouble" to OnyxVirtualFunction(OnyxTuples.empty, listOf()),
-                "hashCode" to OnyxVirtualFunction(OnyxTuples.empty, listOf()),
-                "isFloatingPoint" to OnyxVirtualFunction(OnyxTuples.empty, listOf()),
-                "byteCount" to OnyxVirtualFunction(OnyxTuples.empty, listOf()),
+                "toByte" to OnyxVirtualFunctionDescriptor("toByte", OnyxTuples.empty, listOf()),
+                "toShort" to OnyxVirtualFunctionDescriptor("toShort", OnyxTuples.empty, listOf()),
+                "toInt" to OnyxVirtualFunctionDescriptor("toInt", OnyxTuples.empty, listOf()),
+                "toLong" to OnyxVirtualFunctionDescriptor("toLong", OnyxTuples.empty, listOf()),
+                "toFloat" to OnyxVirtualFunctionDescriptor("toFloat", OnyxTuples.empty, listOf()),
+                "toDouble" to OnyxVirtualFunctionDescriptor("toDouble", OnyxTuples.empty, listOf()),
+                "hashCode" to OnyxVirtualFunctionDescriptor("hashCode", OnyxTuples.empty, listOf()),
+                "isFloatingPoint" to OnyxVirtualFunctionDescriptor("isFloatingPoint", OnyxTuples.empty, listOf()),
+                "byteCount" to OnyxVirtualFunctionDescriptor("byteCount", OnyxTuples.empty, listOf()),
             )
         )
 
@@ -65,29 +65,29 @@ abstract class OnyxNumber<T: Number>(desc: OnyxClassDescriptor = Companion.desc)
             supertypes: List<OnyxClassDescriptor> = listOf(),
             companion: OnyxObject? = null
         ) = OnyxClassDescriptor(
-            name, onyxPrimitives, linkedMapOf(), linkedMapOf(
-                "toByte" to OnyxExternalFunction(OnyxTuples.empty, extendedModifiers) { thisInst, _ ->
+            name, onyxPrimitives, listOf(OnyxModifierType.PUBLIC), linkedMapOf(), linkedMapOf(
+                externalFunc("toByte", OnyxTuples.empty, extendedModifiers) { thisInst, _ ->
                     OnyxByte((thisInst as T).toByte())
                 },
-                "toShort" to OnyxExternalFunction(OnyxTuples.empty, extendedModifiers) { thisInst, _ ->
+                externalFunc("toShort", OnyxTuples.empty, extendedModifiers) { thisInst, _ ->
                     OnyxShort((thisInst as T).toShort())
                 },
-                "toInt" to OnyxExternalFunction(OnyxTuples.empty, extendedModifiers) { thisInst, _ ->
+                externalFunc("toInt", OnyxTuples.empty, extendedModifiers) { thisInst, _ ->
                     OnyxInt((thisInst as T).toInt())
                 },
-                "toLong" to OnyxExternalFunction(OnyxTuples.empty, extendedModifiers) { thisInst, _ ->
+                externalFunc("toLong", OnyxTuples.empty, extendedModifiers) { thisInst, _ ->
                     OnyxLong((thisInst as T).toLong())
                 },
-                "toFloat" to OnyxExternalFunction(OnyxTuples.empty, extendedModifiers) { thisInst, _ ->
+                externalFunc("toFloat", OnyxTuples.empty, extendedModifiers) { thisInst, _ ->
                     OnyxFloat((thisInst as T).toFloat())
                 },
-                "toDouble" to OnyxExternalFunction(OnyxTuples.empty, extendedModifiers) { thisInst, _ ->
+                externalFunc("toDouble", OnyxTuples.empty, extendedModifiers) { thisInst, _ ->
                     OnyxDouble((thisInst as T).toDouble())
                 },
-                "isFloatingPoint" to OnyxExternalFunction(OnyxTuples.empty, extendedModifiers) { thisInst, _ ->
+                externalFunc("isFloatingPoint", OnyxTuples.empty, extendedModifiers) { thisInst, _ ->
                     OnyxBoolean((thisInst as T).floatingPoint)
                 },
-                "byteCount" to OnyxExternalFunction(OnyxTuples.empty, extendedModifiers) { thisInst, _ ->
+                externalFunc("byteCount", OnyxTuples.empty, extendedModifiers) { thisInst, _ ->
                     OnyxInt((thisInst as T).byteCount)
                 },
             ), linkedMapOf(), OnyxClassType.NORMAL, listOf(desc) + supertypes, companion

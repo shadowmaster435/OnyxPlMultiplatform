@@ -2,12 +2,19 @@ package net.shadowmaster435.onyx.lang.function
 
 import net.shadowmaster435.onyx.exception.IncorrectParametersException
 import net.shadowmaster435.onyx.exception.TypeMismatchException
+import net.shadowmaster435.onyx.exception.UnknownException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxNull
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 
 class OnyxTuples(val tuples: List<OnyxTuple>) {
     constructor(vararg tuples: OnyxTuple) : this(tuples.toList())
+    private val nameMap = hashMapOf<String, Int>().apply {
+        tuples.forEachIndexed { index, tuple ->
+            put(tuple.name, index)
+        }
+    }
+
     val requiredTuples = run {
         var count = 0
         tuples.forEach { if (!it.optional) count++ }
@@ -38,6 +45,7 @@ class OnyxTuples(val tuples: List<OnyxTuple>) {
     fun validate(input: Array<out OnyxClassInstance>) = iter(input.iterator(), false)
     fun validate(input: List<OnyxClassInstance>) = iter(input.iterator(), false)
 
+    fun getTuple(name: String) = nameMap[name] ?: throw UnknownException("Unknown tuple $name")
 
     override fun toString(): String {
         var str = ""

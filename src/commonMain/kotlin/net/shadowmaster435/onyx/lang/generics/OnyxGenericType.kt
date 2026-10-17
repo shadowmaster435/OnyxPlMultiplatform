@@ -7,25 +7,25 @@ import net.shadowmaster435.onyx.lang.clazz.OnyxObject
 import net.shadowmaster435.onyx.lang.enums.generics.OnyxGenericVariance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.enums.operator.OnyxOperator
-import net.shadowmaster435.onyx.lang.function.AbstractOnyxFunction
-import net.shadowmaster435.onyx.lang.function.OnyxFunction
+import net.shadowmaster435.onyx.lang.function.AbstractOnyxFunctionDescriptor
 import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
 import net.shadowmaster435.onyx.lang.pkg.OnyxPackage
 import net.shadowmaster435.onyx.lang.pkg.globalRoot
 import net.shadowmaster435.onyx.lang.util.EnumMap
+import net.shadowmaster435.onyx.util.OnyxModifiers
 
 class OnyxGenericType(
     type: OnyxClassDescriptor,
     val variance: OnyxGenericVariance,
     val nullable: Boolean = false
 ): OnyxClassDescriptor(
-    "", globalRoot, linkedMapOf(), linkedMapOf(), linkedMapOf(),
+    "", globalRoot, listOf(), linkedMapOf(), linkedMapOf(), linkedMapOf(),
     OnyxClassType.NORMAL, listOf()
 ) {
     var genericType: OnyxClassDescriptor? = type; private set
     override val fieldEntries: Array<OnyxFieldImpl>
         get() = erasureCheck().fieldEntries
-    override val functionEntries: Array<AbstractOnyxFunction>
+    override val functionEntries: Array<AbstractOnyxFunctionDescriptor>
         get() = erasureCheck().functionEntries
     override val classEntries: Array<OnyxClassDescriptor>
         get() = erasureCheck().classEntries
@@ -39,25 +39,26 @@ class OnyxGenericType(
         get() = erasureCheck().pkg
     override val name: String
         get() = erasureCheck().name
-    override val equalsFunction: AbstractOnyxFunction?
+    override val equalsFunction: AbstractOnyxFunctionDescriptor?
         get() = erasureCheck().equalsFunction
-    override val type: OnyxClassType
-        get() = erasureCheck().type
+    override val classType: OnyxClassType
+        get() = erasureCheck().classType
     override val companion: OnyxObject?
         get() = erasureCheck().companion
     override val constant: Boolean
         get() = erasureCheck().constant
-    override val constructors: List<AbstractOnyxFunction>
+    override val constructors: List<AbstractOnyxFunctionDescriptor>
         get() = erasureCheck().constructors
     override val genericTuples: OnyxGenericTuples
         get() = erasureCheck().genericTuples
-    override val hashcodeFunction: AbstractOnyxFunction?
+    override val hashcodeFunction: AbstractOnyxFunctionDescriptor?
         get() = erasureCheck().hashcodeFunction
-    override val operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunction>
+    override val operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunctionDescriptor>
         get() = erasureCheck().operatorOverloads
     override val supertypes: List<OnyxClassDescriptor>
         get() = erasureCheck().supertypes
-
+    override val modifiers: OnyxModifiers
+        get() = super.modifiers
     override fun getField(name: String): OnyxFieldImpl {
         return erasureCheck().getField(name)
     }
@@ -70,7 +71,7 @@ class OnyxGenericType(
         return erasureCheck().getFieldRefIndex(name)
     }
 
-    override fun getOperatorOverload(op: OnyxOperator): AbstractOnyxFunction? {
+    override fun getOperatorOverload(op: OnyxOperator): AbstractOnyxFunctionDescriptor? {
         return erasureCheck().getOperatorOverload(op)
     }
 
@@ -83,10 +84,11 @@ class OnyxGenericType(
         supertypes: List<OnyxClassDescriptor>,
         companion: OnyxObject?,
         fields: LinkedHashMap<String, OnyxFieldImpl>,
-        functions: LinkedHashMap<String, AbstractOnyxFunction>,
+        functions: LinkedHashMap<String, AbstractOnyxFunctionDescriptor>,
         classes: LinkedHashMap<String, OnyxClassDescriptor>,
-        operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunction>,
-        genericTuples: OnyxGenericTuples
+        operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunctionDescriptor>,
+        genericTuples: OnyxGenericTuples,
+        modifiers: OnyxModifiers
     ): OnyxClassDescriptor {
         return erasureCheck().extend(
             name,
@@ -108,12 +110,24 @@ class OnyxGenericType(
         type: OnyxClassType,
         companion: OnyxObject?,
         fields: LinkedHashMap<String, OnyxFieldImpl>,
-        functions: LinkedHashMap<String, AbstractOnyxFunction>,
+        functions: LinkedHashMap<String, AbstractOnyxFunctionDescriptor>,
         classes: LinkedHashMap<String, OnyxClassDescriptor>,
-        operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunction>,
-        genericTuples: OnyxGenericTuples
+        operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunctionDescriptor>,
+        genericTuples: OnyxGenericTuples,
+        modifiers: OnyxModifiers
     ): OnyxClassDescriptor {
-        return erasureCheck().extend(name, pkg, type, companion, fields, functions, classes, operatorOverloads, genericTuples)
+        return erasureCheck().extend(
+            name,
+            pkg,
+            type,
+            companion,
+            fields,
+            functions,
+            classes,
+            operatorOverloads,
+            genericTuples,
+            modifiers
+        )
     }
 
     override fun extend(
@@ -123,10 +137,11 @@ class OnyxGenericType(
         supertype: OnyxClassDescriptor,
         companion: OnyxObject?,
         fields: LinkedHashMap<String, OnyxFieldImpl>,
-        functions: LinkedHashMap<String, AbstractOnyxFunction>,
+        functions: LinkedHashMap<String, AbstractOnyxFunctionDescriptor>,
         classes: LinkedHashMap<String, OnyxClassDescriptor>,
-        operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunction>,
-        genericTuples: OnyxGenericTuples
+        operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunctionDescriptor>,
+        genericTuples: OnyxGenericTuples,
+        modifiers: OnyxModifiers
     ): OnyxClassDescriptor {
         return erasureCheck().extend(
             name,
@@ -138,7 +153,8 @@ class OnyxGenericType(
             functions,
             classes,
             operatorOverloads,
-            genericTuples
+            genericTuples,
+            modifiers
         )
     }
 

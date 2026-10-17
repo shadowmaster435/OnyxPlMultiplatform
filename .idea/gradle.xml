@@ -15,15 +15,6 @@
         </option>
         <option name="myGradleHome" value="" />
       </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/../Parsinator" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/../Parsinator" />
-            <option value="$PROJECT_DIR$/../Parsinator/parsinator" />
-          </set>
-        </option>
-      </GradleProjectSettings>
     </option>
   </component>
 </project>

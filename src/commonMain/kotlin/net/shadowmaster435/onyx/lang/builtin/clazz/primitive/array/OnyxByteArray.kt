@@ -13,7 +13,7 @@ import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
 import net.shadowmaster435.onyx.lang.util.enumMapOf
 import net.shadowmaster435.onyx.lang.util.externalFinalField
 
-class OnyxByteArray(desc: OnyxClassDescriptor, override val held: ByteArray) : OnyxExternalClassInstance<ByteArray>(desc) {
+class OnyxByteArray(override val held: ByteArray) : OnyxExternalClassInstance<ByteArray>(desc) {
 
 
     companion object {

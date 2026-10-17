@@ -15,7 +15,7 @@ import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
 import net.shadowmaster435.onyx.lang.util.enumMapOf
 import net.shadowmaster435.onyx.lang.util.externalFinalField
 
-class OnyxFloatArray(desc: OnyxClassDescriptor, override val held: FloatArray) : OnyxExternalClassInstance<FloatArray>(desc) {
+class OnyxFloatArray(override val held: FloatArray) : OnyxExternalClassInstance<FloatArray>(desc) {
 
 
     companion object {

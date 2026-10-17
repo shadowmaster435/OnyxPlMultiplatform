@@ -14,7 +14,7 @@ import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
 import net.shadowmaster435.onyx.lang.util.enumMapOf
 import net.shadowmaster435.onyx.lang.util.externalFinalField
 
-class OnyxBooleanArray(desc: OnyxClassDescriptor, override val held: BooleanArray) : OnyxExternalClassInstance<BooleanArray>(desc) {
+class OnyxBooleanArray(override val held: BooleanArray) : OnyxExternalClassInstance<BooleanArray>(desc) {
 
 
     companion object {

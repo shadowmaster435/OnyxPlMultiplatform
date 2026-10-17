@@ -3,8 +3,7 @@ package net.shadowmaster435.onyx.lang.enums.operator
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
-import net.shadowmaster435.onyx.lang.function.OnyxExternalFunction
-import net.shadowmaster435.onyx.lang.function.OnyxFunction
+import net.shadowmaster435.onyx.lang.function.OnyxExternalFunctionDescriptor
 import net.shadowmaster435.onyx.lang.function.OnyxTuple
 import net.shadowmaster435.onyx.lang.function.OnyxTuples
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
@@ -89,7 +88,8 @@ enum class OnyxOperator(
         typeA: OnyxClassDescriptor,
         genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty,
         function: (thisInst: OnyxClassInstance?, list: List<OnyxClassInstance>) -> OnyxClassInstance
-    ) = this to OnyxExternalFunction(
+    ) = this to OnyxExternalFunctionDescriptor(
+        overloadableName ?: throw IllegalArgumentException("Operator $this is not overloadable"),
         OnyxTuples(
             OnyxTuple(
                 typeA,
@@ -104,7 +104,8 @@ enum class OnyxOperator(
         typeB: OnyxClassDescriptor,
         genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty,
         function: (thisInst: OnyxClassInstance?, list: List<OnyxClassInstance>) -> OnyxClassInstance
-    ) = this to OnyxExternalFunction(
+    ) = this to OnyxExternalFunctionDescriptor(
+        overloadableName ?: throw IllegalArgumentException("Operator $this is not overloadable"),
         OnyxTuples(
             OnyxTuple(
                 typeA,

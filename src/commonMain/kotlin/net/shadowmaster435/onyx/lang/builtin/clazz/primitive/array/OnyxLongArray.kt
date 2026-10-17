@@ -15,7 +15,7 @@ import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
 import net.shadowmaster435.onyx.lang.util.enumMapOf
 import net.shadowmaster435.onyx.lang.util.externalFinalField
 
-class OnyxLongArray(desc: OnyxClassDescriptor, override val held: LongArray) : OnyxExternalClassInstance<LongArray>(desc) {
+class OnyxLongArray(override val held: LongArray) : OnyxExternalClassInstance<LongArray>(desc) {
 
 
     companion object {

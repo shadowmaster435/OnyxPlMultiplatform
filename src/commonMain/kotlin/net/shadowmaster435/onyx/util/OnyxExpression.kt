@@ -4,33 +4,47 @@ import net.shadowmaster435.onyx.exception.ImpossibleException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxUnit
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
+import net.shadowmaster435.onyx.lang.field.OnyxFieldDescriptor
 import net.shadowmaster435.onyx.lang.impl.OnyxPokable
+import net.shadowmaster435.onyx.lang.impl.OnyxReferencableImpl
 import net.shadowmaster435.onyx.lang.impl.OnyxRunnableImpl
 
-private typealias Binary = (thisInst: OnyxClassInstance?, a: OnyxClassInstance?, b: OnyxClassInstance?) -> OnyxClassInstance?
-private typealias Unary = (thisInst: OnyxClassInstance?, a: OnyxClassInstance?) -> OnyxClassInstance?
+private typealias Binary = (
+    params: OnyxParams,
+
+    thisInst: OnyxClassInstance?,
+    a: (OnyxParams) -> OnyxClassInstance?,
+    b: (OnyxParams) -> OnyxClassInstance?)
+-> OnyxClassInstance?
+private typealias Unary = (
+    params: OnyxParams,
+    thisInst: OnyxClassInstance?,
+    a: (OnyxParams) -> OnyxClassInstance?)
+-> OnyxClassInstance?
 
 class OnyxExpression internal constructor(groups: List<OnyxExpressionBuilder.Group>, val returnType: OnyxClassDescriptor): OnyxRunnableImpl {
     private val groups = groups.sortedBy { it.precedence }
 
 
-    fun evaluate(thisInst: OnyxClassInstance?): OnyxClassInstance {
+
+
+    fun evaluate(thisInst: OnyxClassInstance?, params: OnyxParams): OnyxClassInstance {
         groups.forEach { it.reset() }
         var accum: OnyxExpressionBuilder.Slot? = null
-        groups.forEach { accum = it.evaluate(thisInst) }
+        groups.forEach { accum = it.evaluate(thisInst, params) }
         return accum!!.held ?: throw ImpossibleException("Expression failed to evaluate. This should never happen")
     }
 
-    override fun execute(thisInst: OnyxClassInstance?, params: List<OnyxClassInstance>) =
-        evaluate(thisInst)
+    override fun execute(thisInst: OnyxClassInstance?, params: OnyxParams) =
+        evaluate(thisInst, params)
 }
 class OnyxExpressionBuilder {
     internal class Group(val precedence: Int, val entries: List<Operation>) : Slot() {
         override fun reset() = entries.forEach { it.slot.reset() }
-        fun evaluate(thisInst: OnyxClassInstance?): Slot {
+        fun evaluate(thisInst: OnyxClassInstance?, params: OnyxParams): Slot {
             var result: Slot? = null
             entries.forEach { operation ->
-                result = operation.evaluate(thisInst)
+                result = operation.evaluate(params, thisInst)
             }
             return result!!
         }
@@ -48,12 +62,12 @@ class OnyxExpressionBuilder {
         var binary: Binary? = null
             set(v) {field = v; isUnary = false}
         var unary: Unary? = null
-        fun evaluate(thisInst: OnyxClassInstance?): Slot =
+        fun evaluate(params: OnyxParams, thisInst: OnyxClassInstance?): Slot =
             if (isUnary) {
-                slot.held = unary!!(thisInst, slot.held)
+                slot.held = unary!!(params, thisInst, {slot.held})
                 slot
             } else {
-                next!!.held = binary!!(thisInst,slot.held, next!!.held)
+                next!!.held = binary!!(params, thisInst,{slot.held}, {next!!.held})
                 next!!
             }
 
@@ -63,7 +77,7 @@ class OnyxExpressionBuilder {
     private var currentGroupList = mutableListOf<Operation>()
     private var lastOperation: Operation? = null
 
-    fun unary(precedence: Int, op: (thisInst: OnyxClassInstance?, a: OnyxClassInstance?) -> OnyxClassInstance?) {
+    fun unary(precedence: Int, op: Unary) {
         val operation = lastOperation
         if (operation != null) {
             if (precedence != operation.precedence) {
@@ -79,7 +93,7 @@ class OnyxExpressionBuilder {
             }
         }
     }
-    fun binary(precedence: Int, op: (thisInst: OnyxClassInstance?, a: OnyxClassInstance?, b: OnyxClassInstance?) -> OnyxClassInstance?) {
+    fun binary(precedence: Int, op: Binary) {
         val operation = lastOperation
         if (operation != null) {
             if (precedence != operation.precedence) {

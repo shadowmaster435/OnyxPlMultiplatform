@@ -6,13 +6,14 @@ import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxString
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxInt
 import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.field.OnyxFieldInstance
-import net.shadowmaster435.onyx.lang.function.OnyxExternalFunction
+import net.shadowmaster435.onyx.lang.function.OnyxExternalFunctionDescriptor
 import net.shadowmaster435.onyx.lang.function.OnyxTuples
 import net.shadowmaster435.onyx.lang.impl.OnyxPokable
+import net.shadowmaster435.onyx.lang.impl.OnyxReferencableImpl
 
 open class OnyxClassInstance(
     val desc: OnyxClassDescriptor,
-): OnyxPokable {
+): OnyxPokable, OnyxReferencableImpl {
     protected open val fieldData: MutableList<OnyxFieldInstance> = mutableListOf()
     protected open var initialized = false
     open val isObject = false
@@ -20,6 +21,8 @@ open class OnyxClassInstance(
         createFieldData()
     }
 
+    override fun getRefVal(thisInstance: OnyxClassInstance?) = thisInstance
+    override fun setRefVal(thisInstance: OnyxClassInstance?, v: OnyxClassInstance) {}
 
     open fun createFieldData() {
         var i = 0
@@ -52,6 +55,7 @@ open class OnyxClassInstance(
     }
     fun getField(refIndex: Int) = fieldData[refIndex].get()
     fun getField(name: String) = fieldData[desc.getFieldRefIndex(name)].get()
+    fun getFieldInstance(name: String) = fieldData[desc.getFieldRefIndex(name)]
     fun getFieldNullable(name: String) = fieldData.getOrNull(desc.getFieldRefIndex(name))?.get()
 
 
@@ -59,21 +63,24 @@ open class OnyxClassInstance(
     companion object {
 
 
-        val defaultEqualsFunction = OnyxExternalFunction(
+        val defaultEqualsFunction = OnyxExternalFunctionDescriptor(
+            "equals",
             OnyxTuples.empty,
             listOf(
                 OnyxModifierType.PUBLIC,
                 OnyxModifierType.OPEN,
             )
         ) { thisInst, list -> thisInst?.onyxEquals(list.first()) ?: OnyxBoolean(false) }
-        val defaultHashcodeFunction = OnyxExternalFunction(
+        val defaultHashcodeFunction = OnyxExternalFunctionDescriptor(
+            "hashCode",
             OnyxTuples.empty,
             listOf(
                 OnyxModifierType.PUBLIC,
                 OnyxModifierType.OPEN,
             )
         ) { thisInst, _ -> OnyxInt(thisInst.hashCode()) }
-        val defaultToStringFunction = OnyxExternalFunction(
+        val defaultToStringFunction = OnyxExternalFunctionDescriptor(
+            "toString",
             OnyxTuples.empty,
             listOf(
                 OnyxModifierType.PUBLIC,

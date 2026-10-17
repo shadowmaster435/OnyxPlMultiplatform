@@ -3,8 +3,6 @@ package net.shadowmaster435.onyx.lang.builtin.clazz.primitive
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
-import net.shadowmaster435.onyx.lang.field.OnyxFieldDesc
-import net.shadowmaster435.onyx.lang.function.AbstractOnyxFunction
 import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
 
 
@@ -20,5 +18,5 @@ internal val anyDesc = OnyxClassDescriptor(
         OnyxClassDescriptor.hashcodeDesc,
         OnyxClassDescriptor.equalDesc,
         OnyxClassDescriptor.toStringDesc,
-    ), linkedMapOf(), OnyxClassType.OPEN, listOf()
+    ), linkedMapOf(), OnyxClassType.OPEN, null
 )

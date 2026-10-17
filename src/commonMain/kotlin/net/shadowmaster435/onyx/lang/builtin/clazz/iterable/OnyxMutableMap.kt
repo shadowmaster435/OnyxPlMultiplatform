@@ -24,7 +24,6 @@ class OnyxMutableMap(override val held: Map<OnyxClassInstance, OnyxClassInstance
             OnyxIterable.desc, null,
             linkedMapOf(
                 interfaceField("size", OnyxNumber.descOf(OnyxInt::class)),
-
             ),
             genericTuples = OnyxGenericTuples(OnyxGenericType(
                 anyDesc, OnyxGenericVariance.OUT

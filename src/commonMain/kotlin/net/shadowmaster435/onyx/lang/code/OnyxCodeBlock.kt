@@ -10,6 +10,7 @@ import kotlin.jvm.JvmInline
 class OnyxCodeBlock(
     val members: List<OnyxRunnableImpl>, val returnType: OnyxClassDescriptor = OnyxUnit.desc
 ) {
+
     fun execute(thisInst: OnyxClassInstance?, params: List<OnyxClassInstance>): Triple<OnyxClassInstance, OnyxExitType?, OnyxCodeBlock?> {
         members.forEach {
             if (it is OnyxExitStatement)

@@ -14,7 +14,7 @@ import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
 import net.shadowmaster435.onyx.lang.util.enumMapOf
 import net.shadowmaster435.onyx.lang.util.externalFinalField
 
-class OnyxShortArray(desc: OnyxClassDescriptor, override val held: ShortArray) : OnyxExternalClassInstance<ShortArray>(desc) {
+class OnyxShortArray(override val held: ShortArray) : OnyxExternalClassInstance<ShortArray>(desc) {
 
 
     companion object {

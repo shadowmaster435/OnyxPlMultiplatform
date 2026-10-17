@@ -2,7 +2,7 @@ package net.shadowmaster435.onyx.lang.clazz
 
 import net.shadowmaster435.onyx.util.ListBuilder
 
-class OnyxEnumClass(
+class OnyxEnumClassInstance(
     desc: OnyxClassDescriptor,
     val enumValues: List<OnyxEnumValue>
 ): OnyxClassInstance(desc) {
