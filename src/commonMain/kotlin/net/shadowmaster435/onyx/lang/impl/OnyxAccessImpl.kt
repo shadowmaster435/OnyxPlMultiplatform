@@ -17,7 +17,7 @@ interface OnyxAccessImpl : OnyxModifierImpl {
     val isPackage get() = modifiers.contains(OnyxModifierType.PACKAGE)
 
     companion object {
-        private val functions = listOf(
+        private val fields = listOf(
             externalFinalField("isFinal", OnyxBoolean.desc) {OnyxBoolean((it as OnyxAccessImpl).isFinal)},
             externalFinalField("isConst", OnyxBoolean.desc) {OnyxBoolean((it as OnyxAccessImpl).isConst)},
             externalFinalField("isMeta", OnyxBoolean.desc) {OnyxBoolean((it as OnyxAccessImpl).isMeta)},
@@ -28,7 +28,7 @@ interface OnyxAccessImpl : OnyxModifierImpl {
             externalFinalField("isFile", OnyxBoolean.desc) {OnyxBoolean((it as OnyxAccessImpl).isFile)},
             externalFinalField("isPackage", OnyxBoolean.desc) {OnyxBoolean((it as OnyxAccessImpl).isPackage)}
         ).toTypedArray()
-        fun functions() = functions.clone()
+        fun fields() = fields.clone()
 
     }
 

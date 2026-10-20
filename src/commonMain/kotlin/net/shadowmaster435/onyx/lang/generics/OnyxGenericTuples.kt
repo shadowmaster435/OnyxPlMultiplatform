@@ -16,7 +16,7 @@ class OnyxGenericTuples(val tuples: List<OnyxGenericType>) {
         var i = 0
         input.forEach { value ->
             val tuple = tuples[i]
-            if (tuple.genericType === OnyxNull.desc && !tuple.nullable) throw NullPointerException("Generic defined as non null")
+            if (tuple.genericType === OnyxNull.desc && !tuple.nullability.nullable) throw NullPointerException("Generic defined as non null")
             if (!(normal(value, tuple))) throw err
             i++
         }

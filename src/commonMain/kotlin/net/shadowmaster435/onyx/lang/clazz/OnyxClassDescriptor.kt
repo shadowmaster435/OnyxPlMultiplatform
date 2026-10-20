@@ -1,6 +1,7 @@
 package net.shadowmaster435.onyx.lang.clazz
 
 import net.shadowmaster435.onyx.exception.UnknownException
+import net.shadowmaster435.onyx.ext.filterDuplicates
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxNull
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.anyDesc
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
@@ -147,7 +148,7 @@ open class OnyxClassDescriptor(
             put(it.key, classEntries[it.value])
         } } + classes),
         type,
-        supertypes + this,
+        (supertypes + this).filterDuplicates(),
         companion,
         enumMapOf(this.operatorOverloads + operatorOverloads), genericTuples
     )
@@ -181,7 +182,7 @@ open class OnyxClassDescriptor(
         genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty,
         modifiers: OnyxModifiers = listOf(OnyxModifierType.PUBLIC)
     ) = extend(
-        name, pkg, type, listOf(anyDesc), companion,
+        name, pkg, type, supertypes + anyDesc, companion,
         fields, functions, classes, operatorOverloads, genericTuples, modifiers
     )
 

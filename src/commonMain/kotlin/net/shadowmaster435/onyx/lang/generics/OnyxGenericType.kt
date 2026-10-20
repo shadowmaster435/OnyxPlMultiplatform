@@ -4,6 +4,7 @@ import net.shadowmaster435.onyx.exception.ImpossibleException
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.clazz.OnyxObject
+import net.shadowmaster435.onyx.lang.enums.code.OnyxNullability
 import net.shadowmaster435.onyx.lang.enums.generics.OnyxGenericVariance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.enums.operator.OnyxOperator
@@ -15,9 +16,10 @@ import net.shadowmaster435.onyx.lang.util.EnumMap
 import net.shadowmaster435.onyx.util.OnyxModifiers
 
 class OnyxGenericType(
+    val genericName: String,
     type: OnyxClassDescriptor,
     val variance: OnyxGenericVariance,
-    val nullable: Boolean = false
+    val nullability: OnyxNullability
 ): OnyxClassDescriptor(
     "", globalRoot, listOf(), linkedMapOf(), linkedMapOf(), linkedMapOf(),
     OnyxClassType.NORMAL, listOf()

@@ -1,5 +1,6 @@
 package net.shadowmaster435.onyx.lang.util
 
+import net.shadowmaster435.onyx.exception.InvalidParameterCountException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxUnit
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
@@ -17,10 +18,13 @@ import net.shadowmaster435.parsinator.dsl.ParsinatorBuilder
 val nameRegex = Regex("[_abAB09]")
 val numbersRegex = Regex("[09]")
 val decimalNumbersRegex = Regex("[09.]")
+val invalidPCount get() = InvalidParameterCountException()
 
 fun ParsinatorBuilder.name(optional: Boolean) = name(optional, nameRegex, numbersRegex)
 
-fun field(name: String, type: OnyxClassDescriptor) {}
+fun field(name: String, type: OnyxClassDescriptor, modifiers: OnyxModifiers) {
+    name to OnyxFieldDescriptor(name, type, modifiers, )
+}
 fun externalFinalField(name: String, type: OnyxClassDescriptor, getter: (OnyxClassInstance?) -> OnyxClassInstance) = name to
     OnyxExternalFinalFieldDesc(name, listOf(), type, extGetter = getter)
 fun interfaceField(name: String, type: OnyxClassDescriptor) = name to OnyxFieldDescriptor(

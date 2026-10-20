@@ -42,8 +42,8 @@ class OnyxFieldDescriptor(
         thisInstance: OnyxClassInstance?,
         v: OnyxClassInstance
     ) {
-        (thisInstance?.getFieldInstance(name) ?: selfInstance ?:
-        throw ImpossibleException("Unbound field. This should never happen")).set(v, thisInstance)
+        (selfInstance ?: thisInstance?.getFieldInstance(name) ?:
+        throw ImpossibleException("Unbound field. This should never happen")).set(v.cast(classType), thisInstance)
     }
 
 

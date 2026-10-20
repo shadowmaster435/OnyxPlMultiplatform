@@ -5,6 +5,7 @@ import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxInt
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxNumber
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.clazz.OnyxExternalClassInstance
+import net.shadowmaster435.onyx.lang.enums.code.OnyxNullability
 import net.shadowmaster435.onyx.lang.enums.generics.OnyxGenericVariance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
@@ -32,7 +33,7 @@ class OnyxSet(override val held: Set<OnyxClassInstance>, ):
 
                 ),
             genericTuples = OnyxGenericTuples(OnyxGenericType(
-                anyDesc, OnyxGenericVariance.OUT
+                "T", anyDesc, OnyxGenericVariance.OUT, OnyxNullability.INPUT
             ))
         )
     }

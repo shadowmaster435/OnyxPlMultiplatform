@@ -37,6 +37,9 @@ fun accessChainStringTemplate(make: (String) -> Any?) = ParsinatorTemplate {
         make(str)
     }
 }
+
+val expressionTemplate: ParsinatorTemplate get() = TODO()
+
 val importTemplate = ParsinatorTemplate {
     chain(false) {
         token(false, "import")

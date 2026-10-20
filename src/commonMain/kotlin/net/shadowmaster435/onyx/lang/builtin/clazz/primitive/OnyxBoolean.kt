@@ -5,6 +5,7 @@ import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.clazz.OnyxExternalClassInstance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
+import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 class OnyxBoolean(override val held: Boolean) : OnyxExternalClassInstance<Boolean>(desc) {
     override fun onyxEquals(other: OnyxClassInstance) = OnyxBoolean(other is OnyxBoolean && other.held == held)
@@ -16,5 +17,11 @@ class OnyxBoolean(override val held: Boolean) : OnyxExternalClassInstance<Boolea
                 OnyxClassDescriptor.equalDesc
             ), linkedMapOf(), OnyxClassType.OPEN, OnyxAny.desc
         )
+        val template = ParsinatorTemplate {
+            branch(true) {
+                token(false, "true")
+                token(false, "false")
+            } makes { OnyxBoolean(it == "true") }
+        }
     }
 }

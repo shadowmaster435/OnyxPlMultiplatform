@@ -7,9 +7,9 @@ import net.shadowmaster435.onyx.util.OnyxExpression
 
 class OnyxIfStatement(val expression: OnyxExpression, val codeBlock: OnyxCodeBlock, val elif: OnyxIfStatement? = null, val elseBlock: OnyxCodeBlock? = null): OnyxRunnableImpl {
     override fun execute(thisInst: OnyxClassInstance?, params: List<OnyxClassInstance>): OnyxClassInstance? {
-        return if (((expression.evaluate(thisInst)) as OnyxBoolean).held)
-            codeBlock.execute(thisInst)
-        else elif?.execute(thisInst) ?: elseBlock?.execute(thisInst)
+        return if (((expression.evaluate(thisInst, params)) as OnyxBoolean).held)
+            codeBlock.execute(thisInst, params).first
+        else elif?.execute(thisInst, params) ?: elseBlock?.execute(thisInst, params)?.first
     }
 
 }

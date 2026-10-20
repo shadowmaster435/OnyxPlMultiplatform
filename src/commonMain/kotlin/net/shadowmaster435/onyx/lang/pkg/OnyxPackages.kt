@@ -7,6 +7,7 @@ val onyxLang = onyxRoot.add("lang")
 val onyxIo = onyxRoot.add("io")
 val onyxCollections = onyxRoot.add("collections")
 val onyxPrimitives = onyxLang.add("primitives")
+val onyxFunctions = onyxLang.add("functions")
 val onyxReflection = onyxRoot.add("reflection")
 
 
