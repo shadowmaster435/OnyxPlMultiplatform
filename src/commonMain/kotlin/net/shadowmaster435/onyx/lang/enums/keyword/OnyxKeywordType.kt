@@ -72,9 +72,17 @@ enum class OnyxKeywordType(val string: String, val subtype: SubType, val require
     companion object {
         @JvmSynthetic internal fun template(make: (Any?) -> Any?) = ParsinatorTemplate {
             branch(true) {
-                for (keyword in enumEntries<OnyxKeywordType>()) token(true, keyword.string)
+                for (keyword in enumEntries<OnyxKeywordType>()) token(false, keyword.string)
             } makes make
         }
-
+        @JvmSynthetic internal val covarianceTemplate = ParsinatorTemplate {
+            branch(true) {
+                for (keyword in enumEntries<OnyxKeywordType>()) if (keyword.subtype == SubType.COVARIANCE) {
+                    token(false, keyword.string)
+                }
+            } makes {
+                OnyxKeywordType.entries.find { k -> k.string == it }!!
+            }
+        }
     }
 }

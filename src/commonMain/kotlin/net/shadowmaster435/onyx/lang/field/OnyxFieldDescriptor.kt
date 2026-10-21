@@ -11,6 +11,7 @@ import net.shadowmaster435.onyx.lang.impl.OnyxReferencableImpl
 import net.shadowmaster435.onyx.lang.util.modifierString
 import net.shadowmaster435.onyx.lang.util.nameRegex
 import net.shadowmaster435.onyx.lang.util.numbersRegex
+import net.shadowmaster435.onyx.lang.util.typeTemplate
 import net.shadowmaster435.onyx.util.OnyxExpression
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
@@ -62,9 +63,9 @@ class OnyxFieldDescriptor(
                 chain(true) {
                     branch(false) {
                         chain(false) {
-                            whitespace()
+                            whitespace(true)
                             token(false, ":")
-                            whitespace()
+                            whitespace(true)
                         }
                         chain(false) {
                             whitespace(false)
@@ -72,7 +73,7 @@ class OnyxFieldDescriptor(
                             whitespace(false)
                         }
                     }
-                    name(false, nameRegex, numbersRegex)
+                    use(typeTemplate)
                 }
             } makes {
                 it as List<*>

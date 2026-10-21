@@ -4,6 +4,9 @@ import kotlin.math.ceil
 import kotlin.math.max
 import kotlin.math.min
 
+fun String.substringOrNull(index: Int, length: Int) = substr(index..<(min(this.length, index + length)))
+fun String.substringOrNull(index: Int) = if (index !in indices) null else substr(index..<length)
+fun String.substringOrNull(intRange: IntRange) {}
 
 fun String.indexToLineColumn(index: Int): Pair<Int, Int> {
     if (index !in indices) throw IndexOutOfBoundsException("Index $index out of string bounds")

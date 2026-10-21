@@ -140,6 +140,11 @@ class OnyxExpressionBuilder internal constructor(val returnType: OnyxClassDescri
         currentGroupList.add(next)
         lastOperation = next
     }
+    fun use(expression: OnyxExpression) {
+        val operation = lastOperation
+        if (operation != null) groups.add(GroupInstance(expression))
+    }
+
     fun group(init: @Marker OnyxExpressionBuilder.() -> Unit) {
         val operation = lastOperation
         if (operation != null) {

@@ -2,6 +2,8 @@ package net.shadowmaster435.onyx.lang.generics
 
 import net.shadowmaster435.onyx.exception.ImpossibleException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxNull
+import net.shadowmaster435.onyx.lang.enums.keyword.OnyxKeywordType
+import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 class OnyxGenericTuples(val tuples: List<OnyxGenericType>) {
     constructor(vararg tuples: OnyxGenericType) : this(tuples.toList())
@@ -37,5 +39,35 @@ class OnyxGenericTuples(val tuples: List<OnyxGenericType>) {
     companion object {
         private val err = ImpossibleException("Type erased for generic cast, this should never happen")
         val empty = OnyxGenericTuples(listOf())
+        val definitionTemplate: ParsinatorTemplate = ParsinatorTemplate {
+            chain(true) {
+                token(false, "<", false, true)
+                whitespace(true)
+                repeating(false, false) {
+                    use(OnyxGenericType.definitionTemplate)
+                    whitespace(true)
+                    trailing { token(true, ",", false, true) }
+                }
+                whitespace(true)
+                token(false, ">",false, true)
+            }
+        }
+        val paramTemplate: ParsinatorTemplate = ParsinatorTemplate {
+            chain(true) {
+                token(false, "<", false, true)
+                whitespace(true)
+                use(OnyxKeywordType.covarianceTemplate)
+                whitespace(true)
+                repeating(false, false) {
+                    use(OnyxGenericType.paramTemplate)
+                    whitespace(true)
+                    trailing { token(true, ",", false, true) }
+                }
+                whitespace(true)
+                token(false, ">", false, true)
+            }
+        }
+
+
     }
 }

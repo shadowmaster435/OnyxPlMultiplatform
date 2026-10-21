@@ -13,7 +13,11 @@ import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
 import net.shadowmaster435.onyx.lang.pkg.OnyxPackage
 import net.shadowmaster435.onyx.lang.pkg.globalRoot
 import net.shadowmaster435.onyx.lang.util.EnumMap
+import net.shadowmaster435.onyx.lang.util.nameRegex
+import net.shadowmaster435.onyx.lang.util.numbersRegex
+import net.shadowmaster435.onyx.lang.util.typeTemplate
 import net.shadowmaster435.onyx.util.OnyxModifiers
+import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 class OnyxGenericType(
     val genericName: String,
@@ -171,5 +175,36 @@ class OnyxGenericType(
 
     companion object {
         private val err = ImpossibleException("Tried to cast to erased type, this should never happen")
+        val definitionTemplate = ParsinatorTemplate {
+            chain(false) {
+                name(false, nameRegex, numbersRegex)
+                branch(true) {
+                    chain(true) {
+                        whitespace(true)
+                        token(false, ":", false, true)
+                        whitespace(true)
+                        use(typeTemplate)
+                    }
+                    chain(true) {
+                        whitespace(true)
+                        token(false, "&", false, true)
+                        whitespace(true)
+                        token(false, "Any")
+                    }
+                }
+            }
+        }
+        val paramTemplate = ParsinatorTemplate {
+            repeating(false, false) {
+                token(false, "<", excludeFromChains = true)
+                whitespace(true)
+                use(typeTemplate)
+                whitespace(true)
+                token(false, ">", excludeFromChains = true)
+                whitespace(true)
+                trailing { token(true, ",", excludeFromChains = true) }
+            }
+        }
+
     }
 }

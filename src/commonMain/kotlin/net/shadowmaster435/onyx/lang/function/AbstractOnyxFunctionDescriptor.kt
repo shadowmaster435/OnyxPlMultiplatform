@@ -11,6 +11,7 @@ import net.shadowmaster435.onyx.lang.impl.OnyxMemberImpl
 import net.shadowmaster435.onyx.lang.impl.OnyxNamedImpl
 import net.shadowmaster435.onyx.lang.util.accessChainStringTemplate
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
+import kotlin.jvm.JvmSynthetic
 
 abstract class AbstractOnyxFunctionDescriptor(
     override val name: String,
@@ -19,6 +20,11 @@ abstract class AbstractOnyxFunctionDescriptor(
     val genericTuples: OnyxGenericTuples,
     val returnType: OnyxClassDescriptor = OnyxUnit.desc,
 ) : OnyxMemberImpl, OnyxAccessImpl, OnyxNamedImpl {
+    var isExtension: Boolean = false; @JvmSynthetic internal set
+
+    var extensionGenerics: OnyxGenericTuples? = null; @JvmSynthetic internal set
+    var extensionType: OnyxClassDescriptor? = null; @JvmSynthetic internal set
+
     abstract fun invoke(thisInst: OnyxClassInstance?, params: List<OnyxClassInstance>, generics: List<OnyxGenericType>): OnyxClassInstance
     fun invoke(thisInst: OnyxClassInstance?) = invoke(thisInst,listOf(),listOf())
     companion object {

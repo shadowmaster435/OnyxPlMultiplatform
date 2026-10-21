@@ -6,6 +6,7 @@ import net.shadowmaster435.onyx.exception.UnknownException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxNull
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
+import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 class OnyxTuples(val tuples: List<OnyxTuple>) {
     constructor(vararg tuples: OnyxTuple) : this(tuples.toList())
@@ -57,6 +58,20 @@ class OnyxTuples(val tuples: List<OnyxTuple>) {
 
     companion object {
         val empty = OnyxTuples(listOf())
+        val template = ParsinatorTemplate {
+            token(false, "(", false, true)
+            whitespace(true)
+            repeating(false, true) {
+                use(OnyxTuple.template)
+                trailing {
+                    whitespace(true)
+                    token(false, ",", excludeFromChains = true)
+                }
+            }
+            whitespace(true)
+            token(false, ")", false, true)
+        }
+
     }
 
 }

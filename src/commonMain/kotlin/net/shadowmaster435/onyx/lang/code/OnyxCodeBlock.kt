@@ -5,6 +5,7 @@ import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.enums.code.OnyxExitType
 import net.shadowmaster435.onyx.lang.impl.OnyxRunnableImpl
+import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 import kotlin.jvm.JvmInline
 
 class OnyxCodeBlock(
@@ -24,4 +25,8 @@ class OnyxCodeBlock(
     }
     fun execute(thisInst: OnyxClassInstance?) = execute(thisInst,listOf())
     fun execute(thisInst: OnyxClassInstance?, singleParam: OnyxClassInstance) = execute(thisInst,listOf(singleParam))
+    companion object {
+        val template: ParsinatorTemplate get() = TODO("Code block template")
+    }
+
 }
