@@ -2,15 +2,13 @@ package net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number
 
 import net.shadowmaster435.onyx.compiler.OnyxCompiledType
 import net.shadowmaster435.onyx.exception.ParseException
-import net.shadowmaster435.onyx.ext.binaryToLong
 import net.shadowmaster435.onyx.ext.binaryToShort
-import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.compileFunc
-import net.shadowmaster435.onyx.lang.impl.OnyxCompilableImpl
+import net.shadowmaster435.onyx.lang.impl.OnyxCompilableConstImpl
 import net.shadowmaster435.onyx.lang.util.numbersRegex
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 expect val OnyxShort.compileFunc: () -> Any?
-class OnyxShort(override val held: Short) : OnyxNumber<Short>(makeOverrideDesc<OnyxShort>("Short")), OnyxCompilableImpl {
+class OnyxShort(override val held: Short) : OnyxNumber<Short>(makeOverrideDesc<OnyxShort>("Short")), OnyxCompilableConstImpl {
     override val byteCount = 2
     override fun toByte() = held.toByte()
     override fun toShort() = held
@@ -18,7 +16,7 @@ class OnyxShort(override val held: Short) : OnyxNumber<Short>(makeOverrideDesc<O
     override fun toLong() = held.toLong()
     override fun toFloat() = held.toFloat()
     override fun toDouble() = held.toDouble()
-    override fun compile() = OnyxCompiledType(compileFunc())
+    override fun compileConst() = OnyxCompiledType(compileFunc())
 
 
     companion object {

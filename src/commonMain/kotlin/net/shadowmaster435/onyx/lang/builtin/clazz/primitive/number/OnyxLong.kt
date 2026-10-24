@@ -1,13 +1,14 @@
 package net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number
 
+import net.shadowmaster435.onyx.compiler.OnyxCompiledType
 import net.shadowmaster435.onyx.exception.ParseException
 import net.shadowmaster435.onyx.ext.binaryToLong
-import net.shadowmaster435.onyx.ext.binaryToLongOrNull
-import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxNull
+import net.shadowmaster435.onyx.lang.impl.OnyxCompilableConstImpl
 import net.shadowmaster435.onyx.lang.util.numbersRegex
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
-class OnyxLong(override val held: Long) : OnyxNumber<Long>(makeOverrideDesc<OnyxLong>("Long")) {
+expect val OnyxLong.compileFunc: () -> Any?
+class OnyxLong(override val held: Long) : OnyxNumber<Long>(makeOverrideDesc<OnyxLong>("Long")), OnyxCompilableConstImpl {
     override val byteCount = 8
     override fun toByte() = held.toByte()
     override fun toShort() = held.toShort()
@@ -15,6 +16,7 @@ class OnyxLong(override val held: Long) : OnyxNumber<Long>(makeOverrideDesc<Onyx
     override fun toLong() = held
     override fun toFloat() = held.toFloat()
     override fun toDouble() = held.toDouble()
+    override fun compileConst() = OnyxCompiledType(compileFunc())
     companion object {
         val desc = descOf(OnyxLong::class)
         val template = ParsinatorTemplate {

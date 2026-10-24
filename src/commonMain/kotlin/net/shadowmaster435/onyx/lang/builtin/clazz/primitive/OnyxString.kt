@@ -1,24 +1,29 @@
 package net.shadowmaster435.onyx.lang.builtin.clazz.primitive
 
+import net.shadowmaster435.onyx.compiler.OnyxCompiledType
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.clazz.OnyxExternalClassInstance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
+import net.shadowmaster435.onyx.lang.impl.OnyxCompilableConstImpl
 import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
+import net.shadowmaster435.onyx.util.JVMPrimitiveType
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 import net.shadowmaster435.parsinator.util.ParsinatorErrorType
 
-class OnyxString(override val held: String) : OnyxExternalClassInstance<String>(desc) {
+expect val OnyxString.compileFunc: () -> Any?
+class OnyxString(override val held: String) : OnyxExternalClassInstance<String>(desc), OnyxCompilableConstImpl {
     override fun onyxEquals(other: OnyxClassInstance) = OnyxBoolean(other is OnyxString && other.held == held)
 
+    override fun compileConst() = OnyxCompiledType(compileFunc())
 
     companion object {
         val desc = OnyxClassDescriptor(
-            "Any", onyxPrimitives, linkedMapOf(), linkedMapOf(
+            "String", onyxPrimitives, linkedMapOf(), linkedMapOf(
                 OnyxClassDescriptor.hashcodeDesc,
                 OnyxClassDescriptor.equalDesc
             ), linkedMapOf(), OnyxClassType.OPEN, OnyxAny.desc
-        )
+        ).apply { jvmNameOverride = JVMPrimitiveType.STRING.descriptor }
         val template = ParsinatorTemplate {
             manual(false, {it.char == '\"'}) {
                 var str = ""

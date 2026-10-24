@@ -1,13 +1,14 @@
 package net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number
 
+import net.shadowmaster435.onyx.compiler.OnyxCompiledType
 import net.shadowmaster435.onyx.exception.ParseException
-import net.shadowmaster435.onyx.ext.binaryToByte
 import net.shadowmaster435.onyx.ext.binaryToFloat
 import net.shadowmaster435.onyx.ext.hexToFloat
-import net.shadowmaster435.onyx.lang.util.numbersRegex
+import net.shadowmaster435.onyx.lang.impl.OnyxCompilableConstImpl
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
-class OnyxFloat(override val held: Float) : OnyxNumber<Float>(makeOverrideDesc<OnyxFloat>("Float")) {
+expect val OnyxFloat.compileFunc: () -> Any?
+class OnyxFloat(override val held: Float) : OnyxNumber<Float>(makeOverrideDesc<OnyxFloat>("Float")), OnyxCompilableConstImpl {
     override val byteCount = 4
     override fun toByte() = held.toInt().toByte()
     override fun toShort() = held.toInt().toShort()
@@ -15,6 +16,7 @@ class OnyxFloat(override val held: Float) : OnyxNumber<Float>(makeOverrideDesc<O
     override fun toLong() = held.toLong()
     override fun toFloat() = held
     override fun toDouble() = held.toDouble()
+    override fun compileConst() = OnyxCompiledType(compileFunc())
     companion object {
         val desc = descOf(OnyxFloat::class)
         val template = ParsinatorTemplate {

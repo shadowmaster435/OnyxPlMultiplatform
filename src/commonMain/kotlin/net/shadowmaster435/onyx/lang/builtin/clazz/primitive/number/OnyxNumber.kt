@@ -1,6 +1,7 @@
 package net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number
 
 import net.shadowmaster435.onyx.exception.IllegalOperationException
+import net.shadowmaster435.onyx.exception.ImpossibleException
 import net.shadowmaster435.onyx.exception.UnknownOperationException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxBoolean
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.anyDesc
@@ -14,7 +15,9 @@ import net.shadowmaster435.onyx.lang.function.OnyxTuples
 import net.shadowmaster435.onyx.lang.function.OnyxVirtualFunctionDescriptor
 import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
 import net.shadowmaster435.onyx.lang.util.externalFunc
+import net.shadowmaster435.onyx.util.JVMPrimitiveType
 import kotlin.reflect.KClass
+
 
 @Suppress("UNCHECKED_CAST")
 abstract class OnyxNumber<T: Number>(desc: OnyxClassDescriptor = Companion.desc): OnyxExternalClassInstance<T>(desc) {
@@ -57,7 +60,17 @@ abstract class OnyxNumber<T: Number>(desc: OnyxClassDescriptor = Companion.desc)
         ): OnyxClassDescriptor {
             val desc = actuallyMakeOverrideDesc<T>(name, supertypes, companion)
             descriptors[T::class] = desc
-            return desc
+            return desc.apply {
+                jvmNameOverride = when(name) {
+                    "Byte" -> JVMPrimitiveType.BYTE
+                    "Short" -> JVMPrimitiveType.SHORT
+                    "Int" -> JVMPrimitiveType.INT
+                    "Long" -> JVMPrimitiveType.LONG
+                    "Float" -> JVMPrimitiveType.FLOAT
+                    "Double" -> JVMPrimitiveType.DOUBLE
+                    else -> throw ImpossibleException()
+                }.descriptor
+            }
         }
 
         fun <T: OnyxNumber<*>> actuallyMakeOverrideDesc(

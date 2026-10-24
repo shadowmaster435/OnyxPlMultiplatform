@@ -64,6 +64,7 @@ kotlin {
             implementation("net.shadowmaster43:parsinator-metadata:1.0")
             implementation(kotlin("reflect"))
             implementation("org.ow2.asm:asm:9.7")
+            implementation("org.ow2.asm:asm-commons:9.7")
             implementation("org.ow2.asm:asm-util:9.7")
             implementation("org.ow2.asm:asm-tree:9.7")
         }

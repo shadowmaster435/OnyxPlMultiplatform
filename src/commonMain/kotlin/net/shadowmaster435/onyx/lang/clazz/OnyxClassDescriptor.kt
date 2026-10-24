@@ -1,15 +1,17 @@
 package net.shadowmaster435.onyx.lang.clazz
 
-import net.shadowmaster435.onyx.exception.UnknownException
 import net.shadowmaster435.onyx.ext.filterDuplicates
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxNull
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.anyDesc
+import net.shadowmaster435.onyx.lang.enums.jvm.JVMApplicability
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxMemberType
 import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.enums.operator.OnyxOperator
 import net.shadowmaster435.onyx.lang.function.AbstractOnyxFunctionDescriptor
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
+import net.shadowmaster435.onyx.lang.impl.jvm.JVMDescribable
+import net.shadowmaster435.onyx.lang.impl.jvm.JVMFlaggable
 import net.shadowmaster435.onyx.lang.impl.OnyxAccessImpl
 import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
 import net.shadowmaster435.onyx.lang.impl.OnyxMemberImpl
@@ -32,12 +34,17 @@ open class OnyxClassDescriptor(
     internal open val operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunctionDescriptor> = enumMapOf(),
     open val genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty,
     open val constructors: List<AbstractOnyxFunctionDescriptor> = listOf(),
-): OnyxMemberImpl, OnyxAccessImpl, OnyxNamedImpl {
+): OnyxMemberImpl, OnyxAccessImpl, OnyxNamedImpl, JVMFlaggable, JVMDescribable {
     open val constant: Boolean = false
+    var subclassOf: OnyxClassDescriptor? = null
+    internal var jvmNameOverride: String? = null
+
     internal open val fieldEntries = fields.values.toTypedArray()
     internal open val functionEntries = functions.values.toTypedArray()
     internal open val classEntries = classes.values.toTypedArray()
-
+    override val applicability = JVMApplicability.CLASS
+    override val descriptor: String
+        get() = jvmName()
     override val type: OnyxMemberType = OnyxMemberType.CLASS
 
     override fun poke() {
@@ -185,6 +192,22 @@ open class OnyxClassDescriptor(
         name, pkg, type, supertypes + anyDesc, companion,
         fields, functions, classes, operatorOverloads, genericTuples, modifiers
     )
+    fun jvmName() =  jvmNameOverride ?: run {
+        val subclassString = run {
+            var str = ""
+            var current = this
+            while (current.subclassOf != null) {
+                str = current.name + str
+                val next = current.subclassOf
+                if (next != null) {
+                    current = next
+                    str = "$$str"
+                }
+            }
+        }
+
+        this.pkg.qualifiedName.replace('.', '/') + "/$subclassString"
+    }
 
     companion object {
         val equalDesc = "equals" to OnyxClassInstance.defaultEqualsFunction

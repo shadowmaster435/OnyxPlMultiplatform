@@ -1,9 +1,11 @@
 package net.shadowmaster435.onyx.lang.util
 
 import net.shadowmaster435.onyx.exception.InvalidParameterCountException
+import net.shadowmaster435.onyx.ext.filterDuplicates
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxUnit
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
+import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.enums.operator.OnyxOperator
 import net.shadowmaster435.onyx.lang.field.OnyxExternalFinalFieldDesc
 import net.shadowmaster435.onyx.lang.field.OnyxFieldDescriptor
@@ -71,4 +73,11 @@ fun OnyxModifiers.modifierString(): String {
         str += mod.string + space
     }
     return str
+}
+
+fun OnyxModifiers.toJVMAccessFlags() = buildList {
+    this@toJVMAccessFlags.forEach {
+        addAll(it.jvmFlags)
+    }
+    filterDuplicates()
 }

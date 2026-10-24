@@ -6,6 +6,7 @@ import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.clazz.OnyxExternalClassInstance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
+import net.shadowmaster435.onyx.util.JVMPrimitiveType
 
 object OnyxUnit : OnyxExternalClassInstance<Unit>(Desc.desc) {
     override val held = Unit
@@ -17,6 +18,6 @@ object OnyxUnit : OnyxExternalClassInstance<Unit>(Desc.desc) {
                 OnyxClassDescriptor.hashcodeDesc,
                 OnyxClassDescriptor.equalDesc
             ), linkedMapOf(), OnyxClassType.NORMAL, OnyxAny.desc
-        )
+        ).apply { jvmNameOverride = JVMPrimitiveType.VOID.descriptor }
     }
 }

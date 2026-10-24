@@ -1,14 +1,14 @@
 package net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number
 
+import net.shadowmaster435.onyx.compiler.OnyxCompiledType
 import net.shadowmaster435.onyx.exception.ParseException
 import net.shadowmaster435.onyx.ext.binaryToDouble
-import net.shadowmaster435.onyx.ext.binaryToFloat
 import net.shadowmaster435.onyx.ext.hexToDouble
-import net.shadowmaster435.onyx.ext.hexToFloat
-import net.shadowmaster435.onyx.lang.impl.OnyxCompilableImpl
+import net.shadowmaster435.onyx.lang.impl.OnyxCompilableConstImpl
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
-class OnyxDouble(override val held: Double) : OnyxNumber<Double>(makeOverrideDesc<OnyxDouble>("Double")) {
+expect val OnyxDouble.compileFunc: () -> Any?
+class OnyxDouble(override val held: Double) : OnyxNumber<Double>(makeOverrideDesc<OnyxDouble>("Double")), OnyxCompilableConstImpl {
     override val byteCount = 8
     override fun toByte() = held.toInt().toByte()
     override fun toShort() = held.toInt().toShort()
@@ -16,6 +16,7 @@ class OnyxDouble(override val held: Double) : OnyxNumber<Double>(makeOverrideDes
     override fun toLong() = held.toLong()
     override fun toFloat() = held.toFloat()
     override fun toDouble() = held
+    override fun compileConst() = OnyxCompiledType(compileFunc())
     companion object {
         val desc = descOf(OnyxDouble::class)
         val template = ParsinatorTemplate {

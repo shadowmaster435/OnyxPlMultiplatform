@@ -4,6 +4,7 @@ import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
+import net.shadowmaster435.onyx.util.JVMPrimitiveType
 
 
 class OnyxAny: OnyxClassInstance(desc) {
@@ -19,4 +20,4 @@ internal val anyDesc = OnyxClassDescriptor(
         OnyxClassDescriptor.equalDesc,
         OnyxClassDescriptor.toStringDesc,
     ), linkedMapOf(), OnyxClassType.OPEN, null
-)
+).apply { jvmNameOverride = JVMPrimitiveType.OBJECT.descriptor }

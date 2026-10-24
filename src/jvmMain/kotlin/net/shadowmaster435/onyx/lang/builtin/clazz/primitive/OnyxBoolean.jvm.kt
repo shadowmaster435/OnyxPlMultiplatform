@@ -1,7 +1,8 @@
 package net.shadowmaster435.onyx.lang.builtin.clazz.primitive
 
-import net.shadowmaster435.onyx.compiler.OnyxCompiledType
-import org.objectweb.asm.Opcodes
+import net.shadowmaster435.onyx.util.JVMPrimitiveType
 
 actual val OnyxBoolean.compileFunc: () -> Any?
-    get() = { listOf(OnyxCompiledType(if (held) Opcodes.ICONST_1 else Opcodes.ICONST_0)) }
+    get() = {
+        JVMPrimitiveType.BOOL to held
+    }

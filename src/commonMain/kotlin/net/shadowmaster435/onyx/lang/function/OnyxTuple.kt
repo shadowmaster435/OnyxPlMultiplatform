@@ -2,6 +2,8 @@ package net.shadowmaster435.onyx.lang.function
 
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.enums.code.OnyxNullability
+import net.shadowmaster435.onyx.lang.enums.jvm.JVMApplicability
+import net.shadowmaster435.onyx.lang.impl.jvm.JVMFlaggable
 import net.shadowmaster435.onyx.lang.util.expressionTemplate
 import net.shadowmaster435.onyx.lang.util.list
 import net.shadowmaster435.onyx.lang.util.nameTemplate
@@ -16,7 +18,9 @@ class OnyxTuple(
     val nullability: OnyxNullability,
     val vararg: Boolean = false,
     val initExpression: OnyxExpression? = null
-) {
+) : JVMFlaggable {
+    override val applicability = JVMApplicability.PARAMETER
+
     val nullable get() = nullability.nullable
     val optional get() = initExpression != null
 
