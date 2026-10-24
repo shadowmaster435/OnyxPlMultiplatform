@@ -1,11 +1,13 @@
 package net.shadowmaster435.onyx.lang.function
 
 import net.shadowmaster435.onyx.exception.IncorrectParametersException
+import net.shadowmaster435.onyx.exception.InvalidParameterCountException
 import net.shadowmaster435.onyx.exception.TypeMismatchException
 import net.shadowmaster435.onyx.exception.UnknownException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxNull
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
+import net.shadowmaster435.onyx.lang.util.list
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 class OnyxTuples(val tuples: List<OnyxTuple>) {
@@ -34,11 +36,11 @@ class OnyxTuples(val tuples: List<OnyxTuple>) {
         var i = 0
         input.forEach { value ->
             val tuple = tuples[i]
-            if (value === OnyxNull && !tuple.nullable) throw NullPointerException("Tuple ${tuple.name} defined as non-null")
+            if (value === OnyxNull && !tuple.nullable) throw IncorrectParametersException("Tuple ${tuple.name} defined as non-null")
             if (!(if (strict) strict(value, tuple.type) else normal(value, tuple.type))) error(value, tuple.type)
             i++
         }
-        if (i < requiredTuples) throw IncorrectParametersException("Invalid parameter count.")
+        if (i < requiredTuples) throw InvalidParameterCountException("Invalid parameter count.")
     }
 
     fun validateStrict(input: Array<out OnyxClassInstance>) = iter(input.iterator(), true)
@@ -58,20 +60,28 @@ class OnyxTuples(val tuples: List<OnyxTuple>) {
 
     companion object {
         val empty = OnyxTuples(listOf())
-        val template = ParsinatorTemplate {
-            token(false, "(", false, true)
-            whitespace(true)
-            repeating(false, true) {
-                use(OnyxTuple.template)
-                trailing {
-                    whitespace(true)
-                    token(false, ",", excludeFromChains = true)
+        val functionTemplate = ParsinatorTemplate {
+            chain(false) {
+                token(false, "(", false, true)
+                whitespace(true)
+                repeating(false, true) {
+                    use(OnyxTuple.functionTemplate)
+                    trailing {
+                        whitespace(true)
+                        token(false, ",", excludeFromChains = true)
+                    }
                 }
+                whitespace(true)
+                token(false, ")", false, true)
+            } makes {
+                it as list
+                OnyxTuples(buildList {
+                    (it[0] as list).forEach { tuple ->
+                        add(tuple as OnyxTuple)
+                    }
+                })
             }
-            whitespace(true)
-            token(false, ")", false, true)
         }
-
     }
 
 }

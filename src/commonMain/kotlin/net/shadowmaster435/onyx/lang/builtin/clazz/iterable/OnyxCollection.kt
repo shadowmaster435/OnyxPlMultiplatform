@@ -4,7 +4,7 @@ import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.anyDesc
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.clazz.OnyxExternalClassInstance
 import net.shadowmaster435.onyx.lang.enums.code.OnyxNullability
-import net.shadowmaster435.onyx.lang.enums.generics.OnyxGenericVariance
+import net.shadowmaster435.onyx.lang.enums.generics.OnyxGenericCovariance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericType
@@ -26,7 +26,7 @@ class OnyxCollection(override val held: Collection<OnyxClassInstance>, ):
             OnyxClassType.INTERFACE,
             OnyxIterable.desc,
             genericTuples = OnyxGenericTuples(OnyxGenericType(
-                "T", anyDesc, OnyxGenericVariance.OUT, OnyxNullability.INPUT
+                "T", anyDesc, OnyxGenericCovariance.OUT, OnyxNullability.INPUT
             ))
         )
     }

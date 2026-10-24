@@ -3,7 +3,7 @@ package net.shadowmaster435.onyx.lang.builtin.clazz.member
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.anyDesc
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxInt
 import net.shadowmaster435.onyx.lang.enums.code.OnyxNullability
-import net.shadowmaster435.onyx.lang.enums.generics.OnyxGenericVariance
+import net.shadowmaster435.onyx.lang.enums.generics.OnyxGenericCovariance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.field.OnyxFieldDescriptor
@@ -33,7 +33,7 @@ object OnyxFunction {
                 OnyxGenericType(
                     ch,
                     anyDesc,
-                    OnyxGenericVariance.NONE,
+                    OnyxGenericCovariance.NONE,
                     OnyxNullability.INPUT
                 )
             )
@@ -45,7 +45,7 @@ object OnyxFunction {
             add(OnyxGenericType(
                 "T",
                 anyDesc,
-                OnyxGenericVariance.NONE,
+                OnyxGenericCovariance.NONE,
                 OnyxNullability.INPUT
             ))
             addAll(genGenerics(it))
@@ -77,7 +77,6 @@ object OnyxFunction {
                         OnyxTuple(
                             generics.tuples[it + 1],
                             ch,
-                            false,
                             OnyxNullability.INPUT
                         )
                     )

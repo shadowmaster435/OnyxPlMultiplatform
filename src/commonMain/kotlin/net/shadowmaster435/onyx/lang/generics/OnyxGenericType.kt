@@ -1,11 +1,13 @@
 package net.shadowmaster435.onyx.lang.generics
 
 import net.shadowmaster435.onyx.exception.ImpossibleException
+import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.anyDesc
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.clazz.OnyxObject
 import net.shadowmaster435.onyx.lang.enums.code.OnyxNullability
-import net.shadowmaster435.onyx.lang.enums.generics.OnyxGenericVariance
+import net.shadowmaster435.onyx.lang.enums.generics.OnyxGenericCovariance
+import net.shadowmaster435.onyx.lang.enums.keyword.OnyxKeywordType
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.enums.operator.OnyxOperator
 import net.shadowmaster435.onyx.lang.function.AbstractOnyxFunctionDescriptor
@@ -13,6 +15,7 @@ import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
 import net.shadowmaster435.onyx.lang.pkg.OnyxPackage
 import net.shadowmaster435.onyx.lang.pkg.globalRoot
 import net.shadowmaster435.onyx.lang.util.EnumMap
+import net.shadowmaster435.onyx.lang.util.list
 import net.shadowmaster435.onyx.lang.util.nameRegex
 import net.shadowmaster435.onyx.lang.util.numbersRegex
 import net.shadowmaster435.onyx.lang.util.typeTemplate
@@ -22,8 +25,8 @@ import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 class OnyxGenericType(
     val genericName: String,
     type: OnyxClassDescriptor,
-    val variance: OnyxGenericVariance,
-    val nullability: OnyxNullability
+    val variance: OnyxGenericCovariance,
+    val nullability: OnyxNullability,
 ): OnyxClassDescriptor(
     "", globalRoot, listOf(), linkedMapOf(), linkedMapOf(), linkedMapOf(),
     OnyxClassType.NORMAL, listOf()
@@ -177,34 +180,94 @@ class OnyxGenericType(
         private val err = ImpossibleException("Tried to cast to erased type, this should never happen")
         val definitionTemplate = ParsinatorTemplate {
             chain(false) {
+                branch(false) {
+                    chain(true) {
+                        use(OnyxKeywordType.covarianceTemplate)
+                        whitespace(false)
+                    } makes {(it as list)[0]}
+                    exit(0) makes { OnyxGenericCovariance.NONE }
+                }
                 name(false, nameRegex, numbersRegex)
-                branch(true) {
-                    chain(true) {
-                        whitespace(true)
-                        token(false, ":", false, true)
-                        whitespace(true)
-                        use(typeTemplate)
-                    }
-                    chain(true) {
-                        whitespace(true)
-                        token(false, "&", false, true)
-                        whitespace(true)
-                        token(false, "Any")
+
+                whitespace(true)
+                chain(true) {
+                    token(false, ":", false, true)
+                    whitespace(true)
+                    use(typeTemplate)
+                    branch(false) {
+                        token(false, "?", false) makes {
+                            OnyxNullability.NULLABLE
+                        }
+                        exit(0) makes { OnyxNullability.NON_NULLABLE }
                     }
                 }
-            }
-        }
-        val paramTemplate = ParsinatorTemplate {
-            repeating(false, false) {
-                token(false, "<", excludeFromChains = true)
-                whitespace(true)
-                use(typeTemplate)
-                whitespace(true)
-                token(false, ">", excludeFromChains = true)
-                whitespace(true)
-                trailing { token(true, ",", excludeFromChains = true) }
+
+            } makes {
+                it as list
+                val covariance = it[0] as OnyxGenericCovariance
+                val name = it[1] as String
+                val bounds = it.getOrNull(2) as? List<*>
+                val boundsType = (bounds?.getOrNull(0) ?: anyDesc) as OnyxClassDescriptor
+                val boundsNullability = (bounds?.getOrNull(1) as? OnyxNullability) ?: OnyxNullability.INPUT
+                OnyxGenericType(name, boundsType, covariance, boundsNullability)
             }
         }
 
+        val inputParamTemplate = ParsinatorTemplate {
+            chain(false) {
+                use(typeTemplate)
+                whitespace(true)
+                branch(false) {
+                    token(false, "?", false) makes {
+                        OnyxNullability.NULLABLE
+                    }
+                    exit(0) makes { OnyxNullability.NON_NULLABLE }
+                }
+            } makes {
+                it as List<*>
+                OnyxGenericType(
+                    "",
+                    it[0] as OnyxClassDescriptor,
+                    OnyxGenericCovariance.NONE,
+                    it[1] as OnyxNullability)
+            }
+        }
+
+        val definitionInputParamTemplate = ParsinatorTemplate {
+            chain(false) {
+                branch(false) {
+                    chain(true) {
+                        use(OnyxKeywordType.covarianceTemplate)
+                        whitespace(false)
+                    } makes {(it as list)[0]}
+                    exit(0) makes { OnyxGenericCovariance.NONE }
+                }
+                whitespace(true)
+                use(typeTemplate)
+                whitespace(true)
+                branch(false) {
+                    chain(true) {
+                        token(false, "&", false, true)
+                        whitespace(true)
+                        token(false, "Any", false, true)
+                        whitespace(false)
+                    } makes {
+                        OnyxNullability.TRUE_NON_NULLABLE
+                    }
+                    token(false, "?", false) makes {
+                        OnyxNullability.NULLABLE
+                    }
+                    exit(0) makes { OnyxNullability.NON_NULLABLE }
+                }
+            } makes {
+                it as List<*>
+                OnyxGenericType(
+                    "",
+                    it[1] as OnyxClassDescriptor,
+                    it[0] as OnyxGenericCovariance,
+                    it[2] as OnyxNullability
+                )
+            }
+        }
     }
 }

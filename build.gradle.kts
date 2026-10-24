@@ -6,8 +6,8 @@ plugins {
 
 }
 
-group = "com.example"
-version = "1.0-SNAPSHOT"
+group = "net.shadowmaster435"
+version = "1.0"
 val parsinatorVersion: String = providers.gradleProperty("parsinatorVersion").get()
 
 repositories {
@@ -31,6 +31,17 @@ kotlin {
     jvm()
     val hostOs = System.getProperty("os.name")
     targets.withType<KotlinNativeTarget>().configureEach {
+        for (compilation in compilations) {
+            println(compilation.name)
+        }
+        compilations.getByName("main") {
+            cinterops {
+                val llvm by creating {
+                    definitionFile.set(project.file("src/nativeMain/cinterop/llvm.def"))
+                    includeDirs("libs")
+                }
+            }
+        }
         binaries {
             sharedLib {
                 baseName = when {
@@ -51,12 +62,17 @@ kotlin {
         commonMain.dependencies {
             implementation(kotlin("stdlib"))
             implementation("net.shadowmaster43:parsinator-metadata:1.0")
+            implementation(kotlin("reflect"))
+            implementation("org.ow2.asm:asm:9.7")
+            implementation("org.ow2.asm:asm-util:9.7")
+            implementation("org.ow2.asm:asm-tree:9.7")
         }
-
         nativeMain.dependencies {
             implementation(kotlin("stdlib"))
             implementation(files("libs/parsinator-linux-$parsinatorVersion.klib"))
             implementation("org.jetbrains.kotlinx:kotlinx-io-okio:0.9.1")
+            implementation(files("libs/llvm.klib"))
+
         }
         jvmMain.dependencies {
             implementation(kotlin("stdlib"))

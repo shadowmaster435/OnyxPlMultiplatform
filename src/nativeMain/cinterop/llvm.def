@@ -1,0 +1,6 @@
+headers = Core.h
+headerFilter = *
+package = net.shadowmaster435.onyx.llvm
+
+compilerOpts.linux = -I/usr/include -I/usr/include/llvm-c
+linkerOpts.linux = -L/usr/lib/llvm-c -lllvm-c

@@ -90,6 +90,16 @@
       <module name="com.example.OnyxPlMultiplatform.parsinator.nativeLinuxTest" options="" />
       <module name="com.example.OnyxPlMultiplatform.parsinator.nativeMain" options="" />
       <module name="com.example.OnyxPlMultiplatform.parsinator.nativeTest" options="" />
+      <module name="net.shadowmaster435.OnyxPlMultiplatform.commonMain" options="" />
+      <module name="net.shadowmaster435.OnyxPlMultiplatform.commonTest" options="" />
+      <module name="net.shadowmaster435.OnyxPlMultiplatform.jvmMain" options="" />
+      <module name="net.shadowmaster435.OnyxPlMultiplatform.jvmTest" options="" />
+      <module name="net.shadowmaster435.OnyxPlMultiplatform.linuxMain" options="" />
+      <module name="net.shadowmaster435.OnyxPlMultiplatform.linuxTest" options="" />
+      <module name="net.shadowmaster435.OnyxPlMultiplatform.nativeLinuxMain" options="" />
+      <module name="net.shadowmaster435.OnyxPlMultiplatform.nativeLinuxTest" options="" />
+      <module name="net.shadowmaster435.OnyxPlMultiplatform.nativeMain" options="" />
+      <module name="net.shadowmaster435.OnyxPlMultiplatform.nativeTest" options="" />
     </option>
   </component>
 </project>

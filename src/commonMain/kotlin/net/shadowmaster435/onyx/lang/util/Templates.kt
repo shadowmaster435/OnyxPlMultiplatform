@@ -1,8 +1,10 @@
 package net.shadowmaster435.onyx.lang.util
 
+import net.shadowmaster435.onyx.ext.substringOrNull
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
 import net.shadowmaster435.onyx.lang.pkg.OnyxPackage
 import net.shadowmaster435.onyx.lang.pkg.OnyxPackage.Companion.byQualifiedName
+import net.shadowmaster435.parsinator.Parsinator
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 import net.shadowmaster435.parsinator.util.ParsinatorErrorType
 
@@ -75,6 +77,30 @@ val extensionDefinitionName = ParsinatorTemplate {
         }
         held = accum
         null
+    } makes {
+        val nameString = it as String
+        val extensionSplitIndex = nameString.lastIndexOf('.')
+        val name = nameString.substringOrNull(
+            extensionSplitIndex.let { i ->
+                if (i < 0) i
+                else i + 1
+            }
+        ) ?: nameString
+        var extensionGenericTuples: OnyxGenericTuples? = null
+        val extensionGenericString = (if (extensionSplitIndex < 0) nameString else nameString.substring(0, extensionSplitIndex))
+        val genericSplitIndex = extensionGenericString.indexOf('<')
+        if (genericSplitIndex >= 0) {
+            val parser = Parsinator {
+                use(OnyxGenericTuples.inputParamTemplate) makes { t ->
+                    extensionGenericTuples = t as OnyxGenericTuples
+                }
+            }
+            parser.parse(nameString.substring(genericSplitIndex))
+        }
+        val extensionClass = OnyxPackage.findClassByQName(
+            if (genericSplitIndex < 0) nameString else nameString.substring(0..<genericSplitIndex)
+        )
+        OnyxDefinitionName(name, extensionClass, extensionGenericTuples)
     }
 }
 
@@ -99,10 +125,10 @@ val importTemplate = ParsinatorTemplate {
 val typeTemplate: ParsinatorTemplate = ParsinatorTemplate {
     chain(false) {
         use(accessChainStringTemplate { it }) makes {
-            OnyxPackage.findClassByQName(it as String)
+            OnyxPackage.findClassByQName(it as String) ?: it
         }
         whitespace(true)
-        use(OnyxGenericTuples.paramTemplate)
+        use(OnyxGenericTuples.inputParamTemplate)
     } makes {TODO("Type Template")}
 }
 val optionalTypeTemplate: ParsinatorTemplate = ParsinatorTemplate {
@@ -111,7 +137,7 @@ val optionalTypeTemplate: ParsinatorTemplate = ParsinatorTemplate {
             OnyxPackage.findClassByQName(it as String)
         }
         whitespace(true)
-        use(OnyxGenericTuples.paramTemplate)
+        use(OnyxGenericTuples.inputParamTemplate)
     } makes {TODO("Type Template")}
 }
 

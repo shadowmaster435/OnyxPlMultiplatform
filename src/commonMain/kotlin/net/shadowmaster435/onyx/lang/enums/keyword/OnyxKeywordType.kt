@@ -1,5 +1,6 @@
 package net.shadowmaster435.onyx.lang.enums.keyword
 
+import net.shadowmaster435.onyx.lang.enums.generics.OnyxGenericCovariance
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 import kotlin.enums.enumEntries
 import kotlin.jvm.JvmSynthetic
@@ -81,7 +82,7 @@ enum class OnyxKeywordType(val string: String, val subtype: SubType, val require
                     token(false, keyword.string)
                 }
             } makes {
-                OnyxKeywordType.entries.find { k -> k.string == it }!!
+                OnyxGenericCovariance.entries.find { k -> k != OnyxGenericCovariance.NONE && k.string == it  } ?: OnyxGenericCovariance.NONE
             }
         }
     }

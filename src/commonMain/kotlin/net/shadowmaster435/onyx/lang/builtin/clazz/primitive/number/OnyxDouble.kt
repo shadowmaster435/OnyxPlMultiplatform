@@ -5,6 +5,7 @@ import net.shadowmaster435.onyx.ext.binaryToDouble
 import net.shadowmaster435.onyx.ext.binaryToFloat
 import net.shadowmaster435.onyx.ext.hexToDouble
 import net.shadowmaster435.onyx.ext.hexToFloat
+import net.shadowmaster435.onyx.lang.impl.OnyxCompilableImpl
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 class OnyxDouble(override val held: Double) : OnyxNumber<Double>(makeOverrideDesc<OnyxDouble>("Double")) {

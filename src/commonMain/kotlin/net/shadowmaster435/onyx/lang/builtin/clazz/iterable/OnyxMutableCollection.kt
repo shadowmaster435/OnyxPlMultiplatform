@@ -6,7 +6,7 @@ import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxNumber
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.clazz.OnyxExternalClassInstance
 import net.shadowmaster435.onyx.lang.enums.code.OnyxNullability
-import net.shadowmaster435.onyx.lang.enums.generics.OnyxGenericVariance
+import net.shadowmaster435.onyx.lang.enums.generics.OnyxGenericCovariance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericType
@@ -33,7 +33,7 @@ class OnyxMutableCollection(override val held: MutableCollection<OnyxClassInstan
                 interfaceField("size", OnyxNumber.descOf(OnyxInt::class)),
             ),
             genericTuples = OnyxGenericTuples(OnyxGenericType(
-                "T", anyDesc, OnyxGenericVariance.OUT, OnyxNullability.INPUT
+                "T", anyDesc, OnyxGenericCovariance.OUT, OnyxNullability.INPUT
             ))
         )
     }
