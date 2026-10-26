@@ -10,9 +10,9 @@ import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
 import net.shadowmaster435.onyx.util.JVMPrimitiveType
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
-expect val OnyxBoolean.compileFunc: () -> Any?
+expect val OnyxBoolean.compileFunc: (Any?) -> Any?
 class OnyxBoolean(override val held: Boolean) : OnyxExternalClassInstance<Boolean>(desc), OnyxCompilableConstImpl {
-    override fun compileConst() = OnyxCompiledType(compileFunc())
+    override fun compileConst(v: Any?) = OnyxCompiledType(compileFunc(v))
 
     override fun onyxEquals(other: OnyxClassInstance) = OnyxBoolean(other is OnyxBoolean && other.held == held)
     companion object {

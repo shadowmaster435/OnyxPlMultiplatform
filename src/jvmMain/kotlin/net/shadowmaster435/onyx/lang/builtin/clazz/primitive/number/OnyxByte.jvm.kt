@@ -3,7 +3,7 @@ package net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number
 import net.shadowmaster435.onyx.compiler.OnyxCompiledType
 import net.shadowmaster435.onyx.util.JVMPrimitiveType
 
-actual val OnyxByte.compileFunc: () -> Any?
+actual val OnyxByte.compileFunc: (Any?) -> Any?
     get() = { OnyxCompiledType(
         JVMPrimitiveType.BYTE to held
     ) }

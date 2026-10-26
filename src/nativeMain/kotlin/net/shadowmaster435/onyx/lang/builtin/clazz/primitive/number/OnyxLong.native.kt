@@ -5,10 +5,11 @@ import net.shadowmaster435.onyx.llvm.LLVMConstInt
 import net.shadowmaster435.onyx.llvm.LLVMConstReal
 import net.shadowmaster435.onyx.llvm.LLVMFloatType
 import net.shadowmaster435.onyx.llvm.LLVMInt128Type
+import net.shadowmaster435.onyx.llvm.LLVMInt64Type
 import net.shadowmaster435.onyx.llvm.LLVMInt8Type
 
 @OptIn(ExperimentalForeignApi::class)
-actual val OnyxLong.compileFunc: () -> Any?
+actual val OnyxLong.compileFunc: (Any?) -> Any?
     get() = {
-        LLVMConstInt(LLVMInt128Type(), held.toULong(), 1)
+        LLVMConstInt(LLVMInt64Type(), held.toULong(), 1)
     }

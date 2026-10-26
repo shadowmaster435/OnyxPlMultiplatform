@@ -1,5 +1,6 @@
 package net.shadowmaster435.onyx.lang.impl
 
+import net.shadowmaster435.onyx.compiler.OnyxCompiledType
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.enums.jvm.JVMApplicability
 import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
@@ -15,7 +16,7 @@ interface OnyxFieldImpl :
     OnyxNamedImpl,
     OnyxReferencableImpl,
     JVMFlaggable,
-    JVMDescribable, OnyxCompilableImpl
+    JVMDescribable, OnyxCompilableConstImpl
 {
     override val applicability: JVMApplicability
         get() = JVMApplicability.FIELD
@@ -30,7 +31,7 @@ interface OnyxFieldImpl :
     val isDeferred: Boolean
     val isVirtual: Boolean
     val selfInstance: OnyxFieldInstance?
-    override fun compile(any: Any?) {
+    override fun compileConst(v: Any?): OnyxCompiledType {
         TODO("Field compile functions")
     }
     fun instantiate(refIndex: Int): OnyxFieldInstance

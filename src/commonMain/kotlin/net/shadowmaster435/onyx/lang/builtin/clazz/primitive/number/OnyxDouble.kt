@@ -7,7 +7,7 @@ import net.shadowmaster435.onyx.ext.hexToDouble
 import net.shadowmaster435.onyx.lang.impl.OnyxCompilableConstImpl
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
-expect val OnyxDouble.compileFunc: () -> Any?
+expect val OnyxDouble.compileFunc: (Any?) -> Any?
 class OnyxDouble(override val held: Double) : OnyxNumber<Double>(makeOverrideDesc<OnyxDouble>("Double")), OnyxCompilableConstImpl {
     override val byteCount = 8
     override fun toByte() = held.toInt().toByte()
@@ -16,7 +16,7 @@ class OnyxDouble(override val held: Double) : OnyxNumber<Double>(makeOverrideDes
     override fun toLong() = held.toLong()
     override fun toFloat() = held.toFloat()
     override fun toDouble() = held
-    override fun compileConst() = OnyxCompiledType(compileFunc())
+    override fun compileConst(v: Any?) = OnyxCompiledType(compileFunc(v))
     companion object {
         val desc = descOf(OnyxDouble::class)
         val template = ParsinatorTemplate {

@@ -11,11 +11,11 @@ import net.shadowmaster435.onyx.util.JVMPrimitiveType
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 import net.shadowmaster435.parsinator.util.ParsinatorErrorType
 
-expect val OnyxString.compileFunc: () -> Any?
+expect val OnyxString.compileFunc: (Any?) -> Any?
 class OnyxString(override val held: String) : OnyxExternalClassInstance<String>(desc), OnyxCompilableConstImpl {
     override fun onyxEquals(other: OnyxClassInstance) = OnyxBoolean(other is OnyxString && other.held == held)
 
-    override fun compileConst() = OnyxCompiledType(compileFunc())
+    override fun compileConst(v: Any?) = OnyxCompiledType(compileFunc(v))
 
     companion object {
         val desc = OnyxClassDescriptor(

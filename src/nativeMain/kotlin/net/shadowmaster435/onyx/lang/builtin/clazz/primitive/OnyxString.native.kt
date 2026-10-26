@@ -4,7 +4,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import net.shadowmaster435.onyx.llvm.LLVMConstString
 
 @OptIn(ExperimentalForeignApi::class)
-actual val OnyxString.compileFunc: () -> Any?
+actual val OnyxString.compileFunc: (Any?) -> Any?
     get() = {
         LLVMConstString(held, held.length.toUInt(), 0)
     }

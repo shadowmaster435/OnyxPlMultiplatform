@@ -10,6 +10,15 @@ enum class JVMPrimitiveType(override val descriptor: String) : JVMDescribable {
     LONG("J"),
     FLOAT("F"),
     DOUBLE("D"),
+
+    BOOL_ARRAY("Z"),
+    BYTE_ARRAY("B"),
+    SHORT_ARRAY("S"),
+    INT_ARRAY("I"),
+    LONG_ARRAY("J"),
+    FLOAT_ARRAY("F"),
+    DOUBLE_ARRAY("D"),
+
     VOID("V"),
     OBJECT("java/lang/Object"),
     STRING("java/lang/String"),

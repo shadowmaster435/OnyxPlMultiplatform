@@ -7,7 +7,7 @@ import net.shadowmaster435.onyx.llvm.LLVMDoubleType
 import net.shadowmaster435.onyx.llvm.LLVMInt8Type
 
 @OptIn(ExperimentalForeignApi::class)
-actual val OnyxDouble.compileFunc: () -> Any?
+actual val OnyxDouble.compileFunc: (Any?) -> Any?
     get() = {
         LLVMConstReal(LLVMDoubleType(), held)
     }

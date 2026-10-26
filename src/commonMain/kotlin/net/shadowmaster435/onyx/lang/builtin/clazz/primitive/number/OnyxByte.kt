@@ -8,7 +8,7 @@ import net.shadowmaster435.onyx.lang.util.numbersRegex
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 
-expect val OnyxByte.compileFunc: () -> Any?
+expect val OnyxByte.compileFunc: (Any?) -> Any?
 class OnyxByte(override val held: Byte) : OnyxNumber<Byte>(makeOverrideDesc<OnyxByte>("Byte")), OnyxCompilableConstImpl {
     override val byteCount = 1
     override fun toByte() = held
@@ -17,7 +17,7 @@ class OnyxByte(override val held: Byte) : OnyxNumber<Byte>(makeOverrideDesc<Onyx
     override fun toLong() = held.toLong()
     override fun toFloat() = held.toFloat()
     override fun toDouble() = held.toDouble()
-    override fun compileConst() = OnyxCompiledType(compileFunc())
+    override fun compileConst(v: Any?) = OnyxCompiledType(compileFunc(v))
 
 
     companion object {

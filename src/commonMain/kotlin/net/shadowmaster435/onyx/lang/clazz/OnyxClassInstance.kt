@@ -3,20 +3,25 @@ package net.shadowmaster435.onyx.lang.clazz
 import net.shadowmaster435.onyx.exception.ImpossibleException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxBoolean
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxString
+import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.array.OnyxShortArray
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxInt
 import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.field.OnyxFieldInstance
 import net.shadowmaster435.onyx.lang.function.OnyxExternalFunctionDescriptor
 import net.shadowmaster435.onyx.lang.function.OnyxTuples
+import net.shadowmaster435.onyx.lang.impl.OnyxCompilableImpl
 import net.shadowmaster435.onyx.lang.impl.OnyxPokable
 import net.shadowmaster435.onyx.lang.impl.OnyxReferencableImpl
 
 open class OnyxClassInstance(
     val desc: OnyxClassDescriptor,
-): OnyxPokable, OnyxReferencableImpl {
+): OnyxPokable, OnyxReferencableImpl, OnyxCompilableImpl {
     protected open val fieldData: MutableList<OnyxFieldInstance> = mutableListOf()
     protected open var initialized = false
     open val isObject = false
+
+
+
     override fun poke() {
         createFieldData()
     }
@@ -57,7 +62,9 @@ open class OnyxClassInstance(
     fun getField(name: String) = fieldData[desc.getFieldRefIndex(name)].get()
     fun getFieldInstance(name: String) = fieldData[desc.getFieldRefIndex(name)]
     fun getFieldNullable(name: String) = fieldData.getOrNull(desc.getFieldRefIndex(name))?.get()
-
+    override fun compile(any: Any?) {
+        TODO("Not yet implemented")
+    }
 
 
     companion object {

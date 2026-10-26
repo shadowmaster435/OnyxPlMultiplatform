@@ -1,11 +1,13 @@
 package net.shadowmaster435.onyx.lang.field
 
+import net.shadowmaster435.onyx.compiler.OnyxCompiledType
 import net.shadowmaster435.onyx.exception.ImpossibleException
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxMemberType
 import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.function.OnyxFunctionDescriptor
+import net.shadowmaster435.onyx.lang.impl.OnyxCompilableConstImpl
 import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
 import net.shadowmaster435.onyx.lang.impl.OnyxReferencableImpl
 import net.shadowmaster435.onyx.lang.util.modifierString
@@ -15,6 +17,7 @@ import net.shadowmaster435.onyx.lang.util.typeTemplate
 import net.shadowmaster435.onyx.util.OnyxExpression
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
+expect val OnyxFieldDescriptor.compileFunc: (Any?) -> Any?
 class OnyxFieldDescriptor(
     override val name: String,
     override val classType: OnyxClassDescriptor,
@@ -23,7 +26,7 @@ class OnyxFieldDescriptor(
     override val isFinal: Boolean = false,
     override val isVirtual: Boolean = false,
     override val selfInstance: OnyxFieldInstance? = null
-): OnyxFieldImpl {
+): OnyxFieldImpl, OnyxCompilableConstImpl {
     override val isDeferred: Boolean = false
     override var getter: OnyxFunctionDescriptor? = null
     override var setter: OnyxFunctionDescriptor? = null
@@ -46,6 +49,8 @@ class OnyxFieldDescriptor(
         (selfInstance ?: thisInstance?.getFieldInstance(name) ?:
         throw ImpossibleException("Unbound field. This should never happen")).set(v.cast(classType), thisInstance)
     }
+
+    override fun compileConst(v: Any?) = OnyxCompiledType(compileFunc(v))
 
 
     companion object {

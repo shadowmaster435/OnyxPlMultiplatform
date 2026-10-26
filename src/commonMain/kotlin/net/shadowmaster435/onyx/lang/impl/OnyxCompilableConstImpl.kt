@@ -5,5 +5,5 @@ package net.shadowmaster435.onyx.lang.impl
 import net.shadowmaster435.onyx.compiler.OnyxCompiledType
 
 interface OnyxCompilableConstImpl {
-    fun compileConst(): OnyxCompiledType
+    fun compileConst(v: Any?): OnyxCompiledType
 }

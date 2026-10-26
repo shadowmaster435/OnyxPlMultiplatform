@@ -5,7 +5,7 @@ import net.shadowmaster435.onyx.llvm.LLVMConstInt
 import net.shadowmaster435.onyx.llvm.LLVMInt16Type
 
 @OptIn(ExperimentalForeignApi::class)
-actual val OnyxShort.compileFunc: () -> Any?
+actual val OnyxShort.compileFunc: (Any?) -> Any?
     get() = {
         LLVMConstInt(LLVMInt16Type(), held.toULong(), 1)
     }
