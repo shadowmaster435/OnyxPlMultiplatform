@@ -16,11 +16,12 @@ class OnyxExpressionWhen(
     private val branches = branches.toList()
     override val isTable = false
     override fun execute(
+        parent: OnyxCodeBlock?,
         thisInst: OnyxClassInstance?,
         params: List<OnyxClassInstance>
     ): OnyxClassInstance {
         branches.forEach {
-            val v = it.execute(thisInst)
+            val v = it.execute(parent,thisInst)
             if (v != null) return v
         }
         if (elseBlock != null) return elseBlock.execute(thisInst, params).first
@@ -39,9 +40,9 @@ class OnyxExpressionWhen(
         }
 
 
-        fun execute(thisInstance: OnyxClassInstance?): OnyxClassInstance? {
+        fun execute(parent: OnyxCodeBlock?, thisInstance: OnyxClassInstance?): OnyxClassInstance? {
             expressions.forEach {
-                if ((it.execute(thisInstance) as OnyxBoolean).held)
+                if ((it.execute(parent, thisInstance) as OnyxBoolean).held)
                     return block.execute(thisInstance).first
             }
             return null

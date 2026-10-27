@@ -19,7 +19,6 @@ class OnyxVirtualFunctionDescriptor(
     name, tuples, modifiers + OnyxModifierType.ABSTRACT, genericTuples, returnType
 ) {
     override val type = OnyxMemberType.FUNCTION
-    override fun poke() {}
     constructor(
         name: String,
         tuples: OnyxTuples,

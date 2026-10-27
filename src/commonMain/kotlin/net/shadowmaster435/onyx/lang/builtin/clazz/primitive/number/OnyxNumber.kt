@@ -7,8 +7,8 @@ import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxBoolean
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.anyDesc
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
-import net.shadowmaster435.onyx.lang.clazz.OnyxObject
 import net.shadowmaster435.onyx.lang.clazz.OnyxExternalClassInstance
+import net.shadowmaster435.onyx.lang.clazz.OnyxObject
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.function.OnyxTuples

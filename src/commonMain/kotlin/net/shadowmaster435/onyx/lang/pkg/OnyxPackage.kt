@@ -1,6 +1,5 @@
 package net.shadowmaster435.onyx.lang.pkg
 
-import net.shadowmaster435.onyx.exception.UnknownException
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxPackageMember
 import net.shadowmaster435.onyx.lang.field.OnyxFieldDescriptor

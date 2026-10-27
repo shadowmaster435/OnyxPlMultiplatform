@@ -2,7 +2,6 @@ package net.shadowmaster435.onyx.lang.code.when_statements
 
 import net.shadowmaster435.onyx.exception.ImpossibleException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxUnit
-import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.anyDesc
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.code.OnyxCodeBlock
@@ -15,8 +14,8 @@ class OnyxTableWhen(
 ) : AbstractOnyxWhen(returnType) {
     override val isTable = true
 
-
     override fun execute(
+        parent: OnyxCodeBlock?,
         thisInst: OnyxClassInstance?,
         params: List<OnyxClassInstance>
     ): OnyxClassInstance {

@@ -1,6 +1,7 @@
 package net.shadowmaster435.onyx.lang.function
 
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
+import net.shadowmaster435.onyx.lang.code.OnyxCodeBlock
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericType
 import net.shadowmaster435.onyx.lang.impl.OnyxRunnableImpl
@@ -19,6 +20,7 @@ class OnyxFunctionCall(
 ) : OnyxRunnableImpl {
 
     override fun execute(
+        parent: OnyxCodeBlock?,
         thisInst: OnyxClassInstance?,
         params: OnyxParams
     ): OnyxClassInstance {

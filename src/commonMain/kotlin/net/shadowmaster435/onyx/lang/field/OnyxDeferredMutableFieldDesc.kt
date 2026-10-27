@@ -1,6 +1,5 @@
 package net.shadowmaster435.onyx.lang.field
 
-import net.shadowmaster435.onyx.exception.ImpossibleException
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxMemberType
@@ -34,5 +33,4 @@ class OnyxDeferredMutableFieldDesc(
 
 
     override val type = OnyxMemberType.FIELD
-    override fun poke() {}
 }

@@ -2,6 +2,4 @@
 
 package net.shadowmaster435.onyx.compiler
 
-
-
 class OnyxCompiledType(val held: Any?)

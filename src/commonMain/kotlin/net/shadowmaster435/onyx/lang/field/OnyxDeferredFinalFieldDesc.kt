@@ -22,7 +22,6 @@ class OnyxDeferredFinalFieldDesc(
     override val initExpression: OnyxExpression? = null
     override var setter: OnyxFunctionDescriptor? = null
     override val type = OnyxMemberType.FIELD
-    override fun poke() {}
     override fun instantiate(refIndex: Int) = OnyxDeferredFinalFieldInstance(
         this, refIndex
     )

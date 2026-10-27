@@ -16,7 +16,6 @@ class OnyxCollection(override val held: Collection<OnyxClassInstance>, ):
     override fun isEmpty() = held.isEmpty()
     override fun contains(element: OnyxClassInstance) = held.contains(element)
     override fun iterator() = held.iterator()
-
     override fun containsAll(elements: Collection<OnyxClassInstance>) = held.containsAll(elements)
 
     companion object {

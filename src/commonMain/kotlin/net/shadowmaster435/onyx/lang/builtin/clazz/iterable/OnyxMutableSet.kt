@@ -20,17 +20,11 @@ class OnyxMutableSet(override val held: MutableSet<OnyxClassInstance>, ):
     override fun contains(element: OnyxClassInstance) = held.contains(element)
     override fun iterator() = held.iterator()
     override fun add(element: OnyxClassInstance) = held.add(element)
-
     override fun remove(element: OnyxClassInstance) = held.remove(element)
-
     override fun addAll(elements: Collection<OnyxClassInstance>) = held.addAll(elements)
-
     override fun removeAll(elements: Collection<OnyxClassInstance>) = held.removeAll(elements.toSet())
-
     override fun retainAll(elements: Collection<OnyxClassInstance>) = held.retainAll(elements.toSet())
-
     override fun clear() = held.clear()
-
     override fun containsAll(elements: Collection<OnyxClassInstance>) = held.containsAll(elements)
 
     companion object {

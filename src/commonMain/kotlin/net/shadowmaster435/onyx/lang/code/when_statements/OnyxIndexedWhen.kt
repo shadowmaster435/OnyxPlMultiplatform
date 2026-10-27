@@ -22,6 +22,7 @@ class OnyxIndexedWhen(
     ) : this(intProvider, returnType, elseBlock, 0, *blocks)
 
     override fun execute(
+        parent: OnyxCodeBlock?,
         thisInst: OnyxClassInstance?,
         params: List<OnyxClassInstance>
     ): OnyxClassInstance {

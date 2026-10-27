@@ -3,12 +3,9 @@ package net.shadowmaster435.onyx.lang.builtin.clazz.primitive.array
 import net.shadowmaster435.onyx.compiler.OnyxCompiledType
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxUnit
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.anyDesc
-import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxByte
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxInt
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxLong
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxNumber
-import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxShort
-import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxExternalClassInstance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.enums.operator.OnyxOperator

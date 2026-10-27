@@ -2,6 +2,7 @@ package net.shadowmaster435.onyx.lang.field
 
 import net.shadowmaster435.onyx.compiler.OnyxCompiledType
 import net.shadowmaster435.onyx.exception.ImpossibleException
+import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxInt
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxMemberType
@@ -9,12 +10,12 @@ import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.function.OnyxFunctionDescriptor
 import net.shadowmaster435.onyx.lang.impl.OnyxCompilableConstImpl
 import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
-import net.shadowmaster435.onyx.lang.impl.OnyxReferencableImpl
 import net.shadowmaster435.onyx.lang.util.modifierString
 import net.shadowmaster435.onyx.lang.util.nameRegex
 import net.shadowmaster435.onyx.lang.util.numbersRegex
 import net.shadowmaster435.onyx.lang.util.typeTemplate
 import net.shadowmaster435.onyx.util.OnyxExpression
+import net.shadowmaster435.onyx.util.OnyxParams
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 expect val OnyxFieldDescriptor.compileFunc: (Any?) -> Any?
@@ -31,11 +32,6 @@ class OnyxFieldDescriptor(
     override var getter: OnyxFunctionDescriptor? = null
     override var setter: OnyxFunctionDescriptor? = null
     override val type = OnyxMemberType.FIELD
-    override fun poke() {}
-    override fun pokeWith(stick: OnyxClassInstance?) {}
-    override fun instantiate(refIndex: Int) = OnyxFieldInstance(
-        this, refIndex, isFinal, isDeferred, isVirtual
-    )
     override fun toString(): String = modifiers.modifierString() + " " + (if (isFinal) "var" else "val") + " " + name
 
     override fun getRefVal(thisInstance: OnyxClassInstance?) =
@@ -51,6 +47,12 @@ class OnyxFieldDescriptor(
     }
 
     override fun compileConst(v: Any?) = OnyxCompiledType(compileFunc(v))
+    override fun instantiate(
+        thisInst: OnyxClassInstance,
+        params: OnyxParams
+    ) = OnyxFieldInstance(
+        this, (params[0] as OnyxInt).held, isFinal, isDeferred, isVirtual
+    )
 
 
     companion object {

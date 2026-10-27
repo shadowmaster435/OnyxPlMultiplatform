@@ -94,9 +94,10 @@ class OnyxNativeCompiler {
     }
     //endregion
 
-
-
     companion object {
         private val notCompiling get() = NullPointerException("Not compiling")
+
+        const val str = "foobar"
+
     }
 }

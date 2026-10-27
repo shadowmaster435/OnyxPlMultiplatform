@@ -16,7 +16,9 @@ object ThreadHelper {
     private lateinit var workerFunctionType: CPointer<LLVMOpaqueType>
     private lateinit var workerFunction: CPointer<LLVMOpaqueValue>
     private lateinit var threadParamType: CPtrList<LLVMOpaqueType>
+    init {
 
+    }
 
     private fun <T> check(v: T?): T = v ?: throw ImpossibleException()
 
@@ -50,6 +52,37 @@ object ThreadHelper {
         )
 
 
+//        // 4. Define the main function to orchestrate the thread launch
+//        val mainFunctionType = LLVMFunctionType(int32Type, null, 0u, 0)
+//        val mainFunction = LLVMAddFunction(module, "main", mainFunctionType)
+//        val entry = LLVMAppendBasicBlock(mainFunction, "entry")
+//        LLVMPositionBuilderAtEnd(builder, entry)
+//
+//
+//        // Allocate stack space for the thread handle variable (pthread_t)
+//        val threadHandle = LLVMBuildAlloca(builder, LLVMInt8Type(), "thread_id")
+//
+//
+//        // Prepare arguments for the call
+//        val nullPtr = LLVMConstNull(int8PtrType)
+//        val args = listOf(
+//            threadHandle,
+//            nullPtr,  // null attributes
+//            workerFunction,
+//            nullPtr // null argument
+//        ).toCValues()
+//
+//        LLVMBuildCall2(
+//            builder,
+//            threadCreateType,
+//            threadCreateFunc,
+//            args,
+//            4u,
+//            "call_pthread_create"
+//        )
+//
+//
+//        LLVMBuildRet(builder, LLVMConstInt(int32Type, 0u, 0))
         if (dumpIr) LLVMDumpModule(module)
         LLVMDisposeBuilder(builder)
         LLVMDisposeModule(module)

@@ -24,9 +24,8 @@ class OnyxMap(override val held: Map<OnyxClassInstance, OnyxClassInstance>):
             OnyxClassType.INTERFACE,
             OnyxIterable.desc, null,
             linkedMapOf(
-                interfaceField("size", OnyxNumber.descOf(OnyxInt::class)),
-
-                ),
+                interfaceField("size", OnyxNumber.descOf(OnyxInt::class))
+            ),
             genericTuples = OnyxGenericTuples(OnyxGenericType(
                 "T", anyDesc, OnyxGenericCovariance.OUT, OnyxNullability.INPUT
             ))

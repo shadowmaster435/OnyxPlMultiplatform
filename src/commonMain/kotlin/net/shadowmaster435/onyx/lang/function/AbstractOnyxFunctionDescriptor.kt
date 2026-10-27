@@ -7,10 +7,10 @@ import net.shadowmaster435.onyx.lang.enums.jvm.JVMApplicability
 import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericType
-import net.shadowmaster435.onyx.lang.impl.jvm.JVMFlaggable
 import net.shadowmaster435.onyx.lang.impl.OnyxAccessImpl
 import net.shadowmaster435.onyx.lang.impl.OnyxMemberImpl
 import net.shadowmaster435.onyx.lang.impl.OnyxNamedImpl
+import net.shadowmaster435.onyx.lang.impl.jvm.JVMFlaggable
 import net.shadowmaster435.onyx.lang.util.accessChainStringTemplate
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 import kotlin.jvm.JvmSynthetic

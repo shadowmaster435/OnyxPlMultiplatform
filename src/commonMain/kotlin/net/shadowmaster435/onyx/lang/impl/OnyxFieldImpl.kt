@@ -16,7 +16,8 @@ interface OnyxFieldImpl :
     OnyxNamedImpl,
     OnyxReferencableImpl,
     JVMFlaggable,
-    JVMDescribable, OnyxCompilableConstImpl
+    JVMDescribable,
+    OnyxCompilableConstImpl, OnyxInstantiatable<OnyxFieldInstance>
 {
     override val applicability: JVMApplicability
         get() = JVMApplicability.FIELD
@@ -34,6 +35,5 @@ interface OnyxFieldImpl :
     override fun compileConst(v: Any?): OnyxCompiledType {
         TODO("Field compile functions")
     }
-    fun instantiate(refIndex: Int): OnyxFieldInstance
 
 }

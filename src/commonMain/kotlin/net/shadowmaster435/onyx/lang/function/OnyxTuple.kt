@@ -72,7 +72,6 @@ class OnyxTuple(
                 val nullability = it[3] as OnyxNullability
                 val initExpression = it.getOrNull(4) as? OnyxExpression
                 OnyxTuple(type, name, nullability, vararg, initExpression)
-
             }
         }
     }

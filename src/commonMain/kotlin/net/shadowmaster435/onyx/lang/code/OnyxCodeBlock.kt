@@ -3,19 +3,20 @@ package net.shadowmaster435.onyx.lang.code
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxUnit
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
-import net.shadowmaster435.onyx.lang.enums.code.OnyxExitType
 import net.shadowmaster435.onyx.lang.impl.OnyxRunnableImpl
+import net.shadowmaster435.onyx.lang.util.expressionTemplate
+import net.shadowmaster435.onyx.lang.util.memberTemplate
+import net.shadowmaster435.onyx.util.OnyxBlockReturn
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
-import kotlin.jvm.JvmInline
 
 class OnyxCodeBlock(
     val members: List<OnyxRunnableImpl>, val returnType: OnyxClassDescriptor = OnyxUnit.desc
 ) {
-
-    fun execute(thisInst: OnyxClassInstance?, params: List<OnyxClassInstance>): Triple<OnyxClassInstance, OnyxExitType?, OnyxCodeBlock?> {
+    var parent: OnyxCodeBlock? = null; internal set
+    fun execute(thisInst: OnyxClassInstance?, params: List<OnyxClassInstance>): OnyxBlockReturn {
         members.forEach {
             if (it is OnyxExitStatement)
-                return Triple(it.execute(thisInst, params), it.type, it.at)
+                return Triple(it.execute(parent, thisInst, params), it.type, it.at)
             else {
                 val ret = execute(thisInst, params)
                 if (ret.third != null && ret.third !== this) return ret
@@ -23,10 +24,22 @@ class OnyxCodeBlock(
         }
         return Triple(OnyxUnit, null, null)
     }
-    fun execute(thisInst: OnyxClassInstance?) = execute(thisInst,listOf())
-    fun execute(thisInst: OnyxClassInstance?, singleParam: OnyxClassInstance) = execute(thisInst,listOf(singleParam))
+    fun execute(thisInst: OnyxClassInstance?): OnyxBlockReturn = execute(thisInst,listOf())
+    fun execute(thisInst: OnyxClassInstance?, singleParam: OnyxClassInstance): OnyxBlockReturn =
+        execute(thisInst,listOf(singleParam))
     companion object {
-        val template: ParsinatorTemplate get() = TODO("Code block template")
+        val template: ParsinatorTemplate = ParsinatorTemplate {
+            chain(true) {
+                token(false, "{")
+                repeating(false, true) {
+                    branch(false) {
+                        use(memberTemplate)
+                        use(expressionTemplate)
+                    }
+                }
+                token(false, "}")
+            }
+        }
     }
 
 }

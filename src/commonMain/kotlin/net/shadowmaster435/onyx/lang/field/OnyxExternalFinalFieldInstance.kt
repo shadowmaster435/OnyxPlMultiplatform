@@ -1,7 +1,6 @@
 package net.shadowmaster435.onyx.lang.field
 
 import net.shadowmaster435.onyx.exception.NonExistenceException
-import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
 import net.shadowmaster435.onyx.util.OnyxInitHolder

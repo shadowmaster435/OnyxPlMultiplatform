@@ -2,11 +2,7 @@ package net.shadowmaster435.onyx.lang.builtin.clazz.member
 
 import net.shadowmaster435.onyx.lang.builtin.clazz.iterable.OnyxSet
 import net.shadowmaster435.onyx.lang.builtin.clazz.other.OnyxModifier
-import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxAny
-import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxClass
-import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxString
-import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxUnit
-import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.anyDesc
+import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.*
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.clazz.OnyxExternalClassInstance
@@ -26,8 +22,8 @@ class OnyxField(override val held: OnyxFieldDescriptor): OnyxExternalClassInstan
     fun get(instance: OnyxClassInstance?) = held.getRefVal(instance)
 
     companion object {
-        val desc = OnyxClassDescriptor(
-            "OField", onyxPrimitives, linkedMapOf(
+        val desc = anyDesc.extend(
+            "OField", onyxPrimitives, OnyxClassType.NORMAL, null, linkedMapOf(
                 externalFinalField("modifiers", OnyxSet.desc) {
                     OnyxSet(buildSet {
                         (it as OnyxField).held.modifiers.forEach { mod ->
@@ -50,7 +46,6 @@ class OnyxField(override val held: OnyxFieldDescriptor): OnyxExternalClassInstan
                     val inst = list.firstOrNull() ?: throw invalidPCount
                     thisInst.get(inst)
                 },
-
                 externalFunc("set", OnyxTuples(
                     OnyxTuple(
                         anyDesc, "instance", false, true
@@ -65,8 +60,7 @@ class OnyxField(override val held: OnyxFieldDescriptor): OnyxExternalClassInstan
                     thisInst.set(inst, value)
                     OnyxUnit
                 },
-
-            ), linkedMapOf(), OnyxClassType.NORMAL, OnyxAny.desc
+            )
         )
     }
 

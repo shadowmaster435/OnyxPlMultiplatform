@@ -9,6 +9,7 @@ sealed class OnyxExitStatement(val at: OnyxCodeBlock?) : OnyxRunnableImpl {
     abstract val type: OnyxExitType
 
     override fun execute(
+        parent: OnyxCodeBlock?,
         thisInst: OnyxClassInstance?,
         params: List<OnyxClassInstance>
     ): OnyxClassInstance = OnyxUnit

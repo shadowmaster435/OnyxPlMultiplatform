@@ -5,6 +5,7 @@ import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 class OnyxContinue(at: OnyxCodeBlock? = null): OnyxExitStatement(at) {
     override val type = OnyxExitType.CONTINUE
+
     companion object {
         val template = ParsinatorTemplate {
             token(true, "continue")

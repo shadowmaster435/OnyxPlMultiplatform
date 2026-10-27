@@ -8,8 +8,8 @@ import net.shadowmaster435.onyx.util.OnyxExpression
 import net.shadowmaster435.onyx.util.OnyxParams
 
 class OnyxFor(val expression: OnyxExpression, val codeBlock: OnyxCodeBlock): OnyxRunnableImpl {
-    override fun execute(thisInst: OnyxClassInstance?, params: OnyxParams): OnyxUnit {
-        val iterable = expression.evaluate(thisInst, params).onyxIterator()
+    override fun execute(parent: OnyxCodeBlock?, thisInst: OnyxClassInstance?, params: OnyxParams): OnyxUnit {
+        val iterable = expression.evaluate(parent, thisInst, params).onyxIterator()
         for (i in iterable) {
             val type = codeBlock.execute(thisInst, i).second
             if (type != null && type != OnyxExitType.CONTINUE) break

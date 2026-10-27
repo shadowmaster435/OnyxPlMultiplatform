@@ -31,7 +31,6 @@ class OnyxExternalFinalFieldDesc(
         v: OnyxClassInstance
     ) {}
 
-    override fun poke() {}
     override fun instantiate(refIndex: Int) = OnyxExternalFinalFieldInstance(
         this, refIndex, getter = extGetter
     )

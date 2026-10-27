@@ -45,24 +45,27 @@ class OnyxGenericTuples(val tuples: List<OnyxGenericType>) {
         private val err = ImpossibleException("Type erased for generic cast, this should never happen")
         val empty = OnyxGenericTuples(listOf())
         val definitionTemplate: ParsinatorTemplate = ParsinatorTemplate {
-            chain(true) {
-                token(false, "<", false, true)
-                whitespace(true)
-                repeating(false, false) {
-                    use(OnyxGenericType.definitionTemplate)
+            branch(false) {
+                chain(true) {
+                    token(false, "<", false, true)
                     whitespace(true)
-                    trailing { token(true, ",", false, true) }
-                }
-                whitespace(true)
-                token(false, ">",false, true)
-            } makes {
-                it as list
-                val entries = it[0] as List<*>
-                OnyxGenericTuples(buildList {
-                    for (entry in entries) {
-                        if (entry is OnyxGenericType) add(entry)
+                    repeating(false, false) {
+                        use(OnyxGenericType.definitionTemplate)
+                        whitespace(true)
+                        trailing { token(true, ",", false, true) }
                     }
-                })
+                    whitespace(true)
+                    token(false, ">",false, true)
+                } makes {
+                    it as list
+                    val entries = it[0] as List<*>
+                    OnyxGenericTuples(buildList {
+                        for (entry in entries) {
+                            if (entry is OnyxGenericType) add(entry)
+                        }
+                    })
+                }
+                exit(0) makes {emptyList<OnyxGenericType>()}
             }
         }
         val inputParamTemplate: ParsinatorTemplate = ParsinatorTemplate {

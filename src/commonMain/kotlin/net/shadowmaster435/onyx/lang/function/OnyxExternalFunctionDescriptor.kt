@@ -18,7 +18,6 @@ class OnyxExternalFunctionDescriptor(
     val function: (thisInst: OnyxClassInstance?, list: List<OnyxClassInstance>) -> OnyxClassInstance
 ) : AbstractOnyxFunctionDescriptor(name, tuples, modifiers, genericTuples, returnType) {
     override val type = OnyxMemberType.FUNCTION
-    override fun poke() {}
 
     constructor(
         name: String,

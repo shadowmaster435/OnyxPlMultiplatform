@@ -18,6 +18,6 @@ internal class OnyxLocalSorter(
     override fun visitCode() {
         super.visitCode()
         val index = newLocal(Type.getType(field.descriptor))
-        field.compile(UnbuiltLocal(index, field, this))
+        field.compileConst(UnbuiltLocal(index, field, this))
     }
 }

@@ -3,28 +3,25 @@ package net.shadowmaster435.onyx.lang.clazz
 import net.shadowmaster435.onyx.exception.ImpossibleException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxBoolean
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxString
-import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.array.OnyxShortArray
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxInt
+import net.shadowmaster435.onyx.lang.code.OnyxCodeBlock
 import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.field.OnyxFieldInstance
 import net.shadowmaster435.onyx.lang.function.OnyxExternalFunctionDescriptor
 import net.shadowmaster435.onyx.lang.function.OnyxTuples
 import net.shadowmaster435.onyx.lang.impl.OnyxCompilableImpl
-import net.shadowmaster435.onyx.lang.impl.OnyxPokable
+import net.shadowmaster435.onyx.lang.impl.OnyxInitializable
 import net.shadowmaster435.onyx.lang.impl.OnyxReferencableImpl
+import net.shadowmaster435.onyx.lang.impl.OnyxRunnableImpl
+import net.shadowmaster435.onyx.util.OnyxParams
 
 open class OnyxClassInstance(
     val desc: OnyxClassDescriptor,
-): OnyxPokable, OnyxReferencableImpl, OnyxCompilableImpl {
+):  OnyxReferencableImpl, OnyxCompilableImpl, OnyxInitializable, OnyxRunnableImpl {
     protected open val fieldData: MutableList<OnyxFieldInstance> = mutableListOf()
-    protected open var initialized = false
     open val isObject = false
 
 
-
-    override fun poke() {
-        createFieldData()
-    }
 
     override fun getRefVal(thisInstance: OnyxClassInstance?) = thisInstance
     override fun setRefVal(thisInstance: OnyxClassInstance?, v: OnyxClassInstance) {}
@@ -32,7 +29,7 @@ open class OnyxClassInstance(
     open fun createFieldData() {
         var i = 0
         for ((_, fieldDesc) in this@OnyxClassInstance.desc.fields) {
-            fieldData.add(desc.getField(fieldDesc).instantiate(i))
+            fieldData.add(desc.getField(fieldDesc).instantiate(this, listOf(OnyxInt(i))))
             i++
         }
     }
@@ -64,6 +61,20 @@ open class OnyxClassInstance(
     fun getFieldNullable(name: String) = fieldData.getOrNull(desc.getFieldRefIndex(name))?.get()
     override fun compile(any: Any?) {
         TODO("Not yet implemented")
+    }
+
+    override fun initialize(
+        thisInst: OnyxClassInstance?,
+        params: OnyxParams
+    ) = createFieldData()
+
+    override fun execute(
+        parent: OnyxCodeBlock?,
+        thisInst: OnyxClassInstance?,
+        params: OnyxParams
+    ): OnyxClassInstance? {
+        initialize(thisInst, params)
+        return this
     }
 
 

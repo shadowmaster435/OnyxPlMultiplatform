@@ -14,11 +14,7 @@ import net.shadowmaster435.onyx.lang.function.AbstractOnyxFunctionDescriptor
 import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
 import net.shadowmaster435.onyx.lang.pkg.OnyxPackage
 import net.shadowmaster435.onyx.lang.pkg.globalRoot
-import net.shadowmaster435.onyx.lang.util.EnumMap
-import net.shadowmaster435.onyx.lang.util.list
-import net.shadowmaster435.onyx.lang.util.nameRegex
-import net.shadowmaster435.onyx.lang.util.numbersRegex
-import net.shadowmaster435.onyx.lang.util.typeTemplate
+import net.shadowmaster435.onyx.lang.util.*
 import net.shadowmaster435.onyx.util.OnyxModifiers
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
@@ -54,8 +50,7 @@ class OnyxGenericType(
         get() = erasureCheck().classType
     override val companion: OnyxObject?
         get() = erasureCheck().companion
-    override val constant: Boolean
-        get() = erasureCheck().constant
+
     override val constructors: List<AbstractOnyxFunctionDescriptor>
         get() = erasureCheck().constructors
     override val genericTuples: OnyxGenericTuples

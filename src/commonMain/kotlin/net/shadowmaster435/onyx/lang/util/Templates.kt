@@ -1,6 +1,9 @@
 package net.shadowmaster435.onyx.lang.util
 
 import net.shadowmaster435.onyx.ext.substringOrNull
+import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
+import net.shadowmaster435.onyx.lang.field.OnyxFieldDescriptor
+import net.shadowmaster435.onyx.lang.function.OnyxFunctionDescriptor
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
 import net.shadowmaster435.onyx.lang.pkg.OnyxPackage
 import net.shadowmaster435.onyx.lang.pkg.OnyxPackage.Companion.byQualifiedName
@@ -56,6 +59,14 @@ fun accessChainStringTemplate(make: (String) -> Any?) = ParsinatorTemplate {
         it as List<*>
         for (entry in it) if (entry is String) str += entry
         make(str)
+    }
+}
+
+val memberTemplate = ParsinatorTemplate {
+    branch(false) {
+        use(OnyxFieldDescriptor.definitionTemplate)
+        use(OnyxFunctionDescriptor.template)
+        use(OnyxClassDescriptor.template)
     }
 }
 

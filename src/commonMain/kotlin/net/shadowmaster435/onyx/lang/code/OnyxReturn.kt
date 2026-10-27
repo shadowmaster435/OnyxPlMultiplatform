@@ -10,9 +10,10 @@ class OnyxReturn(private val expr: OnyxExpression, at: OnyxCodeBlock? = null) : 
     override val type = OnyxExitType.RETURN
 
     override fun execute(
+        parent: OnyxCodeBlock?,
         thisInst: OnyxClassInstance?,
         params: OnyxParams
-    ) = expr.evaluate(thisInst, params)
+    ) = expr.evaluate(parent, thisInst, params)
     companion object {
         val template = ParsinatorTemplate {
             token(false, "return")

@@ -1,6 +1,5 @@
 package net.shadowmaster435.onyx.lang.operators.binary.comparison
 
-import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxBoolean
 import net.shadowmaster435.onyx.lang.enums.operator.OnyxOperator
 import net.shadowmaster435.onyx.lang.operators.OnyxBinaryOp
 import net.shadowmaster435.onyx.lang.operators.OnyxClassProvider

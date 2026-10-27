@@ -1,12 +1,14 @@
 package net.shadowmaster435.onyx.lang.clazz
 
 import net.shadowmaster435.onyx.util.ListBuilder
+import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 class OnyxEnumClassInstance(
     desc: OnyxClassDescriptor,
     val enumValues: List<OnyxEnumValue>
 ): OnyxClassInstance(desc) {
     override val isObject = false
+
     private val indexMap by lazy {
         HashMap<String, Int>().apply {
             var i = 0
@@ -28,5 +30,8 @@ class OnyxEnumClassInstance(
                 }
             })
         }
+    }
+    companion object {
+        val template: ParsinatorTemplate = TODO("Enum class parsinator template")
     }
 }

@@ -6,7 +6,6 @@ import kotlin.math.min
 
 fun String.substringOrNull(index: Int, length: Int) = substr(index..<(min(this.length, index + length)))
 fun String.substringOrNull(index: Int) = if (index !in indices) null else substr(index..<length)
-fun String.substringOrNull(intRange: IntRange) {}
 
 fun String.indexToLineColumn(index: Int): Pair<Int, Int> {
     if (index !in indices) throw IndexOutOfBoundsException("Index $index out of string bounds")
@@ -58,79 +57,6 @@ fun String.substringUntil(endAt: String, startIndex: Int = 0): String {
         i++
     }
     return this
-}
-
-fun String.parseFuncCallLikeList(): List<Triple<String, List<String>, Int>> {
-    val str = replace("\n", "").replace("\t", "")
-    val strings = mutableListOf<String>()
-    var holderString = ""
-    var nameStr = ""
-    val out = mutableListOf<Triple<String, List<String>, Int>>()
-    var parsedOpString = false
-    var literalEscape = false
-    var passedInitialSpaces = false
-    var i = 0
-    fun finish() {
-        out.add(Triple(nameStr, strings.toList(), i))
-        holderString = ""
-        nameStr = ""
-        strings.clear()
-        parsedOpString = false
-        literalEscape = false
-    }
-    for (char in str) {
-        if (!parsedOpString) {
-            when(char) {
-                ' ', '\t', '\n' -> if (!passedInitialSpaces) holderString += char
-                '(', ')' -> if (!literalEscape) {
-                    parsedOpString = true
-                    nameStr = holderString
-                    holderString = ""
-                    passedInitialSpaces = true
-                } else {
-                    holderString += char
-                    literalEscape = false
-                    passedInitialSpaces = true
-                }
-                '\\' -> {
-                    literalEscape = true
-                    passedInitialSpaces = true
-                }
-                else -> holderString += char
-            }
-        } else when(char) {
-            ' ' -> if (!passedInitialSpaces) holderString += char
-            '(', ')' -> {
-                if (!literalEscape) {
-                    strings.add(holderString)
-                    holderString = ""
-                    finish()
-                    passedInitialSpaces = true
-                } else {
-                    holderString += char
-                    literalEscape = false
-                    passedInitialSpaces = true
-                }
-            }
-            ',' -> if (!literalEscape) {
-                strings.add(holderString)
-                holderString = ""
-                passedInitialSpaces = true
-            } else {
-                holderString += char
-                literalEscape = false
-                passedInitialSpaces = true
-            }
-            '\\' -> {
-                literalEscape = true
-                passedInitialSpaces = true
-
-            }
-            else -> holderString += char
-        }
-        i++
-    }
-    return out.toList()
 }
 
 private fun String.substr(range: IntRange, printError: Boolean = false, errorCallback: (String) -> Unit = {}): String {

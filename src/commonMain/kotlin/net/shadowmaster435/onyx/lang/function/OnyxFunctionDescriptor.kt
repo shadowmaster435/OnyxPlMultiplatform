@@ -34,7 +34,6 @@ class OnyxFunctionDescriptor(
         tuples.validate(params)
         return block.execute(thisInst, params).first
     }
-    override fun poke() {}
     @Suppress("UNCHECKED_CAST")
     companion object {
         val template = ParsinatorTemplate {
@@ -49,10 +48,13 @@ class OnyxFunctionDescriptor(
                 whitespace(true)
                 branch(true) {
                     chain(true) {
-                        chain(true) {
-                            token(false, ":", false, true)
-                            whitespace(true)
-                            use(optionalTypeTemplate)
+                        branch(false) {
+                            chain(true) {
+                                token(false, ":", false, true)
+                                whitespace(true)
+                                use(typeTemplate)
+                            }
+                            exit(0) makes { OnyxUnit }
                         }
                         whitespace(true)
                         token(false, "=", false, true)
@@ -60,10 +62,13 @@ class OnyxFunctionDescriptor(
                         use(expressionTemplate)
                     }
                     branch(false) {
-                        chain(true) {
-                            token(false, ":", false, true)
-                            whitespace(true)
-                            use(optionalTypeTemplate)
+                        branch(false) {
+                            chain(true) {
+                                token(false, ":", false, true)
+                                whitespace(true)
+                                use(typeTemplate)
+                            }
+                            exit(0) makes { OnyxUnit }
                         }
                         whitespace(true)
                         use(OnyxCodeBlock.template)
@@ -75,22 +80,17 @@ class OnyxFunctionDescriptor(
                 val generics = it[1] as OnyxGenericTuples
                 val definitionName = it[2] as OnyxDefinitionName
                 val name = definitionName.name
-                val tuples = it[4] as OnyxTuples
+                val tuples = it[3] as OnyxTuples
                 var returnType: OnyxClassDescriptor = OnyxUnit.desc
-                val block = it.getOrNull(5)?.let { blockList ->
+                val block = it.getOrNull(4)?.let { blockList ->
                     blockList as List<*>
-                    val isTyped = blockList.getOrNull(0) !is List<*>
                     val obj = blockList.last()
                     val isExpression = obj is OnyxExpression
-                    var i = 0
-                    if (isTyped) {
-                        returnType = (blockList[0] as List<*>)[0] as OnyxClassDescriptor
-                        i = 1
-                    }
-                    if (isExpression)
-                        return@let OnyxCodeBlock(listOf(OnyxReturn(obj)), returnType)
+                    returnType = blockList[0] as OnyxClassDescriptor
+                    return@let if (isExpression)
+                        OnyxCodeBlock(listOf(OnyxReturn(obj)), returnType)
                     else
-                        return@let obj as OnyxCodeBlock
+                        obj as OnyxCodeBlock
                 }
 
                 val desc = if (modifiers.contains(OnyxModifierType.ABSTRACT)) OnyxVirtualFunctionDescriptor(
@@ -104,7 +104,6 @@ class OnyxFunctionDescriptor(
                 desc
             }
         }
-
     }
 
 }

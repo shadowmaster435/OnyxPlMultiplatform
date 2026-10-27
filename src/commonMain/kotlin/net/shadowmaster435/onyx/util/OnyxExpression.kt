@@ -5,16 +5,18 @@ import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxUnit
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.anyDesc
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
+import net.shadowmaster435.onyx.lang.code.OnyxCodeBlock
 import net.shadowmaster435.onyx.lang.impl.OnyxRunnableImpl
 
 private typealias Binary = (
     params: OnyxParams,
-
+    parent: OnyxCodeBlock?,
     thisInst: OnyxClassInstance?,
     a: (OnyxParams) -> OnyxClassInstance?,
     b: (OnyxParams) -> OnyxClassInstance?)
 -> OnyxClassInstance?
 private typealias Unary = (
+    parent: OnyxCodeBlock?,
     params: OnyxParams,
     thisInst: OnyxClassInstance?,
     a: (OnyxParams) -> OnyxClassInstance?)
@@ -23,15 +25,15 @@ private typealias Unary = (
 class OnyxExpression internal constructor(groups: List<OnyxExpressionBuilder.Slot>, val returnType: OnyxClassDescriptor): OnyxRunnableImpl {
     private val groups = groups.sortedBy { it.precedence }
 
-    fun evaluate(thisInst: OnyxClassInstance?, params: OnyxParams): OnyxClassInstance {
+    fun evaluate(parent: OnyxCodeBlock?, thisInst: OnyxClassInstance?, params: OnyxParams): OnyxClassInstance {
         groups.forEach { it.reset(params) }
         var accum: OnyxExpressionBuilder.Slot? = null
-        groups.forEach { accum = it.evaluate(thisInst, params) }
+        groups.forEach { accum = it.evaluate(parent, thisInst, params) }
         return accum!!.held ?: throw ImpossibleException("Expression failed to evaluate. This should never happen")
     }
 
-    override fun execute(thisInst: OnyxClassInstance?, params: OnyxParams) =
-        evaluate(thisInst, params)
+    override fun execute(parent: OnyxCodeBlock?, thisInst: OnyxClassInstance?, params: OnyxParams) =
+        evaluate(parent, thisInst, params)
 
     companion object {
         fun wrap(classInstance: OnyxClassInstance, type: OnyxClassDescriptor = classInstance.desc) = OnyxExpression(
@@ -47,18 +49,18 @@ class OnyxExpression internal constructor(groups: List<OnyxExpressionBuilder.Slo
 class OnyxExpressionBuilder internal constructor(val returnType: OnyxClassDescriptor) {
     internal class Group(precedence: Int, val entries: List<Operation>) : Slot(precedence = precedence) {
         override fun reset(params: OnyxParams) = entries.forEach { it.slot.reset(params) }
-        override fun evaluate(thisInst: OnyxClassInstance?, params: OnyxParams): Slot {
+        override fun evaluate(parent: OnyxCodeBlock?, thisInst: OnyxClassInstance?, params: OnyxParams): Slot {
             var result: Slot? = null
             entries.forEach { operation ->
-                result = operation.evaluate(params, thisInst)
+                result = operation.evaluate(parent, params, thisInst)
             }
             return result!!
         }
     }
 
-    internal open class GroupInstance(private val expression: OnyxExpression) : Slot(null, {
+    internal open class GroupInstance(private val expression: OnyxExpression, parent: OnyxCodeBlock?) : Slot(null, {
         thisInst: OnyxClassInstance?, params: OnyxParams ->
-        expression.evaluate(thisInst, params)
+        expression.evaluate(parent, thisInst, params)
     }, 15) {
         override fun reset(params: OnyxParams) {}
     }
@@ -66,13 +68,13 @@ class OnyxExpressionBuilder internal constructor(val returnType: OnyxClassDescri
     internal open class Slot(
         val init: OnyxClassInstance? = null,
         val getter: ((thisInst: OnyxClassInstance?, params: OnyxParams) -> OnyxClassInstance?)? = null,
-        val precedence: Int
+        val precedence: Int,
     ) {
         open var held: OnyxClassInstance? = init
         open fun reset(params: OnyxParams) {
             held = if (getter == null) init else getter(init, params)
         }
-        open fun evaluate(thisInst: OnyxClassInstance?, params: OnyxParams) = this
+        open fun evaluate(parent: OnyxCodeBlock?, thisInst: OnyxClassInstance?, params: OnyxParams) = this
     }
     internal class Operation(var slot: Slot) {
         var isUnary = true
@@ -81,12 +83,15 @@ class OnyxExpressionBuilder internal constructor(val returnType: OnyxClassDescri
         var binary: Binary? = null
             set(v) {field = v; isUnary = false}
         var unary: Unary? = null
-        fun evaluate(params: OnyxParams, thisInst: OnyxClassInstance?): Slot =
+
+
+
+        fun evaluate(parent: OnyxCodeBlock?, params: OnyxParams, thisInst: OnyxClassInstance?): Slot =
             if (isUnary) {
-                slot.held = unary!!(params, thisInst) { slot.held }
+                slot.held = unary!!(parent, params, thisInst) { slot.held }
                 slot
             } else {
-                next!!.held = binary!!(params, thisInst,{slot.held}, {next!!.held})
+                next!!.held = binary!!(params, parent, thisInst,{slot.held}, {next!!.held})
                 next!!
             }
 
@@ -140,17 +145,17 @@ class OnyxExpressionBuilder internal constructor(val returnType: OnyxClassDescri
         currentGroupList.add(next)
         lastOperation = next
     }
-    fun use(expression: OnyxExpression) {
+    fun use(expression: OnyxExpression, parent: OnyxCodeBlock?) {
         val operation = lastOperation
-        if (operation != null) groups.add(GroupInstance(expression))
+        if (operation != null) groups.add(GroupInstance(expression, parent))
     }
 
-    fun group(init: @Marker OnyxExpressionBuilder.() -> Unit) {
+    fun group(parent: OnyxCodeBlock?, init: @Marker OnyxExpressionBuilder.() -> Unit) {
         val operation = lastOperation
         if (operation != null) {
             val builder = OnyxExpressionBuilder(anyDesc)
             builder.init()
-            groups.add(GroupInstance(builder.create()))
+            groups.add(GroupInstance(builder.create(), parent))
         }
     }
 
