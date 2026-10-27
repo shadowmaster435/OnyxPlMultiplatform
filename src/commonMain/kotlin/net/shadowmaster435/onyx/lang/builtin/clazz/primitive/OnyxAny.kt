@@ -4,7 +4,7 @@ import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
-import net.shadowmaster435.onyx.util.JVMPrimitiveType
+import net.shadowmaster435.onyx.lang.enums.jvm.JVMPrimitiveType
 
 
 class OnyxAny: OnyxClassInstance(desc) {

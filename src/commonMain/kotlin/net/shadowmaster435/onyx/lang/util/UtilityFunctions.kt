@@ -24,7 +24,7 @@ val invalidPCount get() = InvalidParameterCountException()
 fun ParsinatorBuilder.name(optional: Boolean) = name(optional, nameRegex, numbersRegex)
 
 fun field(name: String, type: OnyxClassDescriptor, modifiers: OnyxModifiers) {
-    name to OnyxFieldDescriptor(name, type, modifiers, )
+    name to OnyxFieldDescriptor(name, type, modifiers)
 }
 fun externalFinalField(name: String, type: OnyxClassDescriptor, getter: (OnyxClassInstance?) -> OnyxClassInstance) = name to
     OnyxExternalFinalFieldDesc(name, listOf(), type, extGetter = getter)

@@ -13,7 +13,7 @@ import net.shadowmaster435.onyx.lang.generics.OnyxGenericType
 import net.shadowmaster435.onyx.lang.pkg.onyxCollections
 import net.shadowmaster435.onyx.lang.util.interfaceField
 
-class OnyxSet(override val held: Set<OnyxClassInstance>, ):
+class OnyxSet(override val held: Set<OnyxClassInstance>):
     OnyxExternalClassInstance<Set<OnyxClassInstance>>(desc), Set<OnyxClassInstance> {
     override val size = held.size
     override fun isEmpty() = held.isEmpty()

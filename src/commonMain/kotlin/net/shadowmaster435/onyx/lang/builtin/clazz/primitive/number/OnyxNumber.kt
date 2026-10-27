@@ -15,7 +15,7 @@ import net.shadowmaster435.onyx.lang.function.OnyxTuples
 import net.shadowmaster435.onyx.lang.function.OnyxVirtualFunctionDescriptor
 import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
 import net.shadowmaster435.onyx.lang.util.externalFunc
-import net.shadowmaster435.onyx.util.JVMPrimitiveType
+import net.shadowmaster435.onyx.lang.enums.jvm.JVMPrimitiveType
 import kotlin.reflect.KClass
 
 

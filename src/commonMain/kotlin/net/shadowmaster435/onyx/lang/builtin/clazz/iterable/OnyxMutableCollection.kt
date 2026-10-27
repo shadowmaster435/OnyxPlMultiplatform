@@ -13,7 +13,7 @@ import net.shadowmaster435.onyx.lang.generics.OnyxGenericType
 import net.shadowmaster435.onyx.lang.pkg.onyxCollections
 import net.shadowmaster435.onyx.lang.util.interfaceField
 
-class OnyxMutableCollection(override val held: MutableCollection<OnyxClassInstance>, ):
+class OnyxMutableCollection(override val held: MutableCollection<OnyxClassInstance>):
     OnyxExternalClassInstance<Collection<OnyxClassInstance>>(desc), Collection<OnyxClassInstance> {
     override val size = held.size
     override fun isEmpty() = held.isEmpty()

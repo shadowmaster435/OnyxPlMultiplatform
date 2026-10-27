@@ -8,5 +8,4 @@ class OnyxDefinitionName(
     val extensionClass: OnyxClassDescriptor?,
     val extensionGenerics: OnyxGenericTuples?,
 
-) {
-}
+)

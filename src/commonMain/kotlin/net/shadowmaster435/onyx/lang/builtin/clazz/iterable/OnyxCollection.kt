@@ -10,7 +10,7 @@ import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericType
 import net.shadowmaster435.onyx.lang.pkg.onyxCollections
 
-class OnyxCollection(override val held: Collection<OnyxClassInstance>, ):
+class OnyxCollection(override val held: Collection<OnyxClassInstance>):
     OnyxExternalClassInstance<Collection<OnyxClassInstance>>(desc), Collection<OnyxClassInstance> {
     override val size = held.size
     override fun isEmpty() = held.isEmpty()

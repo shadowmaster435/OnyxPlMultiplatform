@@ -13,7 +13,7 @@ import net.shadowmaster435.onyx.lang.generics.OnyxGenericType
 import net.shadowmaster435.onyx.lang.pkg.onyxCollections
 import net.shadowmaster435.onyx.lang.util.interfaceField
 
-class OnyxMutableMap(override val held: Map<OnyxClassInstance, OnyxClassInstance>, ):
+class OnyxMutableMap(override val held: Map<OnyxClassInstance, OnyxClassInstance>):
     OnyxExternalClassInstance<Map<OnyxClassInstance, OnyxClassInstance>>(desc) {
     val size = held.size
 

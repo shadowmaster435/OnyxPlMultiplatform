@@ -1,6 +1,6 @@
 package net.shadowmaster435.onyx.lang.builtin.clazz.primitive
 
-import net.shadowmaster435.onyx.util.JVMPrimitiveType
+import net.shadowmaster435.onyx.lang.enums.jvm.JVMPrimitiveType
 
 actual val OnyxBoolean.compileFunc: (Any?) -> Any?
     get() = {

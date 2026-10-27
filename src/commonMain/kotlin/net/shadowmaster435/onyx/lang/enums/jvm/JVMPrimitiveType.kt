@@ -1,4 +1,4 @@
-package net.shadowmaster435.onyx.util
+package net.shadowmaster435.onyx.lang.enums.jvm
 
 import net.shadowmaster435.onyx.lang.impl.jvm.JVMDescribable
 

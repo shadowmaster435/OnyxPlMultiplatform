@@ -7,7 +7,7 @@ import net.shadowmaster435.onyx.lang.clazz.OnyxExternalClassInstance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.impl.OnyxCompilableConstImpl
 import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
-import net.shadowmaster435.onyx.util.JVMPrimitiveType
+import net.shadowmaster435.onyx.lang.enums.jvm.JVMPrimitiveType
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 expect val OnyxBoolean.compileFunc: (Any?) -> Any?

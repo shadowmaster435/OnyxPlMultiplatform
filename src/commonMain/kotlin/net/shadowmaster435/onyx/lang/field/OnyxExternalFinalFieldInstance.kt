@@ -13,5 +13,5 @@ class OnyxExternalFinalFieldInstance(
     override val held: OnyxInitHolder<OnyxClassInstance>
         get() = throw NonExistenceException("Held does not exist on external fields")
 
-    override fun getRefVal(thisInst: OnyxClassInstance?) = getter(thisInst)
+    override fun getRefVal(thisInstance: OnyxClassInstance?) = getter(thisInstance)
 }
