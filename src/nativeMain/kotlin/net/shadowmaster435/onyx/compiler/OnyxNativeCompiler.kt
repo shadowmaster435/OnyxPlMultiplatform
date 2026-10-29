@@ -76,14 +76,23 @@ class OnyxNativeCompiler {
         val structType = LLVMStructTypeInContext(ctx, types.toCValues(), types.size.toUInt(), 0)
         return StructType(Triple(orThrow(structType), null, types))
     }
-    fun globalConstString(name: String, value: String): LLVMValueRef {
+
+    fun globalConstInt(name: String, value: Int, linkage: LLVMLinkage = LLVMLinkage.LLVMInternalLinkage): LLVMValueRef {
+        val type = LLVMInt32TypeInContext(ctx)
+        val globalInt = LLVMAddGlobal(module, type, ".$name")
+        LLVMSetInitializer(globalInt,  LLVMConstInt(type, value.toULong(), 1))
+        LLVMSetLinkage(globalInt, linkage)
+        return orThrow( globalInt)
+    }
+
+    fun globalConstString(name: String, value: String, linkage: LLVMLinkage = LLVMLinkage.LLVMInternalLinkage): LLVMValueRef {
         val length = value.length.toUInt()
         val arrayType = LLVMArrayType(LLVMInt8TypeInContext(ctx), length)
         val globalString = LLVMAddGlobal(module, arrayType, ".$name")
         val constString: LLVMValueRef? = LLVMConstStringInContext(ctx, value, length, 0)
         LLVMSetInitializer(globalString, constString)
         LLVMSetGlobalConstant(globalString, 1);
-        LLVMSetLinkage(globalString, LLVMLinkage.LLVMPrivateLinkage)
+        LLVMSetLinkage(globalString, linkage)
         LLVMSetUnnamedAddress(globalString, LLVMUnnamedAddr.LLVMGlobalUnnamedAddr)
         LLVMSetAlignment(globalString, 1u)
         val zeroIndex = LLVMConstInt(LLVMInt64TypeInContext(ctx), 0u, 1)

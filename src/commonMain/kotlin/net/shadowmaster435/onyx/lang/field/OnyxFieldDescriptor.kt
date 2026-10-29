@@ -5,11 +5,14 @@ import net.shadowmaster435.onyx.exception.ImpossibleException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxInt
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
+import net.shadowmaster435.onyx.lang.code.OnyxCodeBlock
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxMemberType
 import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.function.OnyxFunctionDescriptor
+import net.shadowmaster435.onyx.lang.impl.OnyxCodeBlockContainer
 import net.shadowmaster435.onyx.lang.impl.OnyxCompilableConstImpl
 import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
+import net.shadowmaster435.onyx.lang.util.OnyxDefinitionName
 import net.shadowmaster435.onyx.lang.util.modifierString
 import net.shadowmaster435.onyx.lang.util.nameRegex
 import net.shadowmaster435.onyx.lang.util.numbersRegex
@@ -21,18 +24,23 @@ import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 expect val OnyxFieldDescriptor.compileFunc: (Any?) -> Any?
 class OnyxFieldDescriptor(
     override val name: String,
-    override val classType: OnyxClassDescriptor,
+    override var holderClass: OnyxClassDescriptor?,
+    override var classType: OnyxClassDescriptor,
     override val modifiers: List<OnyxModifierType>,
     override val initExpression: OnyxExpression? = null,
     override val isFinal: Boolean = false,
     override val isVirtual: Boolean = false,
-    override val selfInstance: OnyxFieldInstance? = null
-): OnyxFieldImpl, OnyxCompilableConstImpl {
+    selfInstance: OnyxFieldInstance? = null,
+    override val definitionName: OnyxDefinitionName? = null
+): OnyxFieldImpl, OnyxCompilableConstImpl, OnyxCodeBlockContainer {
     override val isDeferred: Boolean = false
     override var getter: OnyxFunctionDescriptor? = null
     override var setter: OnyxFunctionDescriptor? = null
     override val type = OnyxMemberType.FIELD
     override fun toString(): String = modifiers.modifierString() + " " + (if (isFinal) "var" else "val") + " " + name
+    override val isFinalized: Boolean get() = true
+    override fun createFinal() = this
+    override var selfInstance = selfInstance; internal set
 
     override fun getRefVal(thisInstance: OnyxClassInstance?) =
         thisInstance?.getField(name) ?: selfInstance?.get(thisInstance) ?:
@@ -46,6 +54,9 @@ class OnyxFieldDescriptor(
         throw ImpossibleException("Unbound field. This should never happen")).set(v.cast(classType), thisInstance)
     }
 
+    override fun forEachBlock(consumer: (block: OnyxCodeBlock) -> Unit) {
+        initExpression?.forEachBlock(consumer)
+    }
     override fun compileConst(v: Any?) = OnyxCompiledType(compileFunc(v))
     override fun instantiate(
         thisInst: OnyxClassInstance,
@@ -53,60 +64,5 @@ class OnyxFieldDescriptor(
     ) = OnyxFieldInstance(
         this, (params[0] as OnyxInt).held, isFinal, isDeferred, isVirtual
     )
-
-
-    companion object {
-        @Suppress("UNCHECKED_CAST")
-        val definitionTemplate = ParsinatorTemplate {
-            chain(true) {
-                use(OnyxModifierType.template)
-                whitespace()
-                branch(false) {
-                    token(false,"val")
-                    token(false,"var")
-                }
-                whitespace(false)
-                name(false, nameRegex, numbersRegex)
-                chain(true) {
-                    branch(false) {
-                        chain(false) {
-                            whitespace(true)
-                            token(false, ":")
-                            whitespace(true)
-                        }
-                        chain(false) {
-                            whitespace(false)
-                            token(false, "by")
-                            whitespace(false)
-                        }
-                    }
-                    use(typeTemplate)
-                }
-            } makes {
-                it as List<*>
-                var ofs = 0
-                val modifiers = it[0] as? List<OnyxModifierType> ?: run {
-                    ofs++
-                    listOf()
-                }
-                val final = it[1 - ofs] == "val"
-                val name = it[2 - ofs] as String
-                val typeChain = it[3 - ofs] as List<*>
-                val deferred = (typeChain[0] as List<*>).firstOrNull {s -> s is String} == "by"
-                val typeName = typeChain[1] as String
-                val initExpression = TODO("Field init expression parsing")
-                val classType = TODO("Field class type parsing")
-                name to if (deferred) {
-                    val getter = TODO("Onyx deferred getter parsing")
-                    if (final)
-                        OnyxDeferredFinalFieldDesc(name, getter, modifiers, classType)
-                    else {
-                        val setter = TODO("Onyx deferred setter parsing")
-                        OnyxDeferredMutableFieldDesc(name, getter, setter, modifiers, classType)
-                    }
-                } else OnyxFieldDescriptor(name, classType, modifiers, initExpression, final)
-            }
-        }
-    }
 
 }

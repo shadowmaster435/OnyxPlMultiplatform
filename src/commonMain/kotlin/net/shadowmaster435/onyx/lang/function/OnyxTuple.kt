@@ -12,7 +12,7 @@ import net.shadowmaster435.onyx.util.OnyxExpression
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 
-class OnyxTuple(
+open class OnyxTuple(
     val type: OnyxClassDescriptor,
     val name: String,
     val nullability: OnyxNullability,
@@ -35,46 +35,7 @@ class OnyxTuple(
         if (nullable) OnyxNullability.NULLABLE else OnyxNullability.NON_NULLABLE,
         vararg, initExpression
     )
-    fun wrap() = OnyxTuples(this)
+    open fun wrap() = OnyxTuples(this)
 
     override fun toString() = "$name: $type"
-
-    companion object {
-        val functionTemplate = ParsinatorTemplate {
-            chain(true) {
-                branch(false) {
-                    token(false, "vararg", true, false) makes {true}
-                    exit(0) makes {false}
-                }
-                whitespace(true)
-                use(nameTemplate(false))
-                whitespace(true)
-                token(false, ":", excludeFromChains = true)
-                whitespace(true)
-                use(typeTemplate)
-                branch(false) {
-                    token(false, "?", false) makes {
-                        OnyxNullability.NULLABLE
-                    }
-                    exit(0) makes { OnyxNullability.NON_NULLABLE }
-                }
-                chain(true) {
-                    whitespace(true)
-                    token(false, "=", excludeFromChains = true)
-                    whitespace(true)
-                    use(expressionTemplate)
-                }
-            } makes {
-                it as list
-                val vararg = it[0] as Boolean
-                val name = it[1] as String
-                val type = it[2] as OnyxClassDescriptor
-                val nullability = it[3] as OnyxNullability
-                val initExpression = it.getOrNull(4) as? OnyxExpression
-                OnyxTuple(type, name, nullability, vararg, initExpression)
-            }
-        }
-    }
-
-
 }

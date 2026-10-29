@@ -3,13 +3,14 @@ package net.shadowmaster435.onyx.lang.code
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxUnit
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
+import net.shadowmaster435.onyx.lang.impl.OnyxCodeBlockContainer
 import net.shadowmaster435.onyx.lang.impl.OnyxRunnableImpl
 import net.shadowmaster435.onyx.lang.util.expressionTemplate
 import net.shadowmaster435.onyx.lang.util.memberTemplate
 import net.shadowmaster435.onyx.util.OnyxBlockReturn
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
-class OnyxCodeBlock(
+open class OnyxCodeBlock(
     val members: List<OnyxRunnableImpl>, val returnType: OnyxClassDescriptor = OnyxUnit.desc
 ) {
     var parent: OnyxCodeBlock? = null; internal set
@@ -27,19 +28,4 @@ class OnyxCodeBlock(
     fun execute(thisInst: OnyxClassInstance?): OnyxBlockReturn = execute(thisInst,listOf())
     fun execute(thisInst: OnyxClassInstance?, singleParam: OnyxClassInstance): OnyxBlockReturn =
         execute(thisInst,listOf(singleParam))
-    companion object {
-        val template: ParsinatorTemplate = ParsinatorTemplate {
-            chain(true) {
-                token(false, "{")
-                repeating(false, true) {
-                    branch(false) {
-                        use(memberTemplate)
-                        use(expressionTemplate)
-                    }
-                }
-                token(false, "}")
-            }
-        }
-    }
-
 }

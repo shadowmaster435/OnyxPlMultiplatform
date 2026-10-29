@@ -8,6 +8,7 @@ import net.shadowmaster435.onyx.lang.field.OnyxFieldInstance
 import net.shadowmaster435.onyx.lang.function.OnyxFunctionDescriptor
 import net.shadowmaster435.onyx.lang.impl.jvm.JVMDescribable
 import net.shadowmaster435.onyx.lang.impl.jvm.JVMFlaggable
+import net.shadowmaster435.onyx.lang.util.OnyxDefinitionName
 import net.shadowmaster435.onyx.util.OnyxExpression
 
 interface OnyxFieldImpl :
@@ -17,16 +18,20 @@ interface OnyxFieldImpl :
     OnyxReferencableImpl,
     JVMFlaggable,
     JVMDescribable,
-    OnyxCompilableConstImpl, OnyxInstantiatable<OnyxFieldInstance>
+    OnyxCompilableConstImpl,
+    OnyxInstantiatable<OnyxFieldInstance>,
+    OnyxFinalizable<OnyxFieldImpl>
 {
     override val applicability: JVMApplicability
         get() = JVMApplicability.FIELD
     override val descriptor: String
         get() = classType.descriptor
-    val classType: OnyxClassDescriptor
+    var holderClass: OnyxClassDescriptor?
+    var classType: OnyxClassDescriptor
     var getter: OnyxFunctionDescriptor?
     var setter: OnyxFunctionDescriptor?
     val initExpression: OnyxExpression?
+    val definitionName: OnyxDefinitionName?
     val isLateInit get() = modifiers.contains(OnyxModifierType.LATEINIT)
     val isLazy get() = modifiers.contains(OnyxModifierType.LAZY)
     val isDeferred: Boolean

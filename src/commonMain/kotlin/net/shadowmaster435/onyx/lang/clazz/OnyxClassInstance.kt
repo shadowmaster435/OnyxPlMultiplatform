@@ -20,8 +20,7 @@ open class OnyxClassInstance(
 ):  OnyxReferencableImpl, OnyxCompilableImpl, OnyxInitializable, OnyxRunnableImpl {
     protected open val fieldData: MutableList<OnyxFieldInstance> = mutableListOf()
     open val isObject = false
-
-
+    open val isConstructorCall: Boolean get() = false
 
     override fun getRefVal(thisInstance: OnyxClassInstance?) = thisInstance
     override fun setRefVal(thisInstance: OnyxClassInstance?, v: OnyxClassInstance) {}

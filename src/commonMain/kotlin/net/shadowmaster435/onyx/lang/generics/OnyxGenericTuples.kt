@@ -10,16 +10,16 @@ import net.shadowmaster435.onyx.lang.enums.generics.OnyxGenericCovariance
 import net.shadowmaster435.onyx.lang.util.list
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
-class OnyxGenericTuples(val tuples: List<OnyxGenericType>) {
+open class OnyxGenericTuples(val tuples: List<OnyxGenericType>) {
     constructor(vararg tuples: OnyxGenericType) : this(tuples.toList())
-    val requiredTuples = tuples.size
+    open val requiredTuples = tuples.size
 
-    private fun normal(v: OnyxGenericType, t: OnyxGenericType) =
+    protected open fun normal(v: OnyxGenericType, t: OnyxGenericType) =
         v.genericType?.castableTo(t.genericType ?: throw err) ?: throw err
 
 
 
-    private fun iter(input: Iterator<OnyxGenericType>) {
+    protected open fun iter(input: Iterator<OnyxGenericType>) {
         var i = 0
         input.forEach { value ->
             val tuple = tuples[i]
@@ -30,8 +30,8 @@ class OnyxGenericTuples(val tuples: List<OnyxGenericType>) {
         if (i < requiredTuples) throw InvalidParameterCountException("Invalid parameter count.")
     }
 
-    fun validate(input: Array<out OnyxGenericType>) = iter(input.iterator())
-    fun validate(input: List<OnyxGenericType>) = iter(input.iterator())
+    open fun validate(input: Array<out OnyxGenericType>) = iter(input.iterator())
+    open fun validate(input: List<OnyxGenericType>) = iter(input.iterator())
 
     override fun toString(): String {
         var str = ""
@@ -44,87 +44,5 @@ class OnyxGenericTuples(val tuples: List<OnyxGenericType>) {
     companion object {
         private val err = ImpossibleException("Type erased for generic cast, this should never happen")
         val empty = OnyxGenericTuples(listOf())
-        val definitionTemplate: ParsinatorTemplate = ParsinatorTemplate {
-            branch(false) {
-                chain(true) {
-                    token(false, "<", false, true)
-                    whitespace(true)
-                    repeating(false, false) {
-                        use(OnyxGenericType.definitionTemplate)
-                        whitespace(true)
-                        trailing { token(true, ",", false, true) }
-                    }
-                    whitespace(true)
-                    token(false, ">",false, true)
-                } makes {
-                    it as list
-                    val entries = it[0] as List<*>
-                    OnyxGenericTuples(buildList {
-                        for (entry in entries) {
-                            if (entry is OnyxGenericType) add(entry)
-                        }
-                    })
-                }
-                exit(0) makes {emptyList<OnyxGenericType>()}
-            }
-        }
-        val inputParamTemplate: ParsinatorTemplate = ParsinatorTemplate {
-            chain(false) {
-                token(false, "<", excludeFromChains = true)
-                whitespace(true)
-                repeating(true, false) {
-                    use(OnyxGenericType.inputParamTemplate)
-                    whitespace(true)
-                    trailing { token(true, ",", excludeFromChains = true) }
-                }
-                whitespace(true)
-                token(false, ">", excludeFromChains = true)
-            } makes {
-                it as List<*>
-                val inputs = it[0] as List<*>
-                buildList {
-                    var type: OnyxClassDescriptor? = null
-                    repeat(inputs.size) { i ->
-                        val isSecond = (i and 1) != 0
-                        if (isSecond) {
-                            val nullability = inputs[i] as OnyxNullability
-                            add(
-                                OnyxGenericType(
-                                    "", type!!, OnyxGenericCovariance.NONE, nullability
-                                )
-                            )
-                        } else type = inputs[i] as OnyxClassDescriptor
-                    }
-                }
-            }
-        }
-        val definitionInputParamTemplate = ParsinatorTemplate {
-            chain(false) {
-                token(false, "<", excludeFromChains = true)
-                whitespace(true)
-                repeating(true, false) {
-                    use(OnyxGenericType.definitionInputParamTemplate)
-                    whitespace(true)
-                    trailing { token(true, ",", excludeFromChains = true) }
-                }
-                whitespace(true)
-                token(false, ">", excludeFromChains = true)
-            } makes {
-                it as List<*>
-                val inputs = it[0] as List<*>
-                buildList {
-                    var type: OnyxClassDescriptor? = null
-                    repeat(inputs.size) { i ->
-                        val isSecond = (i and 1) != 0
-                        if (isSecond) {
-                            val nullability = inputs[i] as OnyxNullability
-                            add(OnyxGenericType(
-                                "", type!!, OnyxGenericCovariance.NONE, nullability
-                            ))
-                        } else type = inputs[i] as OnyxClassDescriptor
-                    }
-                }
-            }
-        }
     }
 }

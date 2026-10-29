@@ -18,7 +18,7 @@ import net.shadowmaster435.onyx.lang.util.*
 import net.shadowmaster435.onyx.util.OnyxModifiers
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
-class OnyxGenericType(
+open class OnyxGenericType(
     val genericName: String,
     type: OnyxClassDescriptor,
     val variance: OnyxGenericCovariance,
@@ -27,7 +27,7 @@ class OnyxGenericType(
     "", globalRoot, listOf(), linkedMapOf(), linkedMapOf(), linkedMapOf(),
     OnyxClassType.NORMAL, listOf()
 ) {
-    var genericType: OnyxClassDescriptor? = type; private set
+    open var genericType: OnyxClassDescriptor? = type; protected set
     override val fieldEntries: Array<OnyxFieldImpl>
         get() = erasureCheck().fieldEntries
     override val functionEntries: Array<AbstractOnyxFunctionDescriptor>
@@ -48,8 +48,8 @@ class OnyxGenericType(
         get() = erasureCheck().equalsFunction
     override val classType: OnyxClassType
         get() = erasureCheck().classType
-    override val companion: OnyxObject?
-        get() = erasureCheck().companion
+    override val companions: List<OnyxObject>
+        get() = erasureCheck().companions
 
     override val constructors: List<AbstractOnyxFunctionDescriptor>
         get() = erasureCheck().constructors
@@ -164,105 +164,14 @@ class OnyxGenericType(
 
     private fun erasureCheck(): OnyxClassDescriptor = if (genericType == null) throw err else genericType!!
 
-    fun erase() {
+    open fun erase() {
         if (variance.erasable) genericType = null
     }
     override fun cast(from: OnyxClassInstance) = erasureCheck().cast(from)
     override fun safeCast(from: OnyxClassInstance) = erasureCheck().safeCast(from)
-    fun castableTo(from: OnyxClassInstance) = from.castableTo(erasureCheck())
+    open fun castableTo(from: OnyxClassInstance) = from.castableTo(erasureCheck())
 
     companion object {
         private val err = ImpossibleException("Tried to cast to erased type, this should never happen")
-        val definitionTemplate = ParsinatorTemplate {
-            chain(false) {
-                branch(false) {
-                    chain(true) {
-                        use(OnyxKeywordType.covarianceTemplate)
-                        whitespace(false)
-                    } makes {(it as list)[0]}
-                    exit(0) makes { OnyxGenericCovariance.NONE }
-                }
-                name(false, nameRegex, numbersRegex)
-
-                whitespace(true)
-                chain(true) {
-                    token(false, ":", false, true)
-                    whitespace(true)
-                    use(typeTemplate)
-                    branch(false) {
-                        token(false, "?", false) makes {
-                            OnyxNullability.NULLABLE
-                        }
-                        exit(0) makes { OnyxNullability.NON_NULLABLE }
-                    }
-                }
-
-            } makes {
-                it as list
-                val covariance = it[0] as OnyxGenericCovariance
-                val name = it[1] as String
-                val bounds = it.getOrNull(2) as? List<*>
-                val boundsType = (bounds?.getOrNull(0) ?: anyDesc) as OnyxClassDescriptor
-                val boundsNullability = (bounds?.getOrNull(1) as? OnyxNullability) ?: OnyxNullability.INPUT
-                OnyxGenericType(name, boundsType, covariance, boundsNullability)
-            }
-        }
-
-        val inputParamTemplate = ParsinatorTemplate {
-            chain(false) {
-                use(typeTemplate)
-                whitespace(true)
-                branch(false) {
-                    token(false, "?", false) makes {
-                        OnyxNullability.NULLABLE
-                    }
-                    exit(0) makes { OnyxNullability.NON_NULLABLE }
-                }
-            } makes {
-                it as List<*>
-                OnyxGenericType(
-                    "",
-                    it[0] as OnyxClassDescriptor,
-                    OnyxGenericCovariance.NONE,
-                    it[1] as OnyxNullability)
-            }
-        }
-
-        val definitionInputParamTemplate = ParsinatorTemplate {
-            chain(false) {
-                branch(false) {
-                    chain(true) {
-                        use(OnyxKeywordType.covarianceTemplate)
-                        whitespace(false)
-                    } makes {(it as list)[0]}
-                    exit(0) makes { OnyxGenericCovariance.NONE }
-                }
-                whitespace(true)
-                use(typeTemplate)
-                whitespace(true)
-                branch(false) {
-                    chain(true) {
-                        token(false, "&", false, true)
-                        whitespace(true)
-                        token(false, "Any", false, true)
-                        whitespace(false)
-                    } makes {
-                        OnyxNullability.TRUE_NON_NULLABLE
-                    }
-                    token(false, "?", false) makes {
-                        OnyxNullability.NULLABLE
-                    }
-                    exit(0) makes { OnyxNullability.NON_NULLABLE }
-                }
-            } makes {
-                it as List<*>
-                OnyxGenericType(
-                    "",
-                    it[1] as OnyxClassDescriptor,
-                    it[0] as OnyxGenericCovariance,
-                    it[2] as OnyxNullability
-                )
-            }
-        }
     }
 }

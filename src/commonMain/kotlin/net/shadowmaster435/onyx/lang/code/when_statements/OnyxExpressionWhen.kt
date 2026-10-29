@@ -6,13 +6,14 @@ import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxClass
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.code.OnyxCodeBlock
+import net.shadowmaster435.onyx.lang.impl.OnyxCodeBlockContainer
 import net.shadowmaster435.onyx.util.OnyxExpression
 
 class OnyxExpressionWhen(
     returnType: OnyxClassDescriptor,
     private val elseBlock: OnyxCodeBlock?,
     vararg branches: Branch
-): AbstractOnyxWhen(returnType) {
+): AbstractOnyxWhen(returnType), OnyxCodeBlockContainer {
     private val branches = branches.toList()
     override val isTable = false
     override fun execute(
@@ -26,6 +27,16 @@ class OnyxExpressionWhen(
         }
         if (elseBlock != null) return elseBlock.execute(thisInst, params).first
         throw ImpossibleException()
+    }
+
+    override fun forEachBlock(consumer: (block: OnyxCodeBlock) -> Unit) {
+        branches.forEach {
+            it.expressions.forEach { expression ->
+                expression.forEachBlock(consumer)
+            }
+            consumer(it.block)
+        }
+        elseBlock?.let { consumer(it) }
     }
 
     class Branch (

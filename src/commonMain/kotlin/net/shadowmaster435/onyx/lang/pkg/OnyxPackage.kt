@@ -143,6 +143,8 @@ class OnyxPackage(val packageName: String, val parent: OnyxPackage?) {
             }
         }
 
+        fun loadClass(qname: String): OnyxClassDescriptor? = TODO("Class loading")
+
         private fun getOrMakeByQualifiedName(name: String, startPkg: OnyxPackage = globalRoot): OnyxPackage {
             val arr = name.split(".")
             var current: OnyxPackage = startPkg
@@ -158,7 +160,23 @@ class OnyxPackage(val packageName: String, val parent: OnyxPackage?) {
             for (string in arr) current = current.children[string] ?: return false
             return true
         }
-
+        fun findFieldByQName(qualifiedName: String): OnyxFieldDescriptor? {
+            val arr = qualifiedName.split(".")
+            var current = globalRoot
+            var currentField: OnyxFieldDescriptor? = null
+            var subclassIndex = 0
+            for (entry in arr) {
+                if (currentField == null) {
+                    val child = current.children[entry]
+                    subclassIndex++
+                    if (child != null) {
+                        current = child
+                        continue
+                    } else currentField = current.fields[entry] ?: return null
+                }
+            }
+            return currentField
+        }
         fun findClassByQName(qualifiedName: String): OnyxClassDescriptor? {
             val arr = qualifiedName.split(".")
             var current = globalRoot
@@ -173,7 +191,7 @@ class OnyxPackage(val packageName: String, val parent: OnyxPackage?) {
                         continue
                     } else currentClass = current.classes[entry] ?: return null
                 }
-                currentClass = currentClass.findSubclass(arr.subList(subclassIndex, arr.size - 1))
+                currentClass = currentClass.findInnerClass(arr.subList(subclassIndex, arr.size - 1))
             }
             return currentClass
         }

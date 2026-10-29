@@ -3,6 +3,7 @@ package net.shadowmaster435.onyx.lang.clazz
 import net.shadowmaster435.onyx.compiler.OnyxCompiledType
 import net.shadowmaster435.onyx.ext.filterDuplicates
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxNull
+import net.shadowmaster435.onyx.lang.code.OnyxCodeBlock
 import net.shadowmaster435.onyx.lang.enums.jvm.JVMApplicability
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxMemberType
@@ -32,7 +33,7 @@ open class OnyxClassDescriptor(
     classes: LinkedHashMap<String, OnyxClassDescriptor>,
     open val classType: OnyxClassType,
     supertypes: List<OnyxClassDescriptor>,
-    open val companion: OnyxObject? = null,
+    open val companions: List<OnyxObject> = listOf(),
     internal open val operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunctionDescriptor> = enumMapOf(),
     open val genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty,
     open val constructors: List<AbstractOnyxFunctionDescriptor> = listOf(),
@@ -43,15 +44,16 @@ open class OnyxClassDescriptor(
     JVMFlaggable,
     JVMDescribable,
     OnyxCompilableConstImpl,
-    OnyxInstantiatable<OnyxClassInstance>
+    OnyxInstantiatable<OnyxClassInstance>,
+    OnyxCodeBlockContainer
 {
     //region Vars
-    var subclassOf: OnyxClassDescriptor? = null
+    var innerClassOf: OnyxClassDescriptor? = null
+
     internal var jvmNameOverride: String? = null
     //endregion
     //region Vals
     val isEnum = modifiers.contains(OnyxModifierType.ENUM)
-
     open val isObject = classType == OnyxClassType.OBJECT
     open val supertypes = supertypes.toList()
     open val equalsFunction = functions["equals"]
@@ -70,8 +72,8 @@ open class OnyxClassDescriptor(
     open val qualifiedName: String get() {
         var subclassString = ""
         var current = this
-        while (current.subclassOf != null) {
-            val subclass = current.subclassOf
+        while (current.innerClassOf != null) {
+            val subclass = current.innerClassOf
             subclassString = name + subclassString
             if (subclass != null) {
                 current = subclass
@@ -104,6 +106,7 @@ open class OnyxClassDescriptor(
     }
     //endregion
     //endregion
+    //region Setup
     constructor(
         name: String,
         pkg: OnyxPackage,
@@ -118,8 +121,32 @@ open class OnyxClassDescriptor(
         modifiers: OnyxModifiers = listOf(OnyxModifierType.PUBLIC)
     ) : this(name, pkg, modifiers, fields, functions, classes, type,
         if (supertype == null) listOf() else listOf(supertype),
-        companion, operatorOverloads, genericTuples
+        if (companion == null) listOf() else listOf(companion), operatorOverloads, genericTuples
     )
+    init {
+        fields.forEach {
+            it.value.holderClass = this
+        }
+        functions.forEach {
+            it.value.holderClass = this
+        }
+        classes.forEach {
+            it.value.innerClassOf = this
+        }
+        supertypes.forEach {
+            it.innerClassOf = this
+        }
+        operatorOverloads.forEach {
+            it.value.holderClass = this
+        }
+        constructors.forEach {
+            it.holderClass = this
+        }
+
+    }
+
+    //endregion
+
     //region Class functions
     open fun castableTo(other: OnyxClassDescriptor): Boolean {
         for(supertype in supertypes) {
@@ -157,9 +184,9 @@ open class OnyxClassDescriptor(
         val subclassString = run {
             var str = ""
             var current = this
-            while (current.subclassOf != null) {
+            while (current.innerClassOf != null) {
                 str = current.name + str
-                val next = current.subclassOf
+                val next = current.innerClassOf
                 if (next != null) {
                     current = next
                     str = "$$str"
@@ -173,9 +200,9 @@ open class OnyxClassDescriptor(
     override fun compileConst(v: Any?) = OnyxCompiledType(compileFunc(v))
     //endregion
     //region Utility functions
-    fun findSubclass(path: String) = findSubclass(path.split('.'))
+    fun findInnerClass(path: String) = findInnerClass(path.split('.'))
 
-    fun findSubclass(path: List<String>): OnyxClassDescriptor? {
+    fun findInnerClass(path: List<String>): OnyxClassDescriptor? {
         var current = classEntries[classes[path.first()] ?: return null]
         fun iter(index: Int = 1): OnyxClassDescriptor? {
             if (index > path.size) return current
@@ -213,7 +240,7 @@ open class OnyxClassDescriptor(
         } } + classes),
         type,
         (supertypes + this).filterDuplicates(),
-        companion,
+        if (companion == null) listOf() else listOf(companion),
         enumMapOf(this.operatorOverloads + operatorOverloads), genericTuples
     )
 
@@ -250,6 +277,17 @@ open class OnyxClassDescriptor(
         fields, functions, classes, operatorOverloads, genericTuples, modifiers
     )
     //endregion
+    //region Code block container functions
+    override fun forEachBlock(consumer: (block: OnyxCodeBlock) -> Unit) {
+        fieldEntries.forEach { if (it is OnyxCodeBlockContainer) it.forEachBlock(consumer) }
+        functionEntries.forEach { it.forEachBlock(consumer) }
+        supertypes.forEach { it.forEachBlock(consumer) }
+        companions.forEach { it.desc.forEachBlock(consumer) }
+        constructors.forEach { it.forEachBlock(consumer) }
+        operatorOverloads.forEach { it.value.forEachBlock(consumer) }
+    }
+    //endregion
+
     companion object {
         val equalDesc = "equals" to OnyxClassInstance.defaultEqualsFunction
         val hashcodeDesc = "hashCode" to OnyxClassInstance.defaultHashcodeFunction

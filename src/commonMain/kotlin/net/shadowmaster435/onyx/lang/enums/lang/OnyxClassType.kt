@@ -1,6 +1,7 @@
 package net.shadowmaster435.onyx.lang.enums.lang
 
 enum class OnyxClassType {
+    UNINITIALIZED,
     NORMAL,
     OBJECT,
     DATA,

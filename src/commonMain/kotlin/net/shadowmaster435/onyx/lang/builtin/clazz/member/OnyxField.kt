@@ -3,7 +3,6 @@ package net.shadowmaster435.onyx.lang.builtin.clazz.member
 import net.shadowmaster435.onyx.lang.builtin.clazz.iterable.OnyxSet
 import net.shadowmaster435.onyx.lang.builtin.clazz.other.OnyxModifier
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.*
-import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.clazz.OnyxExternalClassInstance
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType

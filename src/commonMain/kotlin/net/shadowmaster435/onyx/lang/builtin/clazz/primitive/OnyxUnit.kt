@@ -13,11 +13,11 @@ object OnyxUnit : OnyxExternalClassInstance<Unit>(Desc.desc) {
     override fun onyxEquals(other: OnyxClassInstance) = OnyxBoolean(other === this)
     override fun onyxHashcode() = OnyxInt(Unit.hashCode())
     object Desc {
-        val desc = OnyxClassDescriptor(
-            "Unit", onyxPrimitives, linkedMapOf(), linkedMapOf(
+        val desc = anyDesc.extend(
+            "Unit", onyxPrimitives, OnyxClassType.NORMAL, fields =  linkedMapOf(),  functions =  linkedMapOf(
                 OnyxClassDescriptor.hashcodeDesc,
                 OnyxClassDescriptor.equalDesc
-            ), linkedMapOf(), OnyxClassType.NORMAL, OnyxAny.desc
+            ), classes = linkedMapOf()
         ).apply { jvmNameOverride = JVMPrimitiveType.VOID.descriptor }
     }
 }
