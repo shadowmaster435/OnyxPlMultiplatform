@@ -9,13 +9,14 @@ import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.clazz.OnyxExternalClassInstance
 import net.shadowmaster435.onyx.lang.clazz.OnyxObject
+import net.shadowmaster435.onyx.lang.enums.jvm.JVMPrimitiveType
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.function.OnyxTuples
 import net.shadowmaster435.onyx.lang.function.OnyxVirtualFunctionDescriptor
 import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
 import net.shadowmaster435.onyx.lang.util.externalFunc
-import net.shadowmaster435.onyx.lang.enums.jvm.JVMPrimitiveType
+import kotlin.collections.linkedMapOf
 import kotlin.reflect.KClass
 
 
@@ -60,6 +61,7 @@ abstract class OnyxNumber<T: Number>(desc: OnyxClassDescriptor = Companion.desc)
         ): OnyxClassDescriptor {
             val desc = actuallyMakeOverrideDesc<T>(name, supertypes, companion)
             descriptors[T::class] = desc
+
             return desc.apply {
                 jvmNameOverride = when(name) {
                     "Byte" -> JVMPrimitiveType.BYTE
@@ -77,8 +79,8 @@ abstract class OnyxNumber<T: Number>(desc: OnyxClassDescriptor = Companion.desc)
             name: String,
             supertypes: List<OnyxClassDescriptor> = listOf(),
             companion: OnyxObject? = null
-        ) = OnyxClassDescriptor(
-            name, onyxPrimitives, listOf(OnyxModifierType.PUBLIC), linkedMapOf(), linkedMapOf(
+        ): OnyxClassDescriptor = anyDesc.extend(
+            name, onyxPrimitives, OnyxClassType.OPEN, listOf(desc) + supertypes, companion, linkedMapOf(), linkedMapOf(
                 externalFunc("toByte", OnyxTuples.empty, extendedModifiers) { thisInst, _ ->
                     OnyxByte((thisInst as T).toByte())
                 },
@@ -103,7 +105,7 @@ abstract class OnyxNumber<T: Number>(desc: OnyxClassDescriptor = Companion.desc)
                 externalFunc("byteCount", OnyxTuples.empty, extendedModifiers) { thisInst, _ ->
                     OnyxInt((thisInst as T).byteCount)
                 },
-            ), linkedMapOf(), OnyxClassType.NORMAL, listOf(desc) + supertypes, companion
+            ), linkedMapOf(), modifiers = listOf(OnyxModifierType.PUBLIC, OnyxModifierType.OPEN)
         )
 
         private val unknownOp get() = UnknownOperationException("Unknown operator")

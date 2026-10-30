@@ -1,22 +1,19 @@
 package net.shadowmaster435.onyx.lang.generics
 
 import net.shadowmaster435.onyx.exception.ImpossibleException
-import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.anyDesc
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.clazz.OnyxObject
 import net.shadowmaster435.onyx.lang.enums.code.OnyxNullability
 import net.shadowmaster435.onyx.lang.enums.generics.OnyxGenericCovariance
-import net.shadowmaster435.onyx.lang.enums.keyword.OnyxKeywordType
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.enums.operator.OnyxOperator
 import net.shadowmaster435.onyx.lang.function.AbstractOnyxFunctionDescriptor
 import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
 import net.shadowmaster435.onyx.lang.pkg.OnyxPackage
 import net.shadowmaster435.onyx.lang.pkg.globalRoot
-import net.shadowmaster435.onyx.lang.util.*
+import net.shadowmaster435.onyx.lang.util.EnumMap
 import net.shadowmaster435.onyx.util.OnyxModifiers
-import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 open class OnyxGenericType(
     val genericName: String,

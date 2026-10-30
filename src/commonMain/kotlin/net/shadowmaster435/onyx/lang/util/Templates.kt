@@ -1,11 +1,8 @@
 package net.shadowmaster435.onyx.lang.util
 
 import net.shadowmaster435.onyx.ext.substringOrNull
-import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxUnfinalizedClassDesc
-import net.shadowmaster435.onyx.lang.field.OnyxFieldDescriptor
 import net.shadowmaster435.onyx.lang.field.OnyxUnfinalizedFieldDesc
-import net.shadowmaster435.onyx.lang.function.OnyxFunctionDescriptor
 import net.shadowmaster435.onyx.lang.function.OnyxUnfinalizedFunctionDescriptor
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
 import net.shadowmaster435.onyx.lang.generics.OnyxUnfinalizedGenericTuples

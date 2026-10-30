@@ -4,11 +4,6 @@ import net.shadowmaster435.onyx.exception.ImpossibleException
 import net.shadowmaster435.onyx.exception.IncorrectParametersException
 import net.shadowmaster435.onyx.exception.InvalidParameterCountException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxNull
-import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
-import net.shadowmaster435.onyx.lang.enums.code.OnyxNullability
-import net.shadowmaster435.onyx.lang.enums.generics.OnyxGenericCovariance
-import net.shadowmaster435.onyx.lang.util.list
-import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 open class OnyxGenericTuples(val tuples: List<OnyxGenericType>) {
     constructor(vararg tuples: OnyxGenericType) : this(tuples.toList())

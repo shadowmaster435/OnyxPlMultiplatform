@@ -4,12 +4,10 @@ import net.shadowmaster435.onyx.exception.VirtualAccessException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxUnit
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
-import net.shadowmaster435.onyx.lang.clazz.OnyxUnfinalizedClassDesc
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxMemberType
 import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericType
-import net.shadowmaster435.onyx.lang.generics.OnyxUnfinalizedGenericTuples
 
 open class OnyxVirtualFunctionDescriptor(
     name: String,

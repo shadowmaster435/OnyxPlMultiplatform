@@ -1,8 +1,6 @@
 package net.shadowmaster435.onyx.lang.code
 
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxUnit
-import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
-import net.shadowmaster435.onyx.lang.clazz.OnyxUnfinalizedClassDesc
 import net.shadowmaster435.onyx.lang.clazz.OnyxUnfinalizedClassTypeRef
 import net.shadowmaster435.onyx.lang.function.OnyxFunctionDescriptor
 import net.shadowmaster435.onyx.lang.impl.OnyxFinalizable

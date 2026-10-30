@@ -1,13 +1,10 @@
 package net.shadowmaster435.onyx.lang.function
 
 import net.shadowmaster435.onyx.exception.UninitializedException
-import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
-import net.shadowmaster435.onyx.lang.clazz.OnyxUnfinalizedClassDesc
 import net.shadowmaster435.onyx.lang.clazz.OnyxUnfinalizedClassTypeRef
 import net.shadowmaster435.onyx.lang.enums.code.OnyxNullability
 import net.shadowmaster435.onyx.lang.enums.jvm.JVMApplicability
 import net.shadowmaster435.onyx.lang.impl.OnyxFinalizable
-import net.shadowmaster435.onyx.lang.impl.jvm.JVMFlaggable
 import net.shadowmaster435.onyx.lang.util.expressionTemplate
 import net.shadowmaster435.onyx.lang.util.list
 import net.shadowmaster435.onyx.lang.util.nameTemplate

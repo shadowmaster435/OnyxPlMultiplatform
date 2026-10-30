@@ -7,8 +7,6 @@ import net.shadowmaster435.onyx.exception.UnknownException
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxNull
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
-import net.shadowmaster435.onyx.lang.util.list
-import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 open class OnyxTuples(val tuples: List<OnyxTuple>) {
     constructor(vararg tuples: OnyxTuple) : this(tuples.toList())

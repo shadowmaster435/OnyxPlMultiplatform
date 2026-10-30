@@ -3,12 +3,8 @@ package net.shadowmaster435.onyx.lang.code
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxUnit
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
-import net.shadowmaster435.onyx.lang.impl.OnyxCodeBlockContainer
 import net.shadowmaster435.onyx.lang.impl.OnyxRunnableImpl
-import net.shadowmaster435.onyx.lang.util.expressionTemplate
-import net.shadowmaster435.onyx.lang.util.memberTemplate
 import net.shadowmaster435.onyx.util.OnyxBlockReturn
-import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 open class OnyxCodeBlock(
     val members: List<OnyxRunnableImpl>, val returnType: OnyxClassDescriptor = OnyxUnit.desc

@@ -2,7 +2,6 @@ package net.shadowmaster435.onyx.lang.function
 
 import net.shadowmaster435.onyx.exception.UninitializedException
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
-import net.shadowmaster435.onyx.lang.clazz.OnyxUnfinalizedClassTypeRef
 import net.shadowmaster435.onyx.lang.code.OnyxCodeBlock
 import net.shadowmaster435.onyx.lang.generics.OnyxUnfinalizedGenericTuples
 import net.shadowmaster435.onyx.lang.generics.OnyxUnfinalizedGenericType

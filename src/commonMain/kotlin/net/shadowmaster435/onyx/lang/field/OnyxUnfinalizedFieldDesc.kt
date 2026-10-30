@@ -1,6 +1,5 @@
 package net.shadowmaster435.onyx.lang.field
 
-import net.shadowmaster435.onyx.exception.NonExistenceException
 import net.shadowmaster435.onyx.exception.UninitializedException
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
@@ -9,19 +8,14 @@ import net.shadowmaster435.onyx.lang.enums.lang.OnyxMemberType
 import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.function.OnyxFunctionDescriptor
 import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
-import net.shadowmaster435.onyx.lang.pkg.OnyxPackage
-import net.shadowmaster435.onyx.lang.pkg.globalRoot
 import net.shadowmaster435.onyx.lang.util.OnyxDefinitionName
 import net.shadowmaster435.onyx.lang.util.expressionTemplate
 import net.shadowmaster435.onyx.lang.util.extensionDefinitionName
-import net.shadowmaster435.onyx.lang.util.nameRegex
-import net.shadowmaster435.onyx.lang.util.numbersRegex
 import net.shadowmaster435.onyx.lang.util.typeTemplate
 import net.shadowmaster435.onyx.util.OnyxExpression
 import net.shadowmaster435.onyx.util.OnyxModifiers
 import net.shadowmaster435.onyx.util.OnyxParams
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
-import kotlin.jvm.JvmSynthetic
 
 class OnyxUnfinalizedFieldDesc(
     override val name: String,
