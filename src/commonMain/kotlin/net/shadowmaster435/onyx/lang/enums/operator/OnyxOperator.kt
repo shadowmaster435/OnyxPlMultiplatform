@@ -8,6 +8,7 @@ import net.shadowmaster435.onyx.lang.function.OnyxTuple
 import net.shadowmaster435.onyx.lang.function.OnyxTuples
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
+import net.shadowmaster435.parsinator.util.ParsinatorContext
 import kotlin.enums.enumEntries
 import kotlin.jvm.JvmSynthetic
 
@@ -122,37 +123,37 @@ enum class OnyxOperator(
 
 
     companion object {
-        @JvmSynthetic internal fun binaryTemplate(make: (Any?) -> Any?) = ParsinatorTemplate {
+        @JvmSynthetic internal fun binaryTemplate(make: ParsinatorContext.(Any?) -> Any?) = ParsinatorTemplate {
             branch(true) {
                 for (op in enumEntries<OnyxOperator>()) if (op.type == OnyxOperatorType.BINARY)
                     token(true, op.string)
             } makes make
         }
-        @JvmSynthetic internal fun unaryTemplate(make: (Any?) -> Any?) = ParsinatorTemplate {
+        @JvmSynthetic internal fun unaryTemplate(make: ParsinatorContext.(Any?) -> Any?) = ParsinatorTemplate {
             branch(true) {
                 for (op in enumEntries<OnyxOperator>()) if (op.type == OnyxOperatorType.UNARY)
                     token(true, op.string)
             } makes make
         }
-        @JvmSynthetic internal fun unaryLeftTemplate(make: (Any?) -> Any?) = ParsinatorTemplate {
+        @JvmSynthetic internal fun unaryLeftTemplate(make: ParsinatorContext.(Any?) -> Any?) = ParsinatorTemplate {
             branch(true) {
                 for (op in enumEntries<OnyxOperator>()) if (op.type == OnyxOperatorType.UNARY_LEFT)
                     token(true, op.string)
             } makes make
         }
-        @JvmSynthetic internal fun unaryRightTemplate(make: (Any?) -> Any?) = ParsinatorTemplate {
+        @JvmSynthetic internal fun unaryRightTemplate(make: ParsinatorContext.(Any?) -> Any?) = ParsinatorTemplate {
             branch(true) {
                 for (op in enumEntries<OnyxOperator>()) if (op.type == OnyxOperatorType.UNARY_RIGHT)
                     token(true, op.string)
             } makes make
         }
-        @JvmSynthetic internal fun binaryLeftTemplate(make: (Any?) -> Any?) = ParsinatorTemplate {
+        @JvmSynthetic internal fun binaryLeftTemplate(make: ParsinatorContext.(Any?) -> Any?) = ParsinatorTemplate {
             branch(true) {
                 for (op in enumEntries<OnyxOperator>()) if (op.type == OnyxOperatorType.BINARY_OR_LEFT)
                     token(true, op.string)
             } makes make
         }
-        @JvmSynthetic internal fun accessTemplate(make: (Any?) -> Any?) = ParsinatorTemplate {
+        @JvmSynthetic internal fun accessTemplate(make: ParsinatorContext.(Any?) -> Any?) = ParsinatorTemplate {
             branch(true) {
                 for (op in enumEntries<OnyxOperator>()) if (op.type == OnyxOperatorType.ACCESS)
                     token(true, op.string)

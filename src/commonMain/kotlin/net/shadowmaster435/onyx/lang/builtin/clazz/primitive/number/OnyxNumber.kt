@@ -32,10 +32,23 @@ abstract class OnyxNumber<T: Number>(desc: OnyxClassDescriptor = Companion.desc)
     abstract fun toDouble(): Double//
     override fun onyxHashcode() = OnyxInt(held.hashCode())
     companion object {
+        internal val negativeHex get() = IllegalArgumentException("Negative signs are not supported for hex and binary strings")
+        internal val noExponents get() = IllegalArgumentException("Exponents cannot be used here")
         private val extendedModifiers = listOf(OnyxModifierType.PUBLIC, OnyxModifierType.OVERRIDE)
         private val descriptors = hashMapOf<KClass<*>, OnyxClassDescriptor>()
+        init {
+            OnyxByte(0)
+            OnyxShort(0)
+            OnyxInt(0)
+            OnyxLong(0)
+            OnyxFloat(0f)
+            OnyxDouble(0.0)
+        }
 
-        fun <T: OnyxNumber<*>> descOf(klass: KClass<T>) = descriptors[klass]!!
+
+        fun <T: OnyxNumber<*>> descOf(klass: KClass<T>): OnyxClassDescriptor {
+            return descriptors[klass]!!
+        }
 
 
         val desc = anyDesc.extend(

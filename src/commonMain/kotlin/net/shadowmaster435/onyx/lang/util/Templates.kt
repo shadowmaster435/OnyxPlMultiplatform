@@ -10,11 +10,12 @@ import net.shadowmaster435.onyx.lang.pkg.OnyxPackage
 import net.shadowmaster435.onyx.lang.pkg.OnyxPackage.Companion.byQualifiedName
 import net.shadowmaster435.parsinator.Parsinator
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
+import net.shadowmaster435.parsinator.util.ParsinatorContext
 import net.shadowmaster435.parsinator.util.ParsinatorErrorType
 
 internal typealias list = List<*>
 
-fun accessChainTemplate(make: (Any?) -> Any?) = ParsinatorTemplate {
+fun accessChainTemplate(make: ParsinatorContext.(Any?) -> Any?) = ParsinatorTemplate {
     repeating(true, false) {
         name(false)
         whitespace(true)
@@ -50,10 +51,12 @@ fun accessChainStringTemplate(make: (String) -> Any?) = ParsinatorTemplate {
         name(false)
         whitespace(true)
         trailing {
-            token(true, ".", false)
-            whitespace(true)
-            name(false)
-            whitespace(true)
+            chain(true) {
+                token(true, ".", false)
+                whitespace(true)
+                name(false)
+                whitespace(true)
+            }
         }
     } makes {
         var str = ""

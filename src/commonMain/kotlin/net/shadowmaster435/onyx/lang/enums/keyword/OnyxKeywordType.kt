@@ -2,6 +2,7 @@ package net.shadowmaster435.onyx.lang.enums.keyword
 
 import net.shadowmaster435.onyx.lang.enums.generics.OnyxGenericCovariance
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
+import net.shadowmaster435.parsinator.util.ParsinatorContext
 import kotlin.enums.enumEntries
 import kotlin.jvm.JvmSynthetic
 
@@ -71,7 +72,7 @@ enum class OnyxKeywordType(val string: String, val subtype: SubType, val require
         SUGAR,
     }
     companion object {
-        @JvmSynthetic internal fun template(make: (Any?) -> Any?) = ParsinatorTemplate {
+        @JvmSynthetic internal fun template(make: ParsinatorContext.(Any?) -> Any?) = ParsinatorTemplate {
             branch(true) {
                 for (keyword in enumEntries<OnyxKeywordType>()) token(false, keyword.string)
             } makes make

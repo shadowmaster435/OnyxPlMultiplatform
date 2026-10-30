@@ -8,7 +8,7 @@ import net.shadowmaster435.onyx.lang.util.numbersRegex
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 expect val OnyxLong.compileFunc: (Any?) -> Any?
-class OnyxLong(override val held: Long) : OnyxNumber<Long>(makeOverrideDesc<OnyxLong>("Long")), OnyxCompilableConstImpl {
+class OnyxLong(override val held: Long) : OnyxNumber<Long>(desc), OnyxCompilableConstImpl {
     override val byteCount = 8
     override fun toByte() = held.toByte()
     override fun toShort() = held.toShort()
@@ -18,24 +18,17 @@ class OnyxLong(override val held: Long) : OnyxNumber<Long>(makeOverrideDesc<Onyx
     override fun toDouble() = held.toDouble()
     override fun compileConst(v: Any?) = OnyxCompiledType(compileFunc(v))
     companion object {
-        val desc = descOf(OnyxLong::class)
+        val desc = makeOverrideDesc<OnyxLong>("Long")
         val template = ParsinatorTemplate {
             chain(true) {
                 branch(false) {
-                    token(false, "-")
-                    exit(0)
-                } makes { it is String }
-
-                branch(true) {
-                    token(false, "0x")
-                    token(false, "0b")
-                    exit(0)
-                } makes {
-                    when (it) {
-                        "0x" -> 2
-                        "0b" -> 1
-                        else -> 0
-                    }
+                    token(false, "-", false) makes {true}
+                    exit(0) makes { false }
+                }
+                branch(false) {
+                    token(false, "0x", false) makes {2}
+                    token(false, "0b", false) makes {1}
+                    exit(0) makes {0}
                 }
                 name(false, numbersRegex)
                 branch(false) {
@@ -47,7 +40,7 @@ class OnyxLong(override val held: Long) : OnyxNumber<Long>(makeOverrideDesc<Onyx
                 val negative = it[0] as Boolean
                 val stringType = it[1] as Int
                 val numberString = it[2] as String
-                if (negative && stringType != 0) throw IllegalArgumentException("Negative signs are not supported for hex and binary strings")
+                if (negative && stringType != 0) throw negativeHex
                 val result = when(stringType) {
                     2 -> numberString.hexToLong()
                     1 -> numberString.binaryToLong()

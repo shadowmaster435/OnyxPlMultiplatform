@@ -20,27 +20,20 @@ class OnyxFloat(override val held: Float) : OnyxNumber<Float>(makeOverrideDesc<O
     companion object {
         val desc = descOf(OnyxFloat::class)
         val template = ParsinatorTemplate {
-            chain(true) {
+            chain(false) {
                 branch(false) {
-                    token(false, "-")
-                    exit(0)
-                } makes { it is String }
-
-                branch(true) {
-                    token(false, "0x")
-                    token(false, "0b")
-                    exit(0)
-                } makes {
-                    when (it) {
-                        "0x" -> 2
-                        "0b" -> 1
-                        else -> 0
-                    }
+                    token(false, "-", false) makes {true}
+                    exit(0) makes { false }
+                }
+                branch(false) {
+                    token(false, "0x", false) makes {2}
+                    token(false, "0b", false) makes {1}
+                    exit(0) makes {0}
                 }
                 name(false, Regex("[0-9.eE-]"), Regex("[eE-]"))
                 branch(true) {
-                    token(false, "f")
-                    token(false, "F")
+                    token(false, "f", false)
+                    token(false, "F",false)
                 }
             } makes {
                 it as List<*>
@@ -48,8 +41,8 @@ class OnyxFloat(override val held: Float) : OnyxNumber<Float>(makeOverrideDesc<O
                 val stringType = it[1] as Int
                 val numberString = it[2] as String
                 val containsExponent = numberString.contains(Regex("[eE]"))
-                if (negative && stringType != 0) throw IllegalArgumentException("Negative signs are not supported for hex and binary strings")
-                if (stringType != 0 && containsExponent) throw IllegalArgumentException("Exponents cannot be used here")
+                if (negative && stringType != 0) throw negativeHex
+                if (stringType != 0 && containsExponent) throw noExponents
                 val result = when(stringType) {
                     2 -> numberString.hexToFloat()
                     1 -> numberString.binaryToFloat()

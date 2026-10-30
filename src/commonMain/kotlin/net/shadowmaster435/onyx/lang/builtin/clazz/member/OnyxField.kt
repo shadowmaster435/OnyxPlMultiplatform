@@ -13,6 +13,7 @@ import net.shadowmaster435.onyx.lang.field.OnyxFieldDescriptor
 import net.shadowmaster435.onyx.lang.function.OnyxTuple
 import net.shadowmaster435.onyx.lang.function.OnyxTuples
 import net.shadowmaster435.onyx.lang.impl.OnyxAccessImpl
+import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
 import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
 import net.shadowmaster435.onyx.lang.util.externalFinalField
 import net.shadowmaster435.onyx.lang.util.externalFunc
@@ -25,7 +26,7 @@ class OnyxField(override val held: OnyxFieldDescriptor): OnyxExternalClassInstan
 
     companion object {
         val desc = anyDesc.extend(
-            "OField", onyxPrimitives, OnyxClassType.NORMAL, null, linkedMapOf(
+            "OField", onyxPrimitives, OnyxClassType.NORMAL, null, linkedMapOf<String, OnyxFieldImpl>(
                 externalFinalField("modifiers", OnyxSet.desc) {
                     OnyxSet(buildSet {
                         (it as OnyxField).held.modifiers.forEach { mod ->
@@ -39,8 +40,8 @@ class OnyxField(override val held: OnyxFieldDescriptor): OnyxExternalClassInstan
                 externalFinalField("type", OnyxClass.desc) {
                     OnyxClass((it as OnyxField).held.classType)
                 },
-                *OnyxAccessImpl.fields()
-            ), linkedMapOf(
+
+            ).apply { putAll(OnyxAccessImpl.fields()) }, linkedMapOf(
                 externalFunc("get",  OnyxTuple(
                     anyDesc, "instance", false, true
                 ).wrap()) { thisInst, list ->

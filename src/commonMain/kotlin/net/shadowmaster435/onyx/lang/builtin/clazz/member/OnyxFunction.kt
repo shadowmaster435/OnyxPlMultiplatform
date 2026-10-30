@@ -56,7 +56,7 @@ object OnyxFunction {
             fields = linkedMapOf(
                 "parameterCount" to OnyxFieldDescriptor(
                     "parameterCount", OnyxInt.desc,
-                    listOf(OnyxModifierType.PUBLIC, OnyxModifierType.META, OnyxModifierType.OVERRIDE),
+                    OnyxInt.desc, listOf(OnyxModifierType.PUBLIC, OnyxModifierType.META, OnyxModifierType.OVERRIDE),
                     initExpression = OnyxExpression.wrap(OnyxInt(it))
                 ),
             ),

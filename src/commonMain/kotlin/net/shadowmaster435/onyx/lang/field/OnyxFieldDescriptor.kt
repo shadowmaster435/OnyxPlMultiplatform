@@ -38,6 +38,7 @@ class OnyxFieldDescriptor(
     override fun createFinal() = this
     override var selfInstance = selfInstance; internal set
 
+
     override fun getRefVal(thisInstance: OnyxClassInstance?) =
         thisInstance?.getField(name) ?: selfInstance?.get(thisInstance) ?:
         throw ImpossibleException("Unbound field. This should never happen")

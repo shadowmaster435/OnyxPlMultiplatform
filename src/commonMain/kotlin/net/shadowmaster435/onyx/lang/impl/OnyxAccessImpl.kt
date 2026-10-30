@@ -28,7 +28,7 @@ interface OnyxAccessImpl : OnyxModifierImpl {
             externalFinalField("isFile", OnyxBoolean.desc) {OnyxBoolean((it as OnyxAccessImpl).isFile)},
             externalFinalField("isPackage", OnyxBoolean.desc) {OnyxBoolean((it as OnyxAccessImpl).isPackage)}
         ).toTypedArray()
-        fun fields() = fields.clone()
+        fun fields() = fields.copyOf()
 
     }
 

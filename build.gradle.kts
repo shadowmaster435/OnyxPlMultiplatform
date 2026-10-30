@@ -31,12 +31,9 @@ kotlin {
     jvm()
     val hostOs = System.getProperty("os.name")
     targets.withType<KotlinNativeTarget>().configureEach {
-        for (compilation in compilations) {
-            println(compilation.name)
-        }
         compilations.getByName("main") {
             cinterops {
-                val llvm by creating {
+                val llvm = create("llvm") {
                     definitionFile.set(project.file("src/nativeMain/cinterop/llvm.def"))
                     includeDirs("libs")
                 }
@@ -59,25 +56,30 @@ kotlin {
         else -> throw GradleException("Unsupported host OS: $hostOs")
     }
     sourceSets {
-        commonMain.dependencies {
-            implementation(kotlin("stdlib"))
-            implementation("net.shadowmaster43:parsinator-metadata:1.0")
-            implementation(kotlin("reflect"))
-            implementation("org.ow2.asm:asm:9.7")
-            implementation("org.ow2.asm:asm-commons:9.7")
-            implementation("org.ow2.asm:asm-util:9.7")
-            implementation("org.ow2.asm:asm-tree:9.7")
-        }
-        nativeMain.dependencies {
+        commonMain {dependencies {
             implementation(kotlin("stdlib"))
             implementation(files("libs/parsinator-linux-$parsinatorVersion.klib"))
-            implementation("org.jetbrains.kotlinx:kotlinx-io-okio:0.9.1")
-            implementation(files("libs/llvm.klib"))
-
-        }
-        jvmMain.dependencies {
-            implementation(kotlin("stdlib"))
             implementation(files("libs/parsinator-jvm-$parsinatorVersion.jar"))
+            implementation("net.shadowmaster435:parsinator-metadata:1.0")
+            implementation(kotlin("reflect"))
+        }}
+        nativeMain {
+            dependencies {
+                implementation(kotlin("stdlib"))
+                implementation(files("libs/parsinator-linux-$parsinatorVersion.klib"))
+                implementation("org.jetbrains.kotlinx:kotlinx-io-okio:0.9.1")
+                implementation(files("libs/llvm.klib"))
+            }
+        }
+        jvmMain {
+            dependencies {
+                implementation(kotlin("stdlib"))
+//                implementation(files("libs/parsinator-jvm-$parsinatorVersion.jar"))
+                implementation("org.ow2.asm:asm:9.7")
+                implementation("org.ow2.asm:asm-commons:9.7")
+                implementation("org.ow2.asm:asm-util:9.7")
+                implementation("org.ow2.asm:asm-tree:9.7")
+            }
         }
     }
 }

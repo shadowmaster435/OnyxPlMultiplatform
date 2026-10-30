@@ -128,13 +128,12 @@ open class OnyxClassDescriptor(
             it.value.holderClass = this
         }
         functions.forEach {
-            it.value.holderClass = this
+            val v = it.value
+            @Suppress("SENSELESS_COMPARISON")
+            if (v != null) it.value.holderClass = this
         }
         classes.forEach {
             it.value.innerClassOf = this
-        }
-        supertypes.forEach {
-            it.innerClassOf = this
         }
         operatorOverloads.forEach {
             it.value.holderClass = this
@@ -292,6 +291,6 @@ open class OnyxClassDescriptor(
         val equalDesc = "equals" to OnyxClassInstance.defaultEqualsFunction
         val hashcodeDesc = "hashCode" to OnyxClassInstance.defaultHashcodeFunction
         val toStringDesc = "toString" to OnyxClassInstance.defaultToStringFunction
-        val template: ParsinatorTemplate = TODO("Class parsinator template")
+        val template: ParsinatorTemplate get() = TODO("Class parsinator template")
     }
 }

@@ -1,9 +1,12 @@
 package net.shadowmaster435.onyx.util
 
+import net.shadowmaster435.onyx.lang.field.OnyxUnfinalizedFieldDesc
 import java.io.File
 
 
+fun main() {
 
+}
 actual fun iterateDirectoryTree(
     absolutePath: String,
     consumer: (relative: String, isDirectory: Boolean) -> Unit
