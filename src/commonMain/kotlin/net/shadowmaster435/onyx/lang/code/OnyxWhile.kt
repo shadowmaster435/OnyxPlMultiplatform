@@ -5,11 +5,20 @@ import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxUnit
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.enums.code.OnyxExitType
 import net.shadowmaster435.onyx.lang.impl.OnyxCodeBlockContainer
+import net.shadowmaster435.onyx.lang.impl.OnyxFinalizable
 import net.shadowmaster435.onyx.lang.impl.OnyxRunnableImpl
 import net.shadowmaster435.onyx.util.OnyxExpression
 import net.shadowmaster435.onyx.util.OnyxParams
 
-class OnyxWhile(val expression: OnyxExpression, val codeBlock: OnyxCodeBlock, val doBlock: OnyxCodeBlock? = null): OnyxRunnableImpl, OnyxCodeBlockContainer {
+class OnyxWhile(
+    val expression: OnyxExpression,
+    val codeBlock: OnyxCodeBlock,
+    val doBlock: OnyxCodeBlock? = null
+):
+    OnyxRunnableImpl,
+    OnyxCodeBlockContainer,
+    OnyxFinalizable<OnyxWhile>
+{
     override fun execute(parent: OnyxCodeBlock?, thisInst: OnyxClassInstance?, params: OnyxParams): OnyxUnit {
         while ((expression.evaluate(parent, thisInst, params) as OnyxBoolean).held) {
             val type = codeBlock.execute(thisInst).second
@@ -22,4 +31,10 @@ class OnyxWhile(val expression: OnyxExpression, val codeBlock: OnyxCodeBlock, va
         consumer(codeBlock)
         doBlock?.let { consumer(it) }
     }
+
+    override fun createFinal() = OnyxWhile(
+        expression.checkCreateFinal(),
+        if (codeBlock is OnyxUnfinalizedCodeBlock) codeBlock.checkCreateFinal() else codeBlock,
+        doBlock?.let { if (it is OnyxUnfinalizedCodeBlock) it.checkCreateFinal() else it },
+    )
 }

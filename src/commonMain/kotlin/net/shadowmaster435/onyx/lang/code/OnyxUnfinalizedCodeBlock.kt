@@ -19,11 +19,11 @@ class OnyxUnfinalizedCodeBlock(
     override fun createFinal(): OnyxCodeBlock {
         val members = buildList {
             members.forEach {
-                val new = if (it is OnyxFinalizable<*>) it.createFinal() else it
+                val new = if (it is OnyxFinalizable<*>) it.checkCreateFinal() else it
                 if (new is OnyxRunnableImpl) add(it)
             }
         }
-        val returnType = returnTypeUnfinal?.createFinal() ?: OnyxUnit.desc
+        val returnType = returnTypeUnfinal?.checkCreateFinal() ?: OnyxUnit.desc
 
         return OnyxCodeBlock(
             members, returnType

@@ -5,15 +5,19 @@ import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxBoolean
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxClass
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
+import net.shadowmaster435.onyx.lang.clazz.OnyxUnfinalizedClassTypeRef
 import net.shadowmaster435.onyx.lang.code.OnyxCodeBlock
+import net.shadowmaster435.onyx.lang.code.OnyxUnfinalizedCodeBlock
 import net.shadowmaster435.onyx.lang.impl.OnyxCodeBlockContainer
+import net.shadowmaster435.onyx.lang.impl.OnyxFinalizable
 import net.shadowmaster435.onyx.util.OnyxExpression
 
 class OnyxExpressionWhen(
     returnType: OnyxClassDescriptor,
     private val elseBlock: OnyxCodeBlock?,
+    override val isFinalized: Boolean = false,
     vararg branches: Branch
-): AbstractOnyxWhen(returnType), OnyxCodeBlockContainer {
+): AbstractOnyxWhen(returnType), OnyxCodeBlockContainer, OnyxFinalizable<OnyxExpressionWhen> {
     private val branches = branches.toList()
     override val isTable = false
     override fun execute(
@@ -39,6 +43,20 @@ class OnyxExpressionWhen(
         elseBlock?.let { consumer(it) }
     }
 
+    override fun createFinal() = OnyxExpressionWhen(
+        if (returnType is OnyxUnfinalizedClassTypeRef) returnType.checkCreateFinal() else returnType,
+        if (elseBlock is OnyxUnfinalizedCodeBlock) elseBlock.checkCreateFinal() else elseBlock,
+        true,
+        *buildList {
+            branches.forEach {
+                add(Branch(
+                    buildList { it.expressions.onEach { e -> e.checkCreateFinal() } },
+                    if (it.block is OnyxUnfinalizedCodeBlock) it.block.checkCreateFinal() else it.block
+                ))
+            }
+        }.toTypedArray()
+
+    )
     class Branch (
         val expressions: List<OnyxExpression>,
         val block: OnyxCodeBlock

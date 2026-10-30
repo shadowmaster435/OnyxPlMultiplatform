@@ -24,7 +24,7 @@ class OnyxUnfinalizedTuples(private val tuplesUnfinal: List<OnyxUnfinalizedTuple
     override fun validate(input: Array<out OnyxClassInstance>) = throw uninitialized
     override fun validate(input: List<OnyxClassInstance>) = throw uninitialized
     override fun createFinal() = OnyxTuples(
-        buildList { tuplesUnfinal.forEach { add(it.createFinal()) } }
+        buildList { tuplesUnfinal.forEach { add(it.checkCreateFinal()) } }
     )
 
 

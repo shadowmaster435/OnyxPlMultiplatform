@@ -44,7 +44,7 @@ class OnyxUnfinalizedFieldDesc(
     override fun getRefVal(thisInstance: OnyxClassInstance?) = throw uninitialized
 
     override fun createFinal() = OnyxFieldDescriptor(
-        name, null, classTypeUnfinal.createFinal(), modifiers, initExpression, isFinal, false, definitionName = definitionName
+        name, null, classTypeUnfinal.checkCreateFinal(), modifiers, initExpression, isFinal, false, definitionName = definitionName
     )
 
     override fun setRefVal(

@@ -132,7 +132,7 @@ class OnyxExpressionBuilder internal constructor(returnType: OnyxClassDescriptor
         var expression = expression; @JvmSynthetic internal set
         override fun reset(params: OnyxParams) {}
         override fun createFinal() {
-            expression.createFinal()
+            expression.checkCreateFinal()
         }
     }
 

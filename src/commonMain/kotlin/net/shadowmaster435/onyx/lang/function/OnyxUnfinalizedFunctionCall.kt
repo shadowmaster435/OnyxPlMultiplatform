@@ -31,9 +31,9 @@ class OnyxUnfinalizedFunctionCall(
     }
 
     override fun createFinal() = OnyxFunctionCall(
-        params.apply { forEach { it.createFinal() } },
-        buildList { genericsUnfinal.forEach { add(it.createFinal()) } },
-        descUnfinal.createFinal()
+        params.apply { forEach { it.checkCreateFinal() } },
+        buildList { genericsUnfinal.forEach { add(it.checkCreateFinal()) } },
+        descUnfinal.checkCreateFinal()
     )
 
     companion object {

@@ -12,7 +12,7 @@ class OnyxUnfinalizedGenericTuples(private val tuplesUnfinal: List<OnyxUnfinaliz
     override fun validate(input: Array<out OnyxGenericType>) = throw uninitialized
     override fun validate(input: List<OnyxGenericType>) = throw uninitialized
     override fun createFinal() = OnyxGenericTuples(
-        buildList { tuplesUnfinal.forEach { add(it.createFinal()) } }
+        buildList { tuplesUnfinal.forEach { add(it.checkCreateFinal()) } }
     )
 
     companion object {

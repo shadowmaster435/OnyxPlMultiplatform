@@ -28,7 +28,7 @@ open class OnyxTuple(
     ) : this (
         type, name,
         if (nullable) OnyxNullability.NULLABLE else OnyxNullability.NON_NULLABLE,
-        vararg, initExpression
+        vararg, initExpression?.checkCreateFinal()
     )
     open fun wrap() = OnyxTuples(this)
 

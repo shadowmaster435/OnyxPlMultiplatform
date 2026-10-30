@@ -26,7 +26,7 @@ class OnyxUnfinalizedTuple(
 
     override fun wrap() = throw uninitialized
     override fun createFinal() = OnyxTuple(
-        typeUnfinal.createFinal(), name, nullability, vararg, initExpression
+        typeUnfinal.checkCreateFinal(), name, nullability, vararg, initExpression
     )
 
 

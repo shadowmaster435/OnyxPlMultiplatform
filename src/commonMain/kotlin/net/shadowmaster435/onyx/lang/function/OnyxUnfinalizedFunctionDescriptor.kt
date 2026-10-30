@@ -28,11 +28,11 @@ class OnyxUnfinalizedFunctionDescriptor(
 ), OnyxFinalizable<OnyxFunctionDescriptor> {
     override fun createFinal() = OnyxFunctionDescriptor(
         name,
-        tuplesUnfinal.createFinal(),
-        codeBlockUnfinal.createFinal(),
+        tuplesUnfinal.checkCreateFinal(),
+        codeBlockUnfinal.checkCreateFinal(),
         modifiers,
-        genericTuplesUnfinal.createFinal(),
-        returnTypeUnfinal.createFinal()
+        genericTuplesUnfinal.checkCreateFinal(),
+        returnTypeUnfinal.checkCreateFinal()
     )
 
     @Suppress("UNCHECKED_CAST")

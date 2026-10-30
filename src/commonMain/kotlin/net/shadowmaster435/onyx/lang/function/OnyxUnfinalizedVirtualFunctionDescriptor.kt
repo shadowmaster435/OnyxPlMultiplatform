@@ -16,9 +16,9 @@ class OnyxUnfinalizedVirtualFunctionDescriptor(
 ), OnyxFinalizable<OnyxVirtualFunctionDescriptor> {
     override fun createFinal() = OnyxVirtualFunctionDescriptor(
         name,
-        tuplesUnfinal.createFinal(),
+        tuplesUnfinal.checkCreateFinal(),
         modifiers,
-        genericTuplesUnfinal.createFinal(),
-        returnTypeUnfinal.createFinal()
+        genericTuplesUnfinal.checkCreateFinal(),
+        returnTypeUnfinal.checkCreateFinal()
     )
 }

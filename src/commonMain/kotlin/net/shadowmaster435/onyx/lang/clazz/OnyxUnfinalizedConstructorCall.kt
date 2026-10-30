@@ -8,5 +8,5 @@ class OnyxUnfinalizedConstructorCall(
     private val ctor: OnyxFunctionCall
 ) : OnyxClassInstance(descUnfinal), OnyxFinalizable<OnyxClassInstance> {
     override val isConstructorCall: Boolean get() = true
-    override fun createFinal() = OnyxConstructorCall(descUnfinal.createFinal(), ctor)
+    override fun createFinal() = OnyxConstructorCall(descUnfinal.checkCreateFinal(), ctor)
 }
