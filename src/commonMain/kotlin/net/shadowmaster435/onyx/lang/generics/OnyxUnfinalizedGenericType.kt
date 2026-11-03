@@ -166,14 +166,18 @@ class OnyxUnfinalizedGenericType(
                 )
             }
         }
-
+        private val whitespaceRegex = Regex("\\s")
         val inputParamTemplate = ParsinatorTemplate {
             chain(false) {
                 use(typeTemplate)
+
                 whitespace(true)
                 branch(false) {
                     token(false, "?", false) makes {
                         OnyxNullability.NULLABLE
+                    }
+                    token(false, "!", false) makes {
+                        OnyxNullability.NEVER_NULLABLE
                     }
                     exit(0) makes { OnyxNullability.NON_NULLABLE }
                 }
@@ -207,7 +211,7 @@ class OnyxUnfinalizedGenericType(
                         token(false, "Any", false, true)
                         whitespace(false)
                     } makes {
-                        OnyxNullability.TRUE_NON_NULLABLE
+                        OnyxNullability.NEVER_NULLABLE
                     }
                     token(false, "?", false) makes {
                         OnyxNullability.NULLABLE

@@ -8,7 +8,7 @@ import net.shadowmaster435.onyx.lang.impl.OnyxCompilableConstImpl
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 expect val OnyxFloat.compileFunc: (Any?) -> Any?
-class OnyxFloat(override val held: Float) : OnyxNumber<Float>(makeOverrideDesc<OnyxFloat>("Float")), OnyxCompilableConstImpl {
+class OnyxFloat(override val held: Float) : OnyxNumber<Float>(desc), OnyxCompilableConstImpl {
     override val byteCount = 4
     override fun toByte() = held.toInt().toByte()
     override fun toShort() = held.toInt().toShort()
@@ -18,7 +18,7 @@ class OnyxFloat(override val held: Float) : OnyxNumber<Float>(makeOverrideDesc<O
     override fun toDouble() = held.toDouble()
     override fun compileConst(v: Any?) = OnyxCompiledType(compileFunc(v))
     companion object {
-        val desc = descOf(OnyxFloat::class)
+        val desc = makeOverrideDesc<OnyxFloat>("Float")
         val template = ParsinatorTemplate {
             chain(false) {
                 branch(false) {

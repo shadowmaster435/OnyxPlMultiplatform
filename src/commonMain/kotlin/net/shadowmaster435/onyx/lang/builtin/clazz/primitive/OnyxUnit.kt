@@ -8,16 +8,16 @@ import net.shadowmaster435.onyx.lang.enums.jvm.JVMPrimitiveType
 import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.pkg.onyxPrimitives
 
-object OnyxUnit : OnyxExternalClassInstance<Unit>(Desc.desc) {
+
+object OnyxUnit : OnyxExternalClassInstance<Unit>(OnyxClassDescriptor(
+    "Unit", onyxPrimitives, linkedMapOf(), linkedMapOf(
+        "hashCode" to OnyxClassInstance.defaultHashcodeFunction,
+        "equals" to OnyxClassInstance.defaultEqualsFunction
+    ), linkedMapOf(), OnyxClassType.OBJECT, null
+).apply { jvmNameOverride = JVMPrimitiveType.VOID.descriptor }) {
     override val held = Unit
+
     override fun onyxEquals(other: OnyxClassInstance) = OnyxBoolean(other === this)
     override fun onyxHashcode() = OnyxInt(Unit.hashCode())
-    object Desc {
-        val desc = anyDesc.extend(
-            "Unit", onyxPrimitives, OnyxClassType.NORMAL, fields =  linkedMapOf(),  functions =  linkedMapOf(
-                OnyxClassDescriptor.hashcodeDesc,
-                OnyxClassDescriptor.equalDesc
-            ), classes = linkedMapOf()
-        ).apply { jvmNameOverride = JVMPrimitiveType.VOID.descriptor }
-    }
+
 }

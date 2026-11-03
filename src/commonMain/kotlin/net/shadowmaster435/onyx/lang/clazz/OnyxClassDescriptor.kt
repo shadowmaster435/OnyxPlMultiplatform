@@ -20,6 +20,8 @@ import net.shadowmaster435.onyx.lang.util.enumMapOf
 import net.shadowmaster435.onyx.util.OnyxModifiers
 import net.shadowmaster435.onyx.util.OnyxParams
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
+import kotlin.jvm.JvmField
+import kotlin.jvm.JvmStatic
 
 expect val OnyxClassDescriptor.compileFunc: (Any?) -> Any?
 expect val OnyxClassDescriptor.onCreation: (Any?) -> Unit
@@ -31,12 +33,12 @@ open class OnyxClassDescriptor(
     fields: LinkedHashMap<String, OnyxFieldImpl>,
     functions: LinkedHashMap<String, AbstractOnyxFunctionDescriptor>,
     classes: LinkedHashMap<String, OnyxClassDescriptor>,
-    open val classType: OnyxClassType,
+    classType: OnyxClassType,
     supertypes: List<OnyxClassDescriptor>,
-    open val companions: List<OnyxObject> = listOf(),
-    internal open val operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunctionDescriptor> = enumMapOf(),
-    open val genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty,
-    open val constructors: List<AbstractOnyxFunctionDescriptor> = listOf(),
+    companions: List<OnyxObject> = listOf(),
+    operatorOverloads: EnumMap<OnyxOperator, AbstractOnyxFunctionDescriptor> = enumMapOf(),
+    genericTuples: OnyxGenericTuples = OnyxGenericTuples.empty,
+    constructors: List<AbstractOnyxFunctionDescriptor> = listOf(),
 ):
     OnyxMemberImpl,
     OnyxAccessImpl,
@@ -49,12 +51,17 @@ open class OnyxClassDescriptor(
 {
     //region Vars
     var innerClassOf: OnyxClassDescriptor? = null
+    internal open val operatorOverloads = operatorOverloads
+    open val constructors = constructors
+    open val genericTuples = genericTuples
+    open val companions = companions
+    open val classType = classType
 
     internal var jvmNameOverride: String? = null
     //endregion
     //region Vals
-    val isEnum = modifiers.contains(OnyxModifierType.ENUM)
-    open val isObject = classType == OnyxClassType.OBJECT
+    open val isEnum get() = modifiers.contains(OnyxModifierType.ENUM)
+    open val isObject get() = classType == OnyxClassType.OBJECT
     open val supertypes = supertypes.toList()
     open val equalsFunction = functions["equals"]
     open val hashcodeFunction = functions["hashCode"]
@@ -288,9 +295,9 @@ open class OnyxClassDescriptor(
     //endregion
 
     companion object {
-        val equalDesc = "equals" to OnyxClassInstance.defaultEqualsFunction
-        val hashcodeDesc = "hashCode" to OnyxClassInstance.defaultHashcodeFunction
-        val toStringDesc = "toString" to OnyxClassInstance.defaultToStringFunction
+        val equalDesc inline get() = "equals" to OnyxClassInstance.defaultEqualsFunction
+        val hashcodeDesc inline get() = "hashCode" to OnyxClassInstance.defaultHashcodeFunction
+        val toStringDesc inline get() = "toString" to OnyxClassInstance.defaultToStringFunction
         val template: ParsinatorTemplate get() = TODO("Class parsinator template")
     }
 }

@@ -2,7 +2,16 @@ package net.shadowmaster435.onyx.lang.util
 
 import net.shadowmaster435.onyx.exception.InvalidParameterCountException
 import net.shadowmaster435.onyx.ext.filterDuplicates
+import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxAny
+import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxBoolean
 import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.OnyxUnit
+import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxByte
+import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxDouble
+import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxFloat
+import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxInt
+import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxLong
+import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxNumber
+import net.shadowmaster435.onyx.lang.builtin.clazz.primitive.number.OnyxShort
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassDescriptor
 import net.shadowmaster435.onyx.lang.clazz.OnyxClassInstance
 import net.shadowmaster435.onyx.lang.enums.operator.OnyxOperator

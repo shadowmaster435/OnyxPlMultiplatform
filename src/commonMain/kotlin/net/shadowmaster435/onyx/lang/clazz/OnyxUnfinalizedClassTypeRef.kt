@@ -6,6 +6,8 @@ import net.shadowmaster435.onyx.lang.enums.lang.OnyxClassType
 import net.shadowmaster435.onyx.lang.enums.operator.OnyxOperator
 import net.shadowmaster435.onyx.lang.function.AbstractOnyxFunctionDescriptor
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
+import net.shadowmaster435.onyx.lang.generics.OnyxUnfinalizedGenericTuples
+import net.shadowmaster435.onyx.lang.generics.OnyxUnfinalizedGenericType
 import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
 import net.shadowmaster435.onyx.lang.impl.OnyxFinalizable
 import net.shadowmaster435.onyx.lang.pkg.OnyxPackage
@@ -16,9 +18,13 @@ import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
 class OnyxUnfinalizedClassTypeRef(
     val qname: String,
+    genericsUnfinal: List<OnyxUnfinalizedGenericType> = listOf()
 ) : OnyxClassDescriptor(
     "", globalRoot, linkedMapOf(), linkedMapOf(), linkedMapOf(), OnyxClassType.UNINITIALIZED, null
 ), OnyxFinalizable<OnyxClassDescriptor> {
+
+    var genericsUnfinal = genericsUnfinal; internal set
+
     override val pkg: OnyxPackage
         get() = throw UninitializedException("Class is not initialized")
     

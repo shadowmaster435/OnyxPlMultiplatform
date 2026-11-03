@@ -24,6 +24,7 @@ open class OnyxGenericType(
     "", globalRoot, listOf(), linkedMapOf(), linkedMapOf(), linkedMapOf(),
     OnyxClassType.NORMAL, listOf()
 ) {
+
     open var genericType: OnyxClassDescriptor? = type; protected set
     override val fieldEntries: Array<OnyxFieldImpl>
         get() = erasureCheck().fieldEntries
@@ -47,7 +48,10 @@ open class OnyxGenericType(
         get() = erasureCheck().classType
     override val companions: List<OnyxObject>
         get() = erasureCheck().companions
-
+    override val isEnum: Boolean
+        get() = erasureCheck().isEnum
+    override val isObject: Boolean
+        get() = erasureCheck().isObject
     override val constructors: List<AbstractOnyxFunctionDescriptor>
         get() = erasureCheck().constructors
     override val genericTuples: OnyxGenericTuples

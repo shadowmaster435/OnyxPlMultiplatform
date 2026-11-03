@@ -1,7 +1,9 @@
 package net.shadowmaster435.onyx.lang.generics
 
 import net.shadowmaster435.onyx.exception.UninitializedException
+import net.shadowmaster435.onyx.lang.enums.code.OnyxNullability
 import net.shadowmaster435.onyx.lang.impl.OnyxFinalizable
+import net.shadowmaster435.onyx.lang.util.accessChainStringTemplate
 import net.shadowmaster435.onyx.lang.util.list
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 
@@ -41,8 +43,32 @@ class OnyxUnfinalizedGenericTuples(private val tuplesUnfinal: List<OnyxUnfinaliz
                 exit(0) makes {emptyList<OnyxUnfinalizedGenericType>()}
             }
         }
-        val inputParamTemplate: ParsinatorTemplate = ParsinatorTemplate {
+        val inputParamTemplateTest = ParsinatorTemplate {
             chain(false) {
+                recurse(false, {it.char == '<'}, {it.char == '?'}) {
+                    accessChainStringTemplate()
+                    branch(false) {
+                        token(false, "?", false) makes {
+                            OnyxNullability.NULLABLE
+                        }
+                        token(false, "!", false) makes {
+                            OnyxNullability.NEVER_NULLABLE
+                        }
+                        exit(0) makes { OnyxNullability.NON_NULLABLE }
+                    }
+                }
+
+            } makes {
+                it as List<*>
+                OnyxUnfinalizedGenericParam(
+                    it[1] as OnyxNullability,
+                    it[0] as String
+                )
+            }
+        }
+
+        val inputParamTemplate: ParsinatorTemplate = ParsinatorTemplate {
+            chain(true) {
                 token(false, "<", excludeFromChains = true)
                 whitespace(true)
                 repeating(true, false) {

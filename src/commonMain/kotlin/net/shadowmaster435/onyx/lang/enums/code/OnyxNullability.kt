@@ -7,5 +7,5 @@ enum class OnyxNullability(
     INPUT(true, true),
     NULLABLE(true),
     NON_NULLABLE(false),
-    TRUE_NON_NULLABLE(false)
+    NEVER_NULLABLE(false)
 }

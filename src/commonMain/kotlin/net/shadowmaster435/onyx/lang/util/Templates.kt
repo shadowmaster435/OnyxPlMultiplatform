@@ -2,16 +2,21 @@ package net.shadowmaster435.onyx.lang.util
 
 import net.shadowmaster435.onyx.ext.substringOrNull
 import net.shadowmaster435.onyx.lang.clazz.OnyxUnfinalizedClassDesc
+import net.shadowmaster435.onyx.lang.clazz.OnyxUnfinalizedClassTypeRef
+import net.shadowmaster435.onyx.lang.enums.code.OnyxNullability
+import net.shadowmaster435.onyx.lang.enums.generics.OnyxGenericCovariance
 import net.shadowmaster435.onyx.lang.field.OnyxUnfinalizedFieldDesc
 import net.shadowmaster435.onyx.lang.function.OnyxUnfinalizedFunctionDescriptor
 import net.shadowmaster435.onyx.lang.generics.OnyxGenericTuples
 import net.shadowmaster435.onyx.lang.generics.OnyxUnfinalizedGenericTuples
+import net.shadowmaster435.onyx.lang.generics.OnyxUnfinalizedGenericType
 import net.shadowmaster435.onyx.lang.pkg.OnyxPackage
 import net.shadowmaster435.onyx.lang.pkg.OnyxPackage.Companion.byQualifiedName
 import net.shadowmaster435.parsinator.Parsinator
 import net.shadowmaster435.parsinator.dsl.ParsinatorTemplate
 import net.shadowmaster435.parsinator.util.ParsinatorContext
 import net.shadowmaster435.parsinator.util.ParsinatorErrorType
+import net.shadowmaster435.parsinator.util.Stack
 
 internal typealias list = List<*>
 
@@ -33,10 +38,12 @@ fun accessChainStringTemplate() = ParsinatorTemplate {
         name(false)
         whitespace(true)
         trailing {
-            token(true, ".", false)
-            whitespace(true)
-            name(false)
-            whitespace(true)
+            chain(true) {
+                token(true, ".", false)
+                whitespace(true)
+                name(false)
+                whitespace(true)
+            }
         }
     } makes {
         var str = ""
@@ -137,12 +144,91 @@ val importTemplate = ParsinatorTemplate {
         } makes {true}
     } makes {TODO("Import Template")}
 }
+@Suppress("UNCHECKED_CAST")
 val typeTemplate: ParsinatorTemplate = ParsinatorTemplate {
     chain(false) {
         use(accessChainStringTemplate { it }) makes {it}
         whitespace(true)
         use(OnyxUnfinalizedGenericTuples.inputParamTemplate)
-    } makes {TODO("Type Template")}
+    } makes {
+        it as list
+        val name = it[0] as String
+        val generics = it[1] as List<OnyxUnfinalizedGenericType>
+        OnyxUnfinalizedClassTypeRef(name, generics)
+    }
+}
+
+private fun stringToUnfinalizedClassReference(string: String) = OnyxUnfinalizedClassTypeRef(string)
+private fun stringToUnfinalizedGenericType(string: String, nullability: OnyxNullability) = OnyxUnfinalizedGenericType(
+    "",
+    OnyxGenericCovariance.NONE,
+    nullability,
+    string
+)
+private val whitespaceRegex = Regex("\\s")
+
+private fun parseUnfinalizedInputGenerics(string: String) {
+    val string = string.replace(whitespaceRegex, "").replace(",>", ">")
+    var accum = ""
+    val stack = Stack<MutableList<String>>()
+    var nullability = OnyxNullability.NON_NULLABLE
+    var skipComma = false
+    var skipAccum = false
+    for (i in string.indices) {
+        val ch = string[i]
+        val last = string.getOrNull(i - 1)
+        val next = string.getOrNull(i + 1)
+        val afterNext = string.getOrNull(i + 2)
+        when(ch) {
+            ',', '!', '?', '<', '>' -> skipAccum = true
+        }
+        when(ch) {
+            '<' -> {
+                stack.peek().add(accum)
+                accum = ""
+                stack.push(mutableListOf())
+            }
+            '>' -> {
+                skipComma = true
+                nullability = when(next) {
+                    '!' -> OnyxNullability.NEVER_NULLABLE
+                    '?' -> OnyxNullability.NULLABLE
+                    else -> OnyxNullability.NON_NULLABLE
+                }
+            }
+        }
+    }
+}
+
+
+val a = ParsinatorTemplate {
+    manual(false) {
+        var accum = ""
+        var depth = 0
+        var started = false
+        var inGenerics = false
+        while (depth > 0 || !started) {
+            if (it.char == '<') {
+                depth++
+                inGenerics = true
+                started = true
+            }
+            if (it.char == '>') {
+                depth--
+                if (inGenerics && depth == 0) {
+
+                }
+            }
+            if (depth == 0 && it.char == '(') break
+            accum += it.char
+            it.inc()
+            if (!it.inbounds(0)) return@manual ParsinatorErrorType.EOF
+        }
+        held = accum
+        null
+    } makes {
+        null
+    }
 }
 
 val typeDefinitionTemplate: ParsinatorTemplate = ParsinatorTemplate {

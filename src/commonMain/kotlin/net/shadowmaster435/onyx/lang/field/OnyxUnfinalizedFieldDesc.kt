@@ -9,7 +9,6 @@ import net.shadowmaster435.onyx.lang.enums.modifier.OnyxModifierType
 import net.shadowmaster435.onyx.lang.function.OnyxFunctionDescriptor
 import net.shadowmaster435.onyx.lang.impl.OnyxFieldImpl
 import net.shadowmaster435.onyx.lang.util.OnyxDefinitionName
-import net.shadowmaster435.onyx.lang.util.expressionTemplate
 import net.shadowmaster435.onyx.lang.util.extensionDefinitionName
 import net.shadowmaster435.onyx.lang.util.typeTemplate
 import net.shadowmaster435.onyx.util.OnyxExpression
@@ -28,7 +27,6 @@ class OnyxUnfinalizedFieldDesc(
     override var holderClass: OnyxClassDescriptor?
         get() = throw uninitialized
         set(_) {throw uninitialized}
-
     override var classType: OnyxClassDescriptor get() = throw uninitialized
         set(_) {throw uninitialized}
     override var getter: OnyxFunctionDescriptor?
@@ -72,7 +70,7 @@ class OnyxUnfinalizedFieldDesc(
                 whitespace(false)
 
                 chain(true) {
-                    chain(false) {
+                    chain(false, excludeFromChains = true) {
                         whitespace(true)
                         token(false, ":")
                         whitespace(true)
@@ -91,7 +89,7 @@ class OnyxUnfinalizedFieldDesc(
                 val name = it[2] as OnyxDefinitionName
                 val typeChain = it[3] as List<*>
                 val initExpression = (typeChain.last() as? OnyxExpression)
-                val classType = OnyxUnfinalizedClassTypeRef(typeChain.first() as String)
+                val classType = typeChain.first() as OnyxUnfinalizedClassTypeRef
                 name to OnyxUnfinalizedFieldDesc(
                     name.name,
                     name,
