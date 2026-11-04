@@ -23,9 +23,7 @@ class OnyxInt(override val held: Int) : OnyxNumber<Int>(desc), OnyxCompilableCon
         val template = ParsinatorTemplate {
             chain(true) {
                 branch(false) {
-                    token(false, "-", false) makes {
-                        println(indexRange)
-                        true}
+                    token(false, "-", false) makes {true}
                     exit(0) makes { false }
                 }
                 branch(false) {

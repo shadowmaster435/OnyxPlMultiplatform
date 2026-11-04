@@ -79,7 +79,7 @@ enum class OnyxModifierType(
                 chain(false) {
                     whitespace(false)
                     branch(true) {
-                        for (keyword in enumEntries<OnyxKeywordType>()) token(true, keyword.string)
+                        for (keyword in enumEntries<OnyxKeywordType>()) token(true, keyword.string, requiresSurroundingWhitespace = false)
                     }
                     whitespace(false)
                 }

@@ -23,7 +23,6 @@ fun String.indexToLineColumn(index: Int): Pair<Int, Int> {
     return line to currentIndex
 }
 
-
 fun String.hexToFloat(): Float {
     if (length != 8) throw RuntimeException("Invalid float hex string length $length")
     return Float.fromBits(hexToInt())

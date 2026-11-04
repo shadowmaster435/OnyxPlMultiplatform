@@ -136,25 +136,6 @@ class OnyxUnfinalizedGenericParam(
     companion object {
         private val uninitialized get() = UninitializedException("Generic is not initialized")
 
-        private fun createParams(list: list): List<OnyxUnfinalizedGenericParam> = buildList {
-            list.forEach {
-                add(
-                    when(it) {
-                        is Pair<*, *> -> OnyxUnfinalizedGenericParam(
-                            it.first as OnyxNullability,
-                            it.second as String
-                        )
-                        is Triple<*, *, *> -> OnyxUnfinalizedGenericParam(
-                            it.first as OnyxNullability,
-                            it.second as String,
-                            createParams(it.third as list)
-                        )
-                        else -> throw ImpossibleException()
-                    }
-                )
-            }
-        }
-
         val inputParamTemplate = ParsinatorTemplate {
             chain(false) {
                 recurse(false, {
@@ -234,7 +215,6 @@ class OnyxUnfinalizedGenericParam(
                     fun create() = OnyxUnfinalizedGenericParam(
                         nullability, name, params
                     )
-                    override fun toString() = name
                 }
                 var stack = Stack<Holder>()
                 stack.push(Holder())

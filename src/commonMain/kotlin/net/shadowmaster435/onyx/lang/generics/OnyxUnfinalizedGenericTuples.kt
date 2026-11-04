@@ -72,7 +72,7 @@ class OnyxUnfinalizedGenericTuples(private val tuplesUnfinal: List<OnyxUnfinaliz
                 token(false, "<", excludeFromChains = true)
                 whitespace(true)
                 repeating(true, false) {
-                    use(OnyxUnfinalizedGenericType.inputParamTemplate)
+                    use(OnyxUnfinalizedGenericParam.inputParamTemplate)
                     whitespace(true)
                     trailing { token(true, ",", excludeFromChains = true) }
                 }

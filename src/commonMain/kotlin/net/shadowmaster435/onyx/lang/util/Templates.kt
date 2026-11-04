@@ -93,9 +93,10 @@ val extensionDefinitionName = ParsinatorTemplate {
             }
             if (it.char == '>') depth--
             if (depth == 0 && it.char == '(') break
+            if (whitespaceRegex.matches(it.char.toString())) break
             accum += it.char
             it.inc()
-            if (!it.inbounds(0)) return@manual ParsinatorErrorType.EOF
+            if (!it.inbounds(0)) break
         }
         held = accum
         null

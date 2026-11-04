@@ -133,7 +133,7 @@ class OnyxUnfinalizedClassTypeRef(
 
     companion object {
         private val uninitialized get() = UninitializedException("Class is not initialized")
-        val template: ParsinatorTemplate = TODO("Class parsinator template")
+        val template: ParsinatorTemplate get() = TODO("Class parsinator template")
 
     }
 
